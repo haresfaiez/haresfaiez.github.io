@@ -1,8 +1,21 @@
 <header class="site-header">
 
   <div class="wrapper">
+    <div class="">
+        <ul class="contact-list">
+        {% if site.github_username %}
+        <li>
+            {% include icon-github.html username=site.github_username %}
+        </li>
+        {% endif %}
 
-    <a class="site-title" href="{{ site.baseurl }}/">{{ site.title }}</a>
+        {% if site.twitter_username %}
+        <li>
+            {% include icon-twitter.html username=site.twitter_username %}
+        </li>
+        {% endif %}
+        </ul>
+    </div>
 
     <nav class="site-nav">
       <a href="#" class="menu-icon">
