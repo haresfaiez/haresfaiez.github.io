@@ -3,7 +3,7 @@ layout: default
 ---
 
 <div class="home">
-
+  <section class="">
   <ul class="post-list">
     {% for post in site.posts %}
       <li>
@@ -15,7 +15,7 @@ layout: default
       </li>
     {% endfor %}
   </ul>
-
+  </section>
   <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 
 </div>
