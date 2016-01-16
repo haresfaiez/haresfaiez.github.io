@@ -1,12 +1,17 @@
 /**
  * Home
  */
+.home section {
+    display: inline-block;
+}
+
 .home_left-side-content {
     width: $home_left-side__width;
 }
 
 .home_aside-content {
     width: $home_aside-content__width;
+    position: absolute;
 }
 
 /**
