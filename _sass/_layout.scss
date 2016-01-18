@@ -30,9 +30,15 @@
 }
 
 .header_user-pic {
-    width:100%;
+    width:29%;
     margin:0;
     display:inline-block;
+    vertical-align: top;
+}
+
+.header_user-meta-inf {
+    display: inline-block;
+    width: 70%;
 }
 
 .site-title {
