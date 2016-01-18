@@ -5,20 +5,22 @@
         <figure class="header_user-pic">
             <img src="https://avatars3.githubusercontent.com/u/10279086?v=3&s=460" alt="Hares Faiez" />
         </figure>
-        <p>{{ site.description }}</p>
-        <ul class="contact-list">
-        {% if site.github_username %}
-        <li>
-            {% include icon-github.html username=site.github_username %}
-        </li>
-        {% endif %}
+        <div class="header_user-meta-inf">
+            <p>{{ site.description }}</p>
+            <ul class="contact-list">
+            {% if site.github_username %}
+            <li>
+                {% include icon-github.html username=site.github_username %}
+            </li>
+            {% endif %}
 
-        {% if site.twitter_username %}
-        <li>
-            {% include icon-twitter.html username=site.twitter_username %}
-        </li>
-        {% endif %}
-        </ul>
+            {% if site.twitter_username %}
+            <li>
+                {% include icon-twitter.html username=site.twitter_username %}
+            </li>
+            {% endif %}
+            </ul>
+        </div>
     </div>
 
     <nav class="site-nav">
