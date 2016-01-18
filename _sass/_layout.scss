@@ -191,6 +191,14 @@
     padding: $spacing-unit 0;
 }
 
+.featured-post-list {
+    list-style: none;
+
+    > li {
+        width: 33%;
+    }
+}
+
 .page-heading {
     font-size: 20px;
 }
