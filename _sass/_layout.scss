@@ -7,6 +7,12 @@
   width: 33%;
 }
 
+.home-main {
+  width: 66%;
+  display:inline-block;
+  vertical-align: top;
+}
+
 /**
  * Site header
  */
@@ -193,9 +199,6 @@
 .post-list {
     margin-left: 0;
     list-style: none;
-    width: 66%;
-    display:inline-block;
-    vertical-align: top;
 
     > li {
         margin-bottom: $spacing-unit;

@@ -3,6 +3,7 @@ layout: default
 ---
 
 <div class="home">
+  <section class="home-main">
   <ul class="post-list">
     {% for post in site.posts %}
     <li>
@@ -14,6 +15,7 @@ layout: default
     </li>
     {% endfor %}
   </ul>
+  </section>
   <section class="home-aside">
     {% include about.html %}
   </section>
