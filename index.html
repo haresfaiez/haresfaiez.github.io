@@ -3,6 +3,9 @@ layout: default
 ---
 
 <div class="home">
+  <section>
+    {% include about.html %}
+  </section>
   <ul class="post-list">
     {% for post in site.posts %}
     <li>
