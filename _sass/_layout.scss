@@ -1,6 +1,10 @@
 /**
  * Home
  */
+.home-aside {
+  display:inline-block;
+  width: 33%;
+}
 
 /**
  * Site header
@@ -204,6 +208,8 @@
 .post-list {
     margin-left: 0;
     list-style: none;
+    width: 66%;
+    display:inline-block;
 
     > li {
         margin-bottom: $spacing-unit;

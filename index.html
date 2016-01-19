@@ -3,9 +3,6 @@ layout: default
 ---
 
 <div class="home">
-  <section>
-    {% include about.html %}
-  </section>
   <ul class="post-list">
     {% for post in site.posts %}
     <li>
@@ -17,5 +14,8 @@ layout: default
     </li>
     {% endfor %}
   </ul>
+  <section class="home-aside">
+    {% include about.html %}
+  </section>
   <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 </div>
