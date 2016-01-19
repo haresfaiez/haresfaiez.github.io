@@ -3,6 +3,7 @@
  */
 .home-aside {
   display:inline-block;
+  /* TODO: use bootstrap grid system */
   width: 33%;
 }
 
@@ -15,22 +16,6 @@
 
     // Positioning context for the mobile navigation icon
     position: relative;
-}
-
-.header_user-meta {
-    width: 80%;
-}
-
-.header_user-pic {
-    width:24%;
-    margin:0;
-    display:inline-block;
-    vertical-align: top;
-}
-
-.header_user-meta-inf {
-    display: inline-block;
-    width: 75%;
 }
 
 .site-title {
@@ -210,6 +195,7 @@
     list-style: none;
     width: 66%;
     display:inline-block;
+    vertical-align: top;
 
     > li {
         margin-bottom: $spacing-unit;
