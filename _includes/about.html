@@ -8,6 +8,9 @@
             {% if site.email %}
             <li>
                 {% include icon-email.html username=site.email %}
+                <a class="svg-icon" target="_blank" href="{{ site.email }}">
+                    {% icon fa-envelope %}
+                </a>
             </li>
             {% endif %}
 
