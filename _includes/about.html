@@ -7,23 +7,26 @@
             <ul class="contact-list">
             {% if site.email %}
             <li>
-                {% include icon-email.html username=site.email %}
-                <a class="svg-icon" target="_blank" href="{{ site.email }}">
+                <a target="_blank" href="{{ site.email }}">
                     {% icon fa-envelope %}
                 </a>
             </li>
             {% endif %}
 
-
             {% if site.github_username %}
             <li>
-                {% include icon-github.html username=site.github_username %}
+                <a href="https://github.com/{{ site.github_username }}">
+                    {% icon fa-github %}
+                </a>
+
             </li>
             {% endif %}
 
             {% if site.twitter_username %}
             <li>
-                {% include icon-twitter.html username=site.twitter_username %}
+                <a href="https://twitter.com/{{ site.twitter_username }}">
+                    {% icon fa-twitter %}
+                </a>
             </li>
             {% endif %}
             </ul>
