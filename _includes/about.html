@@ -1,9 +1,13 @@
 <div>
-    <h2>
+    <h5>
         About
-    </h2>
-    <p>{{ site.description }}</p>
-    <ul class="contact-list">
+    </h5>
+    <p>
+        <small>
+            {{ site.description }}
+        </small>
+    </p>
+    <ul>
         {% if site.email %}
         <li>
             <a target="_blank" href="{{ site.email }}">
@@ -29,4 +33,5 @@
         </li>
         {% endif %}
     </ul>
+    <hr>
 </div>
