@@ -4,6 +4,7 @@ layout: default
 
 <div class="row">
   <section class="small-12 large-8 columns">
+    {% include categories.html %}
     {% include posts.html %}
     <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
   </section>
