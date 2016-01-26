@@ -2,15 +2,8 @@
 ---
 @charset "utf-8";
 
-.post {
-    padding: 0 0 1rem 0;
-}
-
-.page-header {
-    padding: 2rem 0;
-}
-
 @import
+        "custom/spacing",
         "foundation/grid",
         "foundation/type",
         "foundation/inline-lists",
