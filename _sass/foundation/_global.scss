@@ -313,6 +313,8 @@ $warning-color: #f08a24 !default;   // carrot
 $info-color: #a0d3e8 !default;      // cornflower
 
 // We use these to define default font stacks
+$font-family-lato: 'Lora';
+$heading-font-family: 'Roboto';
 $font-family-sans-serif: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif !default;
 $font-family-serif: Georgia, Cambria, "Times New Roman", Times, serif !default;
 $font-family-monospace: Consolas, "Liberation Mono", Courier, monospace !default;
@@ -324,7 +326,7 @@ $font-weight-bold: bold !default;
 // We use these to control various global styles
 $body-bg: #fff !default;
 $body-font-color: #222 !default;
-$body-font-family: $font-family-sans-serif !default;
+$body-font-family: $font-family-lato !default;
 $body-font-weight: $font-weight-normal !default;
 $body-font-style: normal !default;
 
