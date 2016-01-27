@@ -42,6 +42,7 @@ $subheader-bottom-margin: .5rem !default;
 // A general <small> styling
 $small-font-size: 0.667rem !default;
 $small-font-color: scale-color($header-font-color, $lightness: 35%) !default;
+$small-font-family: 'Roboto';
 
 // We use these to style paragraphs
 $paragraph-font-family: inherit !default;
@@ -302,6 +303,7 @@ $align-class-breakpoints:
     small {
       font-size: $small-font-size;
       line-height: inherit;
+      font-family: $small-font-family;
     }
 
     code {
