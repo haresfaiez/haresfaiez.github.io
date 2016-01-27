@@ -31,7 +31,6 @@ $h3-font-reduction: rem-calc(5) !default;
 $h4-font-reduction: rem-calc(5) !default;
 $h5-font-reduction: 0 !default;
 $h6-font-reduction: 0 !default;
-$h6-font-weight: $font-weight-bold;
 
 // These control how subheaders are styled.
 $subheader-line-height: $base-line-height !default;
@@ -275,7 +274,7 @@ $align-class-breakpoints:
     h3 { font-size: $h3-font-size - $h3-font-reduction; }
     h4 { font-size: $h4-font-size - $h4-font-reduction; }
     h5 { font-size: $h5-font-size - $h5-font-reduction; }
-    h6 { font-size: $h6-font-size - $h6-font-reduction; font-weight: $h6-font-weight; }
+    h6 { font-size: $h6-font-size - $h6-font-reduction; }
 
     .subheader { @include subheader; }
 
