@@ -10,7 +10,7 @@
     <ul class="inline-list">
         {% if site.email %}
         <li>
-            <a target="_blank" href="{{ site.email }}">
+            <a target="_blank" href="{{ site.email }}" class="post-aside-anchor">
                 <i class="fa fa-envelope"></i>
             </a>
         </li>
@@ -18,7 +18,7 @@
 
         {% if site.github_username %}
         <li>
-            <a href="https://github.com/{{ site.github_username }}">
+            <a href="https://github.com/{{ site.github_username }}" class="post-aside-anchor">
                 <i class="fa fa-github"></i>
             </a>
 
@@ -27,7 +27,7 @@
 
         {% if site.twitter_username %}
         <li>
-            <a href="https://twitter.com/{{ site.twitter_username }}">
+            <a href="https://twitter.com/{{ site.twitter_username }}" class="post-aside-anchor">
                 <i class="fa fa-twitter"></i>
             </a>
         </li>
