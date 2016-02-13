@@ -10,11 +10,11 @@ Maybe it is one of a bulk of fallacies that have been emerging as a consequence
 of blindly using cargo manufacturing as a reference while driving software
 development efforts.
 Or may be it is just another inherent aspect of our human nature.
-But, I think that our bais toawrd solving our problems by increasing numbers
+But, I think that our bias toward solving our problems by increasing numbers
 is no more than an escape from our problems.
 
 We are striving all the time for scaling.
-Scaling our teams, our tools, our plateforms...
+Scaling our teams, our tools, our platforms...
 But we end up having more problems.
 
 Small is simple. Small is also tiny and light.
