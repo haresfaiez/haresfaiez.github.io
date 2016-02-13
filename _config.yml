@@ -6,10 +6,9 @@ description: >
 about: >
     Hi!
     I am Hares Faiez.
-    I am a Software engineering student.
-    I write about all those thoughts that blow my mind about software development.
-    I would appreciate if you give your opinion about them.
-    Have a great day.
+    I am a programmer.
+    I write here about what I have learned and what I am trying to learn.
+    It is mostly about software development and product design.
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "haresfaiez.github.io" # the base hostname & protocol for your site
