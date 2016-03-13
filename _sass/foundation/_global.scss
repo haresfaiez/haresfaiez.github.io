@@ -19,7 +19,8 @@ $namespace: false !default;
 // set $rem-base to $base-font-size and make sure $base-font-size is a px value.
 $base-font-size: 100% !default;
 
-$base-line-height: 1.35rem !default;
+// $base-line-height is 24px while $base-font-size is 16px
+$base-line-height: 1.5 !default;
 
 //
 // Global Foundation Mixins
@@ -291,7 +292,7 @@ $vapor         : #F6F6F6 !default;
 $white-smoke   : #F5F5F5 !default;
 $silver        : #EFEFEF !default;
 $smoke         : #EEEEEE !default;
-$gainsboro     : #EEEFF0 !default;
+$gainsboro     : #DDDDDD !default;
 $iron          : #CCCCCC !default;
 $base          : #AAAAAA !default;
 $aluminum      : #999999 !default;
@@ -305,17 +306,14 @@ $jet           : #222222 !default;
 $black         : #000000 !default;
 
 // We use these as default colors throughout
-$primary-color: #1C1A3D !default;
+$primary-color: #008CBA !default;   // bondi-blue
 $secondary-color: #e7e7e7 !default; // white-lilac
 $alert-color: #f04124 !default;     // cinnabar
 $success-color: #43AC6A !default;   // sea-green
 $warning-color: #f08a24 !default;   // carrot
 $info-color: #a0d3e8 !default;      // cornflower
-$anchor-color: #EE3440 !default;
 
 // We use these to define default font stacks
-$font-family-lato: 'Lora';
-$heading-font-family: 'Roboto';
 $font-family-sans-serif: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif !default;
 $font-family-serif: Georgia, Cambria, "Times New Roman", Times, serif !default;
 $font-family-monospace: Consolas, "Liberation Mono", Courier, monospace !default;
@@ -325,9 +323,9 @@ $font-weight-normal: normal !default;
 $font-weight-bold: bold !default;
 
 // We use these to control various global styles
-$body-bg: #FFFFFF !default;
-$body-font-color: #353536 !default;
-$body-font-family: $font-family-lato !default;
+$body-bg: #fff !default;
+$body-font-color: #222 !default;
+$body-font-family: $font-family-sans-serif !default;
 $body-font-weight: $font-weight-normal !default;
 $body-font-style: normal !default;
 

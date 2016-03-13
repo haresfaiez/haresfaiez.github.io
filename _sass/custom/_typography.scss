@@ -1,6 +1,14 @@
 @import url(https://fonts.googleapis.com/css?family=Lora);
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 
+$body-bg: #FFFFFF !default;
+$font-family-serif: "Lora";
+$font-family-sans-serif: "Roboto", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif !default;
+
+.site-title {
+    font-size: 1.25em;
+}
+
 .post-link {
     color: #212121;
 }
@@ -10,8 +18,6 @@
 }
 
 .post-aside {
-    font-family: "roboto";
-    font-size: 0.95rem;
 }
 
 .post-aside-anchor {
