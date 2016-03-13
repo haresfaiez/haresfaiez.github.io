@@ -1,12 +1,12 @@
 {% for post in site.posts %}
-  <article class="post">
+<article class="post">
     <h2>
-      <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
     </h2>
     <small>
-      <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
     </small>
     {{ post.excerpt }}
-  </article>
+</article>
 {% endfor %}
 
