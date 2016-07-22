@@ -30,6 +30,5 @@ $accent-color         : #212121;
 }
 
 .text-details {
-  color: $primary-color_bright;
   font-size: 70%;
 }
