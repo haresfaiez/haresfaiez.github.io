@@ -7,7 +7,7 @@ tags: featured
 ---
 
 What is a good software?
-A software that does everything you expect from? a one with an attractive user interface? well documented one ?
+A software that does everything you expect from? A one with an attractive user interface? well documented one ?
 The definition of a good software is context-specific, and a good software for a person may not be the same for an other.
 Everyone has its metrics and its view of a good software.
 
