@@ -29,6 +29,12 @@ Reusable software is useful in contexts it has been grown to operate into.
 The smaller it is, the more it is open for combinations with other tools and
 the bigger the number of contexts where it could be valuable.
 
+Small modules help to avoid duplications.
+Small modules lead to knowledge *centralization*, wich means a better
+encapsulation of knowledge.
+Then, if we want to introduce a new bit of logic,
+we have to change only one module.
+
 Small teams deliver better software.
 Working together in small teams is easier. Communication is fluid,
 therefore, progress is the only option.
