@@ -7,11 +7,6 @@
 $font-family-serif      : "Lora";
 $font-family-sans-serif : "Roboto", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif !default;
 
-// custom colors
-$primary-color_light  : #bdbdbd;
-$primary-color_bright : #9e9e9e;
-$accent-color         : #212121;
-
 // custom style
 .header-navigation_bar {
   line-height: 4em;
@@ -30,5 +25,6 @@ $accent-color         : #212121;
 }
 
 .text-details {
+  color: $primary-color_bright;
   font-size: 70%;
 }
