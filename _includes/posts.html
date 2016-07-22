@@ -1,13 +1,16 @@
 {% include pre-posts.html %}
 {% for post in site.posts %}
 <article class="post">
-    <h2>
-        <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-    </h2>
-    <small>
-        {{ post.date | date: "%b %-d, %Y" }}
-    </small>
-    {{ post.excerpt }}
+  <h3>
+    <a class="text-accent"
+       href="{{ post.url | prepend: site.baseurl }}">
+      {{ post.title }}
+    </a>
+  </h3>
+  <small>
+    {{ post.date | date: "%b %-d, %Y" }}
+  </small>
+  {{ post.excerpt }}
 </article>
 {% endfor %}
 

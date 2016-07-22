@@ -10,6 +10,7 @@ $font-family-sans-serif : "Roboto", "Helvetica Neue", Helvetica, Roboto, Arial, 
 // custom colors
 $primary-color_light  : #bdbdbd;
 $primary-color_bright : #9e9e9e;
+$accent-color         : #212121;
 
 // custom style
 .header-navigation_bar {
@@ -22,4 +23,8 @@ $primary-color_bright : #9e9e9e;
 
 .text-primary_bright {
   color: $primary-color_bright;
+}
+
+.text-accent {
+  color: $accent-color;
 }
