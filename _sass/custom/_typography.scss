@@ -7,6 +7,7 @@
 $font-family-serif      : "Lora";
 $font-family-sans-serif : "Roboto", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif !default;
 $primary-color_light    : #bdbdbd;
+$primary-color_bright   : #9e9e9e;
 
 // custom style
 .header-navigation_bar {
@@ -15,4 +16,8 @@ $primary-color_light    : #bdbdbd;
 
 .text-primary_light {
   color: $primary-color_light;
+}
+
+.text-primary_bright {
+  color: $primary-color_bright;
 }
