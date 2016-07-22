@@ -4,7 +4,7 @@ email: hares.faiez@gmail.com
 description: >
     Software engineering blog
 about: >
-    Programmer, product designer
+    Programmer
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "haresfaiez.github.io" # the base hostname & protocol for your site
