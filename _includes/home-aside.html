@@ -3,7 +3,7 @@
 </h6>
 
 <ul>
-  {% for tag in page.tags %}
-    <li> {{tag}} </li>
+  {% for each in page.categories %}
+    <li> {{each}} </li>
   {% endfor %}
 </ul>
