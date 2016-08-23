@@ -1,3 +1,9 @@
 <h6 class="text-primary_bright">
   Categories
 </h6>
+
+<ul>
+  {% for tag in page.tags %}
+    <li> {{tag}} </li>
+  {% endfor %}
+</ul>
