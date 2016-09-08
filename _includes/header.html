@@ -1,10 +1,15 @@
-<header class="row">
-  <section class="small-8 medium-9 large-10 columns">
-    <h1>
-      <a href="{{ site.baseurl }}/">{{ site.title }}</a>
-    </h1>
+<header>
+  <section class="row">
+    <div class="small-8 medium-9 large-10 columns">
+      <h1>
+	<a href="{{ site.baseurl }}/">{{ site.title }}</a>
+      </h1>
+    </div>
+    <div class="small-4 medium-3 large-2 columns">
+      {% include contact.html %}
+    </div>
   </section>
-  <section class="small-4 medium-3 large-2 columns">
-    {% include contact.html %}
+  <section class="row">
+    {% include pages-list.html %}
   </section>
 </header>
