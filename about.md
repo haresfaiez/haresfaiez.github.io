@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About Faiez
+title: About Me
 permalink: /about/
 ---
 
