@@ -1,26 +1,19 @@
-<ul class="inline-list header-navigation_bar">
-    {% if site.email %}
-    <li>
-        <a target="_blank" href="{{ site.email }}">
-            <i class="fa fa-envelope"></i>
-        </a>
-    </li>
-    {% endif %}
+<div class="icon-bar three-up">
+  {% if site.email %}
+  <a target="_blank" href="{{ site.email }}">
+    <i class="fa fa-envelope"></i>
+  </a>
+  {% endif %}
 
-    {% if site.github_username %}
-    <li>
-        <a href="https://github.com/{{ site.github_username }}">
-            <i class="fa fa-github"></i>
-        </a>
+  {% if site.github_username %}
+  <a class="item" href="https://github.com/{{ site.github_username }}">
+    <i class="fa fa-github top"></i>
+  </a>
+  {% endif %}
 
-    </li>
-    {% endif %}
-
-    {% if site.twitter_username %}
-    <li>
-        <a href="https://twitter.com/{{ site.twitter_username }}">
-            <i class="fa fa-twitter"></i>
-        </a>
-    </li>
-    {% endif %}
-</ul>
+  {% if site.twitter_username %}
+  <a class="item" href="https://twitter.com/{{ site.twitter_username }}">
+    <i class="fa fa-twitter"></i>
+  </a>
+  {% endif %}
+</div>
