@@ -4,6 +4,6 @@ title: About Me
 permalink: /about/
 ---
 
-Programmer passionate about software design and architecture and product design.
-
-Specialties: Agile software development, Test-driven development, Emergent design.
+My name is Hares Faiez. I am a programmer and a designer.
+This is my presonal website.
+I share here learning and thoughts along my journey.

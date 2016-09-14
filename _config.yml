@@ -4,7 +4,9 @@ email: hares.faiez@gmail.com
 description: >
     Software engineering blog
 about: >
-    Programmer
+    My name is Hares Faiez. I am a programmer and a designer.
+    This is my presonal website.
+    I share here learning and thoughts along my journey.
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "haresfaiez.github.io" # the base hostname & protocol for your site
