@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "UNIX, introduction"
-date:   2016-07-22 11:55:43 +0100
+date:   2016-07-21 11:55:43 +0100
 categories: Software, unix
 tags: featured
 ---
