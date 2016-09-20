@@ -2,7 +2,7 @@
 layout: post
 title:  "UNIX portability"
 date:   2016-07-22 11:50:43 +0100
-categories: Software
+categories: Software, unix
 tags: featured
 ---
 We are lazy. 
