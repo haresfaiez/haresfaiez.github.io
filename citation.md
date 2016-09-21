@@ -4,10 +4,6 @@ title:  Citations
 permalink: /citation/
 ---
 
-* The bottlneck happens when we mistake the class identity for the object identity; an account for the customer means an entry for the banker (same object, but different classes).
-
-* When we do class-based design, what we are doing is meta-object design insetad of object design.
-
 * An object is defined by its behaviour.
   Thus, inside a netwrok of interacting objects, each object is defined in terms of the its behavioural contribution to the system.
   The structure of an object system then follows the distribution of behaviour between its constituents.
