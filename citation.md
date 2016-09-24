@@ -4,6 +4,10 @@ title:  Citations
 permalink: /citation/
 ---
 
+* Don't wait for a better situation to refactor. Just put your current understanding into the current situation. It is a journey of learning, not a destination.
+
+* Emergence is the consequence of learning.
+
 * An object is defined by its behaviour.
   Thus, inside a netwrok of interacting objects, each object is defined in terms of the its behavioural contribution to the system.
   The structure of an object system then follows the distribution of behaviour between its constituents.
