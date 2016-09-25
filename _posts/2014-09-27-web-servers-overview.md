@@ -24,6 +24,7 @@ The web server receives the request through a predefined network port (generally
 ## The request processing axis
 Received by the web server, the request will be splatted into several phases in order to manipulate headers and to devide the necessary work into several phases.
 Each web server implements its own strategy to process incoming http log over requests, but a families of operations known as ‘the request processing axis’ are common for all web servers. The request processing contains three units:
+
 * Themeta-data phase:
 where the web server examines, manipulates the request’s headers and determines what to do with the request (e.g : access and authentication to check if the client is authorized to access to the requested point of the file system). It selects then the mapping target : a CGI script, a static file, the file system or whatever…
 
