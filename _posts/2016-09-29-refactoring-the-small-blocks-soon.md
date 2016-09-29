@@ -1,21 +1,17 @@
 ---
 layout: post
-title:  "Refactoring the small block soon"
+title:  "Refactoring the small blocks early"
 date:   2016-09-29 22:47:43 +0100
 categories: Software, Refactoring
 tags: featured
 ---
 
-This week, I am working on 'The Gilded Rose' refactoring kata proposed by Industrial Logic.
-My mission was to make a complex piece of code clear and easier to extend.
+This week, I am working on 'The Gilded Rose' refactoring Kata proposed by Industrial Logic.
+The goal of the Kata is to make a complex piece of code clear and easier to extend.
 
-I needed to take my first step. But, from where?
-
-My first strategies were holistic.
+My first strategies toward this task were holistic.
 I started with something like
 'Remove all nested conditionals', 'Move accesses to that field to that class'.
-In a previous similiar situation,
-I started with the decision to 'Replace all arrays with classes' where every entry designare a class.
 
 I was focusing on code smells instead of the knowledge expressed through the code.
 I was trying to take away one code smell at a time.
@@ -34,12 +30,11 @@ I learned a lot about the solution as I was able to hold less context in my mind
 And, yes, I got it, without that red bar.
 
 This experience recalls some of my first steps with TDD.
-There were a voice inside my mind yelling after making a test pass
-'Go ahead, write one more test, there will be an interesting pattern that will appear.
-Then, you will be able refactor all the mess'.
+There was a voice in my mind yelling at me after making a test pass
+'Go ahead, write one more test, an interesting patterns will appear,
+then, you will be able refactor all the mess easily'.
 
-It turns out that the moment never comes.
-It is more that tidy code leads to insights than it is thtat insights that make the code tidy.
+It turns out that the perfect moment never comes.
 
-There is no a perfect moment or a better situtation for refactoring.
-Approaching it through small and safe steps makes it enjoyable and focused.
+It is rare to find good insights that help making the code tidy.
+Nevertheless, tidy code leads continuously to good insights.
