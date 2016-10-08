@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Apache web server: Content handling"
-date:   2016-02-09 22:47:43 +0100
+date:   2014-10-12 22:47:43 +0100
 categories: Software
 tags: featured
 ---
@@ -19,7 +19,7 @@ So needed updates on the request must be done before passing any data down the c
 
 The content generator is unique for each request (we are not allowed to use two content handlers in a same request processing unless we modify the core source), it is responsible for invoking input filter chain at the moment of reading the request and the output filter chain when it sends the response back.
 
-*Apache modules*
+**Apache modules**
 
 Modules are pluggables, the administrator can load/unload them via the httpd.conf file. Modules can be compiled as dynamic shared objects (DSO) that exist separately from the main httpd binary file, inside the lib directory— and this is required—, or compiled into the httpd binary when the server is built.
 To be reconized by Apache they must be registered inside httpd.conf file, excet mod\_so modules, others can be either compiled when the server is built or added out of the httpd source tree as an extension thanks to the Apache extension tool. mod_so is the loader module.
@@ -29,7 +29,7 @@ make install procedure of the configurer’s script — a script that config
 
 At run-time, Apache modules can be loaded statically (when they are compiled with the core) or dynamically through a loader, so they can call module’sfunctions and module will become able to use Apache API and modify some records and data sets.
 
-*Hooks*
+**Hooks**
 
 Hooks are everywhere in Apache web server, they have the same mission as events in some programming languages (i.e JAVA); some handlers are attached to them and when they are trigged, handlers are called.
 Apache core offers some predefined hooks.
@@ -41,7 +41,7 @@ There are two alternatives for calling hook handlers :
 * RUN ALL / VOID : all handlers will be called consecutively in their order — whatever a handler complete or refuse to complete the task— unless the apparition of an execution error.
 * RUN FIRST : all handlers will be called consecutively unless there is an execution error occurs or a handler completes the task.
 
-*Apache Filters*
+**Apache Filters**
 
 A filter is a set of data manipulations applied on an input (consecutively output) data while reading the request and before content handling (consecutively after content handling while sending response back to the client).
 
