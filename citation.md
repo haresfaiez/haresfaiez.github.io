@@ -4,6 +4,8 @@ title:  Citations
 permalink: /citation/
 ---
 
+* Producing value is the outcome of learning what is most valuable.
+
 * Retrospection is more rewarding when we reflect on the articulation of the problem as well as the adequacy of the solution.
 
 * Don't wait for a better situation to refactor. Just put your current understanding into the current situation. It is a journey of learning, not a destination.
