@@ -13,6 +13,10 @@ $primary-color_bright : #9e9e9e;
 $accent-color         : #212121;
 
 // custom style
+.title-header {
+  color: $header-title-color;
+}
+
 .header-navigation_bar {
   line-height: 4em;
 }
