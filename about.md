@@ -4,6 +4,6 @@ title: About Me
 permalink: /about/
 ---
 
-My name is Hares Faiez. I am a programmer and a designer.
-This is my presonal website.
-I share here my thoughts about software development.
+I am Hares Faiez. I am a programmer.
+I write code, I explore ideas, I share toughts, I tell stories, and I try to make the world a better place.
+You can find my ideas here.
