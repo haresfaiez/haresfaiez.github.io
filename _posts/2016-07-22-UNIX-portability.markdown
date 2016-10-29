@@ -5,8 +5,9 @@ date:   2016-07-22 11:50:43 +0100
 categories: Software, unix
 tags: featured
 ---
+
 We are lazy. 
-Honestly! if some tasks can be automated, we will be doing that, immediately.
+If some tasks can be automated, we will be doing that, immediately.
 But, sometimes, we will be doing that all the time.
 Each platform will have its specific variant of the task.
 And it will be upgraded with each platform update, may be just to adhere to the new interface or the new infrastructure.
@@ -15,7 +16,7 @@ Then that will be complicated, and we will need a specialist developer or a team
 Keeping them synchronized may have a significant cost.
 So we may not offer the same features on different environments at the same time.
 The user may not have the same experience across different contexts.
-And he will blow us with some ‘pretty’ messages on the bug tracking tool.
+And he will not be satisfied.
 
 Duplication is evil.
 

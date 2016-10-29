@@ -6,16 +6,18 @@ categories: Software, Naming
 tags: featured
 ---
 
-A construction method hides the instanciation of an object.
+A construction method is used to hide the instanciation of a desired object.
 It expresses the intent behind the construction; the value
 provided by the instance in the context of use.
-Indeed, it freezes a subset of arguments while leveraging the setting
+It does that by fixing a subset of arguments while leveraging the setting
 of other arguments to the client.
+
+I use a set of heuristics when I need to use a construction method.
 
 I prefer construction methods with the fewest possible number of arguments.
 I like them to be with no arguments at all.
 That keeps these methods focused and easier to understand.
-It's not unusual that a construction method leads to improvements in the design.
+It's not unusual that a construction method leads to many improvements in the design.
 
 I like naming a construction method after its use.
 

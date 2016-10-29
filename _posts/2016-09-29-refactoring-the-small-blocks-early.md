@@ -34,7 +34,7 @@ There was a voice in my mind yelling at me after making a test pass
 'Go ahead, write one more test, an interesting patterns will appear,
 then, you will be able refactor all the mess easily'.
 
-It turns out that the perfect moment never comes.
+It turns out that that perfect moment is an evil job, it is an illusion.
 
 It is rare to find good insights that help making the code tidy.
 Nevertheless, tidy code leads continuously to good insights.
