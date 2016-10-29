@@ -4,21 +4,18 @@ title:  Citations
 permalink: /citation/
 ---
 
+* We better experiment by giving up decision(leveraging external components) than by rushing and making a lot bad ones. 
+
 * Producing value is the outcome of learning what is most valuable.
 
 * Retrospection is more rewarding when we reflect on the articulation of the problem as well as the adequacy of the solution.
 
 * Don't wait for a better situation to refactor. Just put your current understanding into the current situation. It is a journey of learning, not a destination.
 
-* Emergence is the consequence of learning.
+* Within a netwrok of interacting objects, each object is defined in terms of the its behavioural contribution to the system.
+  The structure of an object system, thus, follows the distribution of behaviour between its constituents.
 
-* An object is defined by its behaviour.
-  Thus, inside a netwrok of interacting objects, each object is defined in terms of the its behavioural contribution to the system.
-  The structure of an object system then follows the distribution of behaviour between its constituents.
-
-* Set a direction or a destination before refactoring. Or just discover it as you go.
-
-* A refactoring should either contribute to a purpose or help us understand the code. Before refactoring, set a direction or a target situation/condition.
+* A refactoring should either contribute to a purpose, or help us understand the code. Before refactoring, set a direction or a target situation/condition.
 
 * TDD is a continuous conversation with the situation where we favour exploring the problem over imposing our the synthesis of old solutions.
 
@@ -36,4 +33,4 @@ permalink: /citation/
 
 * The dichotomy between BUD and ED is measured against adheration to forces (that could be opposite) exerced by the environment on the system, i.e: customer, techonology, business rules, team skills, ... Then, The cost of changing the tension of each force highlights architectural decisions (axis of change).
 
-* If the only adequate name of a variable is the name of its type(class), reconcider the design, the level of abstractions, and the substance of your abstractions.
+* If the only adequate name of a variable is the name of its class, reconcider the design, the level of abstractions, and the substance of your abstractions.
