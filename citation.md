@@ -4,7 +4,7 @@ title:  Citations
 permalink: /citation/
 ---
 
-* We better experiment by giving up decision(leveraging external components) than by rushing and making a lot bad ones. 
+* We better experiment by giving up decisions (leveraging external dependencies) than by making bad ones. 
 
 * Producing value is the outcome of learning what is most valuable.
 
