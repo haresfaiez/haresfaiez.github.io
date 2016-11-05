@@ -9,6 +9,7 @@ tags: featured
 In our daily life, we interact a lot with technologies.
 That pushes us to consume a huge amount of data 
 that springs from different sources and that takes various shapes.
+
 We also create a lot of data; we pick a name for our new cat, or we share wisdom on the internet.
 And from time to time, we even remove data, although it seems a bit strange,
 and hardly guaranteed by the service provider.
