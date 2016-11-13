@@ -14,8 +14,12 @@ $accent-color         : #212121;
 
 // custom size
 $accent-font-size     : 0.8em;
+$h1-font-size         : 1.6em;
 
 // custom style
+h1 {
+  font-size: $h1-font-size;
+}
 h3 {
   margin-bottom: 0;
 }
