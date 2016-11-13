@@ -7,11 +7,6 @@
 $font-family-serif      : "Lora";
 $font-family-sans-serif : "Roboto", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif !default;
 
-// custom colors
-$primary-color_light  : #bdbdbd;
-$primary-color_bright : #9e9e9e;
-$accent-color         : #212121;
-
 // custom size
 $accent-font-size     : 0.8em;
 $h1-font-size         : 1.6rem;
@@ -38,7 +33,7 @@ h3 {
 }
 
 .text-primary_bright {
-  color: $primary-color_bright;
+  color: $header-title-color;
 }
 
 .text-accent {
@@ -47,6 +42,5 @@ h3 {
 }
 
 .text-details {
-  color: $primary-color_bright;
   font-size: 70%;
 }
