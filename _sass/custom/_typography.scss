@@ -12,6 +12,9 @@ $primary-color_light  : #bdbdbd;
 $primary-color_bright : #9e9e9e;
 $accent-color         : #212121;
 
+// custom size
+$accent-font-size     : 0.8em;
+
 // custom style
 h3 {
   margin-bottom: 0;
@@ -34,7 +37,8 @@ h3 {
 }
 
 .text-accent {
-  color: $accent-color;
+  font-size: $accent-font-size;
+  color    : $accent-color;
 }
 
 .text-details {
