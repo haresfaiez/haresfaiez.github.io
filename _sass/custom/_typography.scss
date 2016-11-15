@@ -1,11 +1,9 @@
 // serif font
 @import url(https://fonts.googleapis.com/css?family=Lora);
-// sans-serif font
-@import url(https://fonts.googleapis.com/css?family=Roboto);
 
 // overridden foundation fonts
 $font-family-serif      : "Lora";
-$font-family-sans-serif : "Roboto", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif !default;
+$font-family-sans-serif : "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif !default;
 
 // custom size
 $accent-font-size     : 0.8em;
