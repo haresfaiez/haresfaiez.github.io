@@ -9,19 +9,10 @@ $font-family-sans-serif: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif 
 $default-size: 1vw;
 $accent-size : 1.4vw;
 $details-size: 0.8vw;
-$h1-font-size: 1.6rem;
 
 // custom style
-body {
+p {
   font-size: $default-size;
-}
-
-h1 {
-  font-size: $h1-font-size;
-}
-
-h3 {
-  margin-bottom: 0;
 }
 
 .title-header {
