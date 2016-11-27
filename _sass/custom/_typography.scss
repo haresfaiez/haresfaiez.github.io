@@ -2,14 +2,20 @@
 @import url(https://fonts.googleapis.com/css?family=Lora);
 
 // overridden foundation fonts
-$font-family-serif      : "Lora";
-$font-family-sans-serif : "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif !default;
+$font-family-serif     : "Lora";
+$font-family-sans-serif: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif !default;
 
 // custom size
-$accent-font-size     : 0.8em;
-$h1-font-size         : 1.6rem;
+$default-size: 1vw;
+$accent-size : 1.4vw;
+$details-size: 0.8vw;
+$h1-font-size: 1.6rem;
 
 // custom style
+body {
+  font-size: $default-size;
+}
+
 h1 {
   font-size: $h1-font-size;
 }
@@ -35,10 +41,10 @@ h3 {
 }
 
 .text-accent {
-  font-size: $accent-font-size;
+  font-size: $accent-size;
   color    : $accent-color;
 }
 
 .text-details {
-  font-size: 70%;
+  font-size: $details-size;
 }
