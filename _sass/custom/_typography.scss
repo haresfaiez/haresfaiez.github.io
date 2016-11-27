@@ -12,7 +12,7 @@ $details-size: 0.8vw;
 
 // custom style
 p {
-  font-size: $default-size;
+  font-size: $default-size !important;
 }
 
 .title-header {
