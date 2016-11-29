@@ -5,15 +5,7 @@
 $font-family-serif     : "Lora";
 $font-family-sans-serif: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif !default;
 
-// custom size
-$default-size: 1vw;
-$accent-size : 1.4vw;
-$details-size: 0.8vw;
-
 // custom style
-p {
-  font-size: $default-size !important;
-}
 
 .title-header {
   color: $primary-color_bright;
@@ -32,10 +24,5 @@ p {
 }
 
 .text-accent {
-  font-size: $accent-size;
   color    : $accent-color;
-}
-
-.text-details {
-  font-size: $details-size;
 }
