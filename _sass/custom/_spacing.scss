@@ -1,0 +1,8 @@
+.aside {
+  display:        flex;
+  flex-direction: column;
+}
+
+.aside-item {
+  align-self: flex-end;
+}
