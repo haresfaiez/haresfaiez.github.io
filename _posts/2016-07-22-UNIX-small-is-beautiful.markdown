@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title:  "UNIX, Small is beautiful"
 date:   2016-07-22 11:55:43 +0100
 categories: Software

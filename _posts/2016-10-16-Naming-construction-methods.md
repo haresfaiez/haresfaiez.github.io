@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title:  "Naming construction methods"
 date:   2016-10-16 15:42:00 +0100
 categories: Software, Naming

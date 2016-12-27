@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title:  "Emergent requirements"
 date:   2016-12-03 22:27:43 +0100
 categories: Software

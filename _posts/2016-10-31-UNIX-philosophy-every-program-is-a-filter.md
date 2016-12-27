@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title:  "UNIX philosophy: Every program is a filter"
 date:   2016-10-31 16:55:43 +0100
 categories: Software, unix

@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title:  "UNIX, design for the future"
 date:   2016-07-22 11:55:43 +0100
 categories: Software, unix

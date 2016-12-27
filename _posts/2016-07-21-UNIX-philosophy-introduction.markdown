@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title:  "UNIX, introduction"
 date:   2016-07-21 11:55:43 +0100
 categories: Software, unix

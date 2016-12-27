@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title:  "Refactoring the small blocks early"
 date:   2016-09-29 22:47:43 +0100
 categories: Software, Refactoring
