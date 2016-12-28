@@ -10,7 +10,7 @@ about: >
     I share here my learning and thoughts.
 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "haresfaiez.github.io" # the base hostname & protocol for your site
+url: "http://haresfaiez.github.io" # the base hostname & protocol for your site
 twitter_username: hrsfaiez
 behance_username: hrsfaiez
 github_username:  haresfaiez
