@@ -7,6 +7,19 @@ categories: Software
 tags: featured
 ---
 
+Product development is a journey of collaborative learning.
+This is why we value failures, collaboration, and feedback;
+we embrace misunderstanding as a part of our activities 
+and we work toward uncovering it early.
+The aim of that journey is to find and to meet the needs of the users.
+And, because the product success is measured by the value delivered,
+identifying invalid assumptions about how that value is created 
+is a priority for all the development activities.
+Users use a product because it solves their problems in a way that fits
+well within their contexts.
+They see solutions, not features.
+And they learn more about the product as their interactions with it increase.
+
 In an environemnt where feedback is highly valued, 
 stakeholders often try the software as it is being developed.
 That changes their view as well as their expectations.
@@ -22,15 +35,15 @@ We work toward requirements and we get them when we are done.
 Software requirements, like design, are emergent.
 
 We start with assumptions.
-We assume that listing the invoices will help the client find
-and update his target invoice.
-But, does that really meet the need of the customer
-that wants to update the last invoice due to a typing issue?
+We assume that listing the events will help the manager find
+and update his target.
+But, does that really meet the need of the manager
+that wants to update the next event due to a typing issue?
 I am not sure of that.
-That depends on where the invoices are found, 
-what the clients are really using our system
+That depends on where the events are found, 
+what the managers are really using our system
 for, when they do it, and how the software fits in their
-life.
+lifes.
 All of that requires continuous investigation, toughful reflection,
 and a lot of trial-and-error.
 
