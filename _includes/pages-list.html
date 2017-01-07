@@ -1,15 +1,11 @@
 <ul class="inline-list">
   <li>
-    <h6>
-      <a href="/">Home</a>
-    </h6>
+    <a href="/">Home</a>
   </li>
   {% for my_page in site.pages %}
   {% if my_page.title %}
   <li>
-    <h6>
-      <a href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
-    </h6>
+    <a href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
   </li>
   {% endif %}
   {% endfor %}
