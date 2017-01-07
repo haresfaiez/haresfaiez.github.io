@@ -6,6 +6,11 @@
   margin-bottom: 0;
 }
 
+.vertical-inset {
+  margin-top:    $paragraph-margin-bottom;
+  margin-bottom: $paragraph-margin-bottom;
+}
+
 .horizontal-icons a {
  margin-left: 0.4em;
 }
