@@ -1,6 +1,13 @@
 <footer class="row">
     <div class="columns">
       <hr />
+You can reach me through
+  {% if site.email %}
+ - email: {{ site.email }}
+  {% endif %}
+  {% if site.phone %}
+ - phone: {{ site.phone }}
+  {% endif %}
       <p class="text-primary_light">
         Copyright © 2015-2016 Hares Faiez
       </p>
