@@ -1,16 +1,16 @@
 @import url(https://fonts.googleapis.com/css?family=Fanwood+Text|Open+Sans);
 
-$font-family-serif     : "Fanwood Text", serif;
-$font-family-sans-serif: "Open Sans", sans-serif !default;
+$serif-font     : "Fanwood Text", serif;
+$sans-serif-font: "Open Sans", sans-serif !default;
 
 .header-navigation_bar {
   line-height: 4em;
 }
 
 body {
-  font-family: $font-family-sans-serif;
+  family: $sans-serif-font;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $font-family-sans-serif;
+  family: $sans-serif-font;
 }
