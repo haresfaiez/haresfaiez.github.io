@@ -1,27 +1,12 @@
 @import url(https://fonts.googleapis.com/css?family=Fanwood+Text|Open+Sans);
 
-// overridden foundation fonts
-$font-family-serif     : "Fanwood Text", serif;
-$font-family-sans-serif: "Open Sans", sans-serif !default;
-
-// custom style
-
-.title-header {
-  color: $primary-color_bright;
-}
+$serif-font     : "Fanwood Text", serif;
+$sans-serif-font: "Open Sans", sans-serif !default;
 
 .header-navigation_bar {
   line-height: 4em;
 }
 
-.text-primary_light {
-  color: $primary-color_light;
-}
-
-.text-primary_bright {
-  color: $primary-color_bright;
-}
-
-.text-accent {
-  color    : $accent-color;
+.body {
+  font-family: $sans-serif-font;
 }

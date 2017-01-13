@@ -6,3 +6,19 @@ $primary-color_light  : #bdbdbd;
 $primary-color_bright : #50616E;
 $accent-color         : #212121;
 $hover-color          : #444A54;
+
+.title-header {
+  color: $primary-color_bright;
+}
+
+.text-primary_light {
+  color: $primary-color_light;
+}
+
+.text-primary_bright {
+  color: $primary-color_bright;
+}
+
+.text-accent {
+  color: $accent-color;
+}
