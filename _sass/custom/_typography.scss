@@ -8,9 +8,18 @@ $sans-serif-font: "Open Sans", sans-serif !default;
 }
 
 body {
-  family: $sans-serif-font;
+  font-family: $sans-serif-font;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  family: $sans-serif-font;
+  font-family: $sans-serif-font;
+}
+
+.content-heading {
+  font-weight: bold;
+}
+
+.text-bloc > .heading {
+  font-weight: bold;
+  font-size  : 1.4em;
 }

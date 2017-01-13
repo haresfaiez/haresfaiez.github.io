@@ -5,7 +5,7 @@ layout: default
   <section class="small-12 large-12 columns">
     <article itemscope itemtype="http://schema.org/BlogPosting">
       <header>
-	<h2 itemprop="name headline">{{ page.title }}</h2>
+	<h2 itemprop="name headline" class="content-heading">{{ page.title }}</h2>
 	<small class="text-details text-primary_bright">
 	  <time class="post__meta" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
 	    {{ page.date | date: "%b %-d, %Y" }}

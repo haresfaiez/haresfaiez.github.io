@@ -1,13 +1,12 @@
 {% include pre-posts.html %}
 {% for post in site.posts %}
-<article>
-  <h3 class="vertical-outset">
-    <a class="text-accent"
-       href="{{ post.url | prepend: site.baseurl }}">
+<article class="text-bloc">
+  <h3 class="accent vertical-outset heading">
+    <a href="{{ post.url | prepend: site.baseurl }}">
       {{ post.title }}
     </a>
   </h3>
-  <small class="text-details text-primary_bright">
+  <small class="primary_bright">
     {{ post.date | date: "%b %-d, %Y" }}
   </small>
   {{ post.excerpt }}
