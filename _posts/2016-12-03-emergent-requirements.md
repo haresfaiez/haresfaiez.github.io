@@ -7,17 +7,19 @@ categories: Software
 tags: featured
 ---
 
-Product development is a journey of collaborative learning, a two-levels learning loop.
+Product development is a journey of collaborative learning.
 We learn how to solve effectively an unknown set of problems.
 This is hardly a linear process.
-It, often, entails uncovering misunderstanding
-and identifying the critical aspects of each problem.
+It, often, entails iterations, rework, and removal of completed functionalities
+entirely from the product.
+The aim, thus, is to unconver misunderstanding
+and to identify the critical aspects of each faced problem.
 Early failures help the team find its way toward a good product.
 And so, identifying invalid assumptions about how value is created 
-have to be a priority in the activities of the development process.
+deserves a deep consideration in all the activities of the development process.
+
 To close the metaphor loop, here, we could say that the requirements 
 constitute the way to a good product.
-
 Users use a product because it solves their problems in a way that fits
 well within their contexts.
 They see solutions, not features.
