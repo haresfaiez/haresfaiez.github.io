@@ -15,13 +15,14 @@ h1, h2, h3, h4, h5, h6 {
   font-family: $sans-serif-font;
 }
 
-.content-heading {
+article > header > .headline {
   font-weight: bold;
+  font-size  : 1.9em;
 }
 
-.text-bloc > .heading {
+.text-bloc > .headline {
   font-weight: bold;
-  font-size  : 1.4em;
+  font-size  : 1.3em;
 }
 
 .logo {
