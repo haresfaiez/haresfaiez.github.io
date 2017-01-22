@@ -1,7 +1,6 @@
-{% include pre-posts.html %}
 {% for post in site.posts %}
 <article class="text-bloc">
-  <h3 class="accent vertical-outset heading">
+  <h3 class="accent vertical-outset headline">
     <a href="{{ post.url | prepend: site.baseurl }}">
       {{ post.title }}
     </a>
