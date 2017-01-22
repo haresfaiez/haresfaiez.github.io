@@ -1,9 +1,9 @@
 // foundation
-$primary-color	      : #9FBDAD;
+$primary-color	      : #92A89C;
 
 // custom colors
 $primary-color_light  : #bdbdbd;
-$primary-color_bright : #50616E;
+$primary-color_bright : #343D38;
 $accent-color         : #212121;
 $hover-color          : #444A54;
 
@@ -21,4 +21,8 @@ $hover-color          : #444A54;
 
 .text-bloc > .accent a {
   color: $accent-color;
+}
+
+.text-bloc > .accent a:hover {
+  color: $hover-color;
 }
