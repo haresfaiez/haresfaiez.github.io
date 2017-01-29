@@ -7,19 +7,19 @@ categories: Naming
 tags: featured
 ---
 
-Every programming unit is a model.
-It maps back to a real world object, an action, an idea,
-or a set of thoughts we haven't find a name for yet.
-We can reach it by sending messages
-or we can move it around and use it to alter the control flow of the program.
-It is a matter of distributing responsibilities between the composing elements of the program
-and the level to which each component is ready to give up control.
+Each unit of a program has a set responsibilities and a purpose.
+The resopnsibilities specify what the unit is and what problems
+it solves.
+The purpose, on the other side, involves the meaning of the unit
+in its context of execution.
 
-A type is a set of constraints.
-A specification, a set of invariants, or a set of rules that need to be respected 
-by the user of the subject programming unit.
-The level to which we can leverage the checking of these constraints to the language
-depends on the power of the tools and the simplicity of the syntax.
+A type is a specification of the unit on which it applies.
+That specification, often, addresses the responsibilities of the unit,
+but it can be extended to a slight description of the purpose if that turns
+out to be valuable.
+
+The level to which we can leverage the assertion of this specification to the language
+depends on the power of the tooling and the simplicity of the syntax.
 More important is the level of certainty we want to guarantee for the users of that unit.
 For a highly constrained unit, the more the afferent coupling the unit have,
 the harder changing its implementation will be.
