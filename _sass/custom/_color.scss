@@ -1,28 +1,28 @@
 // foundation
-$primary-color	      : #92A89C;
+$primary-color	      : #4A515C;
+$hover-color          : #6A7079;
 
 // custom colors
-$primary-color_light  : #bdbdbd;
-$primary-color_bright : #343D38;
-$accent-color         : #212121;
-$hover-color          : #444A54;
+$primary-color_dark   : #212121;
+$primary-color_light  : #424546;
 
-.title-header {
-  color: $primary-color_bright;
-}
-
-.text-primary_light {
-  color: $primary-color_light;
-}
 
 .text-bloc > .primary_bright {
-  color: $primary-color_bright;
+  color: $primary-color_dark;
 }
 
 .text-bloc > .accent a {
-  color: $accent-color;
+  color: $primary-color_dark;
 }
 
 .text-bloc > .accent a:hover {
+  color: $primary-color_light;
+}
+
+.text-bloc > small {
   color: $hover-color;
+}
+
+.text-bloc > p {
+ color: $primary-color_light;
 }
