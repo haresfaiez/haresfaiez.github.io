@@ -5,6 +5,8 @@ $hover-color          : #6A7079;
 // custom colors
 $primary-color_dark   : #212121;
 $primary-color_light  : #424546;
+$bg-color             : #ffffff;
+$block-bg-color       : #1F2226;
 
 
 .text-bloc > .primary_bright {
@@ -25,4 +27,14 @@ $primary-color_light  : #424546;
 
 .text-bloc > p {
  color: $primary-color_light;
+}
+
+.highlighter-rouge {
+  background: $block-bg-color;
+}
+
+.highlighter-rouge code {
+  background: none;
+  color:      $bg-color;
+  border:     none;
 }
