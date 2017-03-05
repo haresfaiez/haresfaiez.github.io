@@ -3,37 +3,31 @@
 $serif-font     : "Fanwood Text", serif;
 $sans-serif-font: "Open Sans", sans-serif !default;
 
-.header-navigation_bar {
-  line-height: 4em;
+$default-font-size: 1rem;
+$medium-font-size : 1.3rem;
+$big-font-size    : 1.5rem;
+
+@mixin header($font-size: $medium-font-size) {
+  font: {
+    weight: bold;
+    size  : $font-size;
+    family: $sans-serif-font;
+  }
 }
 
 body {
   font-family: $sans-serif-font;
+  font-size  : $default-font-size;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: $sans-serif-font;
+h1 {
+  @include header($big-font-size);
 }
 
-article > header > .headline {
-  font-weight: bold;
-  font-size  : 1.9em;
-}
-
-.text-bloc > .headline {
-  font-weight: bold;
-  font-size  : 1.3em;
+h2, h3, h4, h5, h6 {
+  @include header;
 }
 
 .text-bloc > .separator {
   width: 10%;
-}
-
-.logo {
-  font-size:   1.5em;
-  font-weight: bold;
-}
-
-.line {
-  text-align: center;
 }

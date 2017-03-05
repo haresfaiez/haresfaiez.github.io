@@ -1,16 +1,15 @@
-#TODO:choose a better blog name, maybe smthng like 'the _ programmer'
 title: Hares Faiez
 email: faiez.hrs@gmail.com
 phone: +216 26 87 17 88
 description: >
     Software engineering blog
 about: >
-    My name is Hares Faiez. I am a programmer.
-    Here is my drawing board.
-    I share here my learning and thoughts.
+    Hi! I am Hares Faiez. I am a programmer.
 
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://haresfaiez.github.io" # the base hostname & protocol for your site
+avatar: "https://avatars3.githubusercontent.com/u/10279086?v=3&s=460"
+
+url: "http://haresfaiez.github.io"
+baseurl: ""
 twitter_username: hrsfaiez
 behance_username: hrsfaiez
 github_username:  haresfaiez
