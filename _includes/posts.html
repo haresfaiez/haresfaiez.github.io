@@ -1,21 +1,15 @@
-{% include about-me.html %}
-
-<h2 class="headline">
-  Recent posts
-</h2>
-
-{% for post in site.posts %}
-<article class="text-bloc">
-  <hr class="separator" />
-  <h3 class="accent vertical-outset headline">
-    <a href="{{ post.url | prepend: site.baseurl }}">
-      {{ post.title }}
-    </a>
-  </h3>
-  <small>
-    {{ post.date | date: "%b %-d, %Y" }}
-  </small>
-  {{ post.excerpt }}
-</article>
-{% endfor %}
-
+<section class="small-12 large-12 columns bloc">
+  {% for post in site.posts %}
+  <article class="text-bloc">
+    <h3 class="accent vertical-outset headline">
+      <a href="{{ post.url | prepend: site.baseurl }}">
+	{{ post.title }}
+      </a>
+    </h3>
+    <small>
+      {{ post.date | date: "%b %-d, %Y" }}
+    </small>
+    {{ post.excerpt }}
+  </article>
+  {% endfor %}
+</section>
