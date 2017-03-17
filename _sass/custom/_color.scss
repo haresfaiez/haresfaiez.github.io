@@ -9,6 +9,10 @@ $bg-color             : #FFFFFF;
 $block-bg-color       : #1F2226;
 
 
+aside {
+  color: $hover-color;
+}
+
 .bloc > .headline {
   color: $primary-color_light;
 }
