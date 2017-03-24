@@ -6,9 +6,10 @@
 	{{ post.title }}
       </a>
     </h3>
-    <small>
+    <aside>
+      <i class="fa fa-clock-o"></i>
       {{ post.date | date: "%b %-d, %Y" }}
-    </small>
+    </aside>
     {{ post.excerpt }}
   </article>
   {% endfor %}
