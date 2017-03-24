@@ -28,6 +28,10 @@ a {
   font-size: 0.8rem;
 }
 
+aside {
+  font-size: 0.9rem;
+}
+
 h1 {
   @include header($big-font-size);
 }
