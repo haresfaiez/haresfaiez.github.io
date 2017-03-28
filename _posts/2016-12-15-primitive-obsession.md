@@ -1,47 +1,74 @@
 ---
-layout: post
-comments: true
-title:  "Primitive Obsession"
-date:   2016-12-15 11:49:00 +0100
+layout:     post
+comments:   true
+title:      "Primitive Obsession"
+date:       2016-12-15 11:49:00 +0100
 categories: Naming
-tags: featured
+tags:       featured
 ---
 
-Each unit of a program has a set responsibilities and a purpose.
-The resopnsibilities specify what the unit is and what problems
-it solves.
-The purpose, on the other side, involves the meaning of the unit
-in its context of execution.
+Each program is a collection of decisions. It solves a problem, at least.
+It communicates the structure of the solution and, perhaps, the reason behind each decision.
+A program is, also, a collection of units, each has a set of responsibilities,
+a role, and an implementation.
+When the units fit well together,
+the program communicates the solution well.
 
-A type is a specification of the unit on which it applies.
-That specification, often, addresses the responsibilities of the unit,
-but it can be extended to a slight description of the purpose if that turns
-out to be valuable.
+The responsibilities of each unit specify the problems the unit solves (what it is doing),
+the role specifies its contribution to the program (why it is doing it),
+and the implementation describes how well the unit satisfies its responsibilities
+(how it is doing it).
 
-The level to which we can leverage the assertion of this specification to the language
-depends on the power of the tooling and the simplicity of the syntax.
-More important is the level of certainty we want to guarantee for the users of that unit.
-For a highly constrained unit, the more the afferent coupling the unit have,
-the harder changing its implementation will be.
+By learning the roles of the constructs of the program and witnessing their relationships,
+one constructs a mental model of the subject.
+Then, by diving into the responsibilities and the implementation,
+he understands the thinking that went behind the sturctural decisions.
 
-To keep the program intellectually manageable,
-and to allow more opportunities for future changes,
-it is important to offer each user the least possible information he needs 
-to know about a unit.
-This could mean using multiple types for one model,
-then, a person could be its age, its job, its name, its identity, ...
+The role implies the responsibilities, and
+the responsibilites, when interpreted in the right way, imply the role.
+Although valid,
+this correlation limits our ability to think of each unit as a separate construct.
+Indeed, when we see the program itself as a part of a bigger system,
+it is this very sepration that implies the fitness
+of each unit in contexts other than which it was designed for in the first place.
 
-A problem occurs when we use predefined types such as integer, boolean, and string
-to convey a program concept, a model.
-The evaluation context carries semantics and constraints about the result.
-It is very hard to keep that implicit knowledge in mind
+The difference between the responsibilities and the role are expressed
+in multiple fashion.
+One way to it is "Responsibilities in the core, role specification at the edges";
+This is the approach used by functional programming languages.
+Eah type is a fixed set of values, and when we need to include more meaning
+in the type, we wrap it inside a new rich type.
+Another way is
+"The role details in the core, and the specification of the responsibilites in the edges";
+This is the approach taken by class-based object languages.
+The interface is the a specification of the unit, and the hidden state
+induces variations between different contexts of use.
+
+A type is a specification of a programming unit.
+It could bee seen from a variety of lenses.
+But, I will take it as a communication mechanism for the remaining of this post.
+Each type allows the programmer to enforce constraints on the role,
+the responsibilities, and the implementaion.
+Choosing what unit to include in the structure
+and what constraints to impose on this units
+requires continuous refinment and a reflective mindset.
+Finding the right abstraction, what information to omit from the specification,
+requires maturity, from the programmer, the programming language,
+and from the software itself.
+
+I will introduce a primitive type as a type which conveys a little about the unit.
+The primitive character, thus, is highly contextual.
+And finding an adequate type is more about consistency and coherence
+with the other units in the program than it is a subjective view.
+Whether the type of a unit is expressive or not depends
+on whether an instance of this type makes sense as a collaborator in the program.
+It is very hard to keep the specification of a unit implicit
 due to the large set of assumptions that could be made
 and the growing complexity of the program itself.
-It will be lost if it is not conveyed by the type.
-Using a predefined type, thus, omits knowledge about the evaluation context,
-by allowing inappropriate interpretation about a certain value.
+Using a predefined type, thus, in the domain logic,
+allows for inappropriate interpretation of values.
 
-An even number, for example, can be modeled as an integer. We could have:
+An even number, for example, can be specified as an integer. We could have:
 
 ```
 Integer two  = new Integer(2);
