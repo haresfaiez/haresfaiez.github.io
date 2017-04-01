@@ -1,22 +1,26 @@
-// foundation
 $primary-color	      : #4A515C;
 $hover-color          : #6A7079;
 
-// custom colors
 $primary-color_dark   : #212121;
 $primary-color_light  : #424546;
 $bg-color             : #FFFFFF;
 $block-bg-color       : #1F2226;
-
+$highligthed-bloc-bg  : #F9F9FC;
 
 aside {
   color: $hover-color;
 }
 
+// Blocks 
 .bloc > .headline {
   color: $primary-color_light;
 }
 
+.highligthed-bloc {
+  background-color: $highligthed-bloc-bg;
+}
+
+// Text blocks
 .text-bloc > .primary_bright {
   color: $primary-color_dark;
 }
@@ -37,6 +41,7 @@ aside {
  color: $primary-color_light;
 }
 
+// Code
 .highlighter-rouge {
   background: $block-bg-color;
 }

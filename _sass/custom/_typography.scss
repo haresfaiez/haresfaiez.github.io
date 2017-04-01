@@ -4,6 +4,8 @@ $serif-font     : "Fanwood Text", serif;
 $sans-serif-font: "Open Sans", sans-serif !default;
 
 $default-font-size: 1rem;
+$tiny-font-size   : 0.8rem;
+$small-font-size  : 0.9rem;
 $medium-font-size : 1.3rem;
 $big-font-size    : 1.5rem;
 
@@ -25,11 +27,11 @@ a {
 }
 
 .inline-list > li > a {
-  font-size: 0.8rem;
+  font-size: $tiny-font-size;
 }
 
 aside {
-  font-size: 0.9rem;
+  font-size: $small-font-size;
 }
 
 h1 {

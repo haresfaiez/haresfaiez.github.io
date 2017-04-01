@@ -1,14 +1,24 @@
-.row {
-  max-width: 50rem;
+@mixin horizontal-block {
+  padding: {
+    top   : $paragraph-margin-bottom;
+    bottom: $paragraph-margin-bottom;
+  }
+}
+
+.bloc {
+  @include horizontal-block;
+}
+
+.highligthed-bloc {
+  @include horizontal-block;
+}
+
+.vertical-inset {
+  @include horizontal-block;
 }
 
 .vertical-outset {
   margin-bottom: 0;
-}
-
-.vertical-inset {
-  margin-top:    $paragraph-margin-bottom;
-  margin-bottom: $paragraph-margin-bottom;
 }
 
 .horizontal-icons a {
@@ -16,15 +26,11 @@
 }
 
 .highlighter-rouge {
-  width:      100%;
-  padding:    5px;
+  width  : 100%;
+  padding: 5px;
 }
 
 figure.avatar {
   margin: 0;
-  width: 8em;
-}
-
-.bloc {
-  margin-top: 40px;
+  width : 8em;
 }

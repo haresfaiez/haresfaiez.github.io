@@ -1,15 +1,15 @@
-<section class="small-12 large-12 columns bloc">
-  {% for post in site.posts %}
-  <article class="text-bloc">
-    <h3 class="accent vertical-outset headline">
-      <a href="{{ post.url | prepend: site.baseurl }}">
-	{{ post.title }}
-      </a>
-    </h3>
-    <aside>
-      {{ post.date | date: "%b %-d, %Y" }}
-    </aside>
-    {{ post.excerpt }}
-  </article>
-  {% endfor %}
+<section class="bloc row">
+    {% for post in site.posts %}
+    <article class="text-bloc">
+      <h3 class="accent vertical-outset headline">
+	<a href="{{ post.url | prepend: site.baseurl }}">
+	  {{ post.title }}
+	</a>
+      </h3>
+      <aside>
+	{{ post.date | date: "%b %-d, %Y" }}
+      </aside>
+      {{ post.excerpt }}
+    </article>
+    {% endfor %}
 </section>

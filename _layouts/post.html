@@ -1,12 +1,12 @@
 ---
 layout: default
 ---
-<div>
+<div class="row">
   <section class="small-12 large-12 columns">
     <article itemscope itemtype="http://schema.org/BlogPosting">
       <header>
 	<h1 itemprop="name headline" class="headline">{{ page.title }}</h1>
-	<small class="text-details">
+	<aside class="text-details">
 	  <time class="post__meta" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
 	    {{ page.date | date: "%b %-d, %Y" }}
 	  </time>
@@ -17,7 +17,7 @@ layout: default
 	    </span>
 	  </span>
 	  {% endif %}
-	</small>
+	</aside>
       </header>
       <div class="post" itemprop="articleBody">
 	{{ content }}
