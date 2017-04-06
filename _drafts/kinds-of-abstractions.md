@@ -1,0 +1,11 @@
+- data abstraction:
+  - need for an interace (common interaface a-la unix file interface and control through pipe-&-filter?)
+- control abstraction:
+  - abstraction of the control flow
+  - goes hand in hand with data abstraction
+  - think of macros in Lisp, do .. while, if..
+  - examples: do ..while, loops, function invocation, mapping, local/non-local exits
+  - control structures: function invocation, initialization,  ...
+- Procedural abstraction
+- functional abstraction:
+  - higher order function allow to define control abstraction
