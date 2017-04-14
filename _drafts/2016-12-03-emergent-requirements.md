@@ -43,7 +43,7 @@ This suggests that figuring out the requirements before starting the development
 of assumptions:
  * Each requirement solves a problem the user have.
  * The requirements form a cohesive whole.
- * The requirements, as a whole, 
+ * The requirements, as a whole,
    improve the life of the user and create less frustration than the problem being addressed.
 
 Identifying invalid assumptions about how value is created is essential.
@@ -66,7 +66,7 @@ It is a social challenge.
 By the time the solution becomes usable,
 it helps the team have valuable conversations.
 It is, then, used as a learning asset and a pivot for the following activities.
-In an environment where feedback is highly valued, 
+In an environment where feedback is highly valued,
 cutomers and stakeholders try the software as it is being developed.
 They give feedback from which the team learns and explores improvments
 opportunities.
@@ -87,8 +87,8 @@ as we try to build the product, and stumble occasionally, and learn."
 https://twitter.com/michaelbolton/status/847998544598487041
 
 also this
-"Of course, at the beginning of the journey, 
-we don't know all the things we need to know! We learn them 
+"Of course, at the beginning of the journey,
+we don't know all the things we need to know! We learn them
 as we develop the product."
 — Michael Bolton
 https://twitter.com/michaelbolton/status/848003572482682880
@@ -107,7 +107,7 @@ and update his target.
 But, does that really meet the need of the manager
 that wants to update the next event due to a typing issue?
 I am not sure of that.
-That depends on where the events are found, 
+That depends on where the events are found,
 what the managers are really using our system
 for, when they do it, and how the software fits in their
 lifes.
@@ -128,7 +128,7 @@ Another problem is that identifying the scope of the software early
 hinders our ability to learn and inquire deliberately.
 The stakehodlers' views change continuously.
 They learn more about the solution.
-Their interaction with the software gives birth to a set 
+Their interaction with the software gives birth to a set
 of patterns by which they establlsish rules and habits of use.
 This invalidates most of our early decisions.
 
