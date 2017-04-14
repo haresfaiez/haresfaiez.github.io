@@ -3,8 +3,8 @@
 *Design specification*
 - Font scale factor: 0.2
 - Color palette:
-  - #212121
-  - #424546
-  - #1F2226
   - #4A515C
-  - #6A7079
+  - #666D79
+  - #C9D3DB
+  - #F9F9FC
+  - #FFFFFF

@@ -41,3 +41,7 @@ h1 {
 h2, h3, h4, h5, h6 {
   @include header;
 }
+
+.text-bloc aside {
+  font-size: $tiny-font-size;
+}
