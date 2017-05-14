@@ -2,7 +2,7 @@ title: Hares Faiez
 email: faiez.hrs@gmail.com
 phone: +216 26 87 17 88
 description: >
-    Software engineering blog
+    Programmign and design tales
 about: >
     Hi! I am Hares Faiez. I am a programmer.
     I tell the stories of my small shiny discoveries and I share the thoughs of my journey.
@@ -13,9 +13,9 @@ avatar: "https://avatars3.githubusercontent.com/u/10279086?v=3&s=460"
 
 url: "http://haresfaiez.github.io"
 baseurl: ""
-twitter_username: hrsfaiez
-behance_username: hrsfaiez
-github_username:  haresfaiez
+twitter_handle  : hrsfaiez
+behance_handle  : hrsfaiez
+github_handle   : haresfaiez
+goodreads_handle: 53209781-hares-faiez
 
-# Build settings
 markdown: kramdown
