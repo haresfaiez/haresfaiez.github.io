@@ -7,21 +7,32 @@ categories: Software
 tags: featured
 ---
 
-Products thrieve because each helps the user surmount a hindrance or solve a problem.
-As a learning activity, product development involves the articulation of a set
-of problems and the exploration of a way to solve them.
-For the various kinds of software products,
-the problems themselves and the context of using the product are not fully known initially.
+Products thrieve because they help users surmount a hindrance.
+Whether that was a waste of time, an inability to perform, or a lack of knowledge,
+the hindrance sets up a problem the user is struggling against.
+Good products come from a clear definition of a problem followed by
+a fruitful hunt for a solution.
+It is complex, or even chaotic, to find a atruggle.
+The problems and the context of using the product are uknown, maybe even unknowable initially.
 Identifying them, so, is in itself a complex activity
-that requires inquiry, learning, and a reflective mindset.
+that requires creativity, inquiry, and a reflective mindset.
+
+Take the usual life of friends or families, we take most of it as granted.
+We fail so see opportunities for improvements.
+But, it is that indulgence with other perspectives that widen our point of view
+and lead us to the right questions.
+While developing a product, we have to engage and, at the same time,
+to keep an opposite point of view; challenging every activity as we go
+and questioning continuously the actual situation of affairs.
 
 I will take the requirements, here, as the problems, and the specification as the solutions.
 
 **Failing as a pivot for better decisions**
-Software products are different than other kinds of products in that each is unique.
+Software products are unique.
 The cost of redistributing a software is low, and often null.
-There is a little value in developing something similar to what exists.
-We often express the requirements in terms of a solution we already worked on.
+There is a little value in creating something similar to what exists.
+
+We express the requirements in terms of a solution we already worked on.
 We take an other system with and a potentially diferent goal as a reference.
 We do this because we are looking for a language.
 Each software has its own language that is discoverd iteratively.
@@ -133,4 +144,7 @@ of patterns by which they establlsish rules and habits of use.
 This invalidates most of our early decisions.
 
 *The software is more than the user interface*
+"When you understand something, then you can find the math to express that understanding. The math doesn't provide the understanding."
+https://channel9.msdn.com/Shows/Going+Deep/E2E-Erik-Meijer-and-Leslie-Lamport-Mathematical-Reasoning-and-Distributed-Systems
+
 ** Software development as automating wireframes**
