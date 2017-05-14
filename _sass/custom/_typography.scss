@@ -42,6 +42,19 @@ h2, h3, h4, h5, h6 {
   @include header;
 }
 
+h3 {
+  font-size: 1rem;
+  font-weight: none;
+}
+
+.bloc .header {
+  font-size: 0.8rem;
+}
+
 .text-bloc aside {
   font-size: $tiny-font-size;
+}
+
+.text-bloc p {
+  font-size: $default-font-size;
 }

@@ -1,48 +1,45 @@
 $bg-color         : #FFFFFF;
+$anchor-font-color: #7e57c2;
 
-$primary-color    : #4A515C;
-$hover-color      : #666D79;
-$hover-color_light: #C9D3DB;
+$primary-color  : #000000;
+$hover-color    : #757575;
 
-$hover-bg         : #F9F9FC;
+$secondary-color: #9579CD;
 
-aside {
-  color: $primary-color;
+$highlight      : #FAFAFA;
+
+// Bloc
+.bloc .header {
+  color: $secondary-color;
 }
 
-// Blocks 
-.bloc > .headline {
-  color: $primary-color;
+.text-bloc {
+
+  aside {
+    color: $hover-color;
+  }
+
+  .headline a {
+    color: $primary-color;
+  }
 }
 
+// Highlighted bloc
 .highligthed-bloc {
-  background-color: $hover-bg;
+
+  background-color: $highlight;
+
+  * {
+    color: $primary-color;
+  }
 }
 
-// Text blocks
-.text-bloc > p {
-  color: $primary-color;
-}
-
-.text-bloc > .accent a {
-  color: $primary-color;
-}
-
-.text-bloc > .accent a:hover {
-  color: $hover-color;
-}
-
-.text-bloc aside {
-  color: $hover-color_light;
-}
-
-// Code
 .highlighter-rouge {
   background: $primary-color;
 }
 
 .highlighter-rouge code {
   background: none;
-  color:      $hover-color;
+  color:      $anchor-font-color;
   border:     none;
 }
