@@ -16,6 +16,7 @@ I once wrote also
 ".
 Well, now I will rewrite it as
 
+- Think only about the structure when refactoring
 
 
 It is the restructuring

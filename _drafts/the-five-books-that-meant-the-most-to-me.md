@@ -1,4 +1,0 @@
-- TDD by example
-- Refactoring
-- Continuous delivery
-- Pragmatic thinking and learning
