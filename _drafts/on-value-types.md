@@ -1,1 +1,0 @@
-- A variable of a value type is copied by value and not by reference.
