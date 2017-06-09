@@ -8,41 +8,39 @@ tags: featured
 ---
 
 I have been thinking about the relation between types,
-tests, and software specification.
-I have been thinking about the utility of TDD and the how TDD work
-in an environment where algebraic data types and pure functions rule.
-I could say that there is a subtle relation between failing and growing.
-We grow by destroying our most held beliefs.
-In software, that means forgetting about silver bullets
-and understanding the principles behind each practice.
+tests, and the specification of software.
+I was looking for the use cases of TDD.
+Especially, how it fits in an environment where algebraic data types
+and pure functions rule.
 
-Software is the reflection of the knowledge grown through
+A software is the reflection of the knowledge grown through
 the process of finding a solution to a problem.
-Neither the code is the software, nor is it the set of architectural decisions.
-Once a team starts to discover the problem a user have,
-it comes up with a serious attempt, often not a good one.
-Then, the members iterate on it until they come up with a good-enough solution.
-Nothing, here, guarantees that the solution will not change some aspects of the
+Once the members of a team start to uncover the problems users have,
+they come up with an initial solution, often not a good one.
+Then, they iterate on that attempt until they come up
+with good-enough solution.
+Nothing, here, guarantees that the solution will not change aspects of the
 problem. It, certainly, will.
 
-Imagine two teams given the same problem to solve.
+Given two teams faced with the same problem.
 Would they end up with the same solution?
 I doubt that (It would be an interesting experiment to run by the way).
-Each team understands the problem in different terms
-and each team expresses the solution in a collection home-grown metaphors.
-The difference is in the shared knowledge about the solution.
-That knowledge is the product of the rules the team codes by
-and the set of constraints it respects while growing the software.
+Each team understands the problem differently
+and each expresses the solution in his set of home-grown metaphors.
+That local knowledge is the product of the rules the team codes by
+and the set of implicit associations in the code and in conversations.
 
-When programming, we need to revisit the program.
-At each visit, we express the knowledge about the next feature
-or change existing decisions about after the discovery of an ambiguity or a bug.
-We reflect the knowledge through decisions; decisions about how we express
-a computation through code and rules about the identity of an entity
-in documents and in conversation.
-None of these decisions is independent.
-Each of them shares relationships within themselves
-and with the existing decisions.
+The knowledge translates as decisions to the code.
+When programming, we iterate.
+And at each visit, we express the knowledge about the next feature
+or we change an existing decision as a result of an insight.
+Insights come as surfacing an invisible association
+or noticing a hidden symmetry.
+Decisions are, also, fixed after the discovery of an ambiguity or a bug.
+Each of these decisions is interdependent with other decisions.
+There is a significant work of design in deciding which decisions
+should be explicit, which move to an external configuration,
+and which are best to be implicit.
 
 The decisions are like:
   * Each opportunity have a global identity.
@@ -51,44 +49,44 @@ The decisions are like:
   * A fund have an identity, a name, and a target.
 
 There could be no unit called "Opportunity" or "Fund" in the code.
-You might call it a "destination" when talking about an "opportunity"
-and use types such as "Existing" or "Stale" in a context where "Fund"
-is the main subject.
+We may refer to a "Fund" as a "destination" when talking about an "opportunity"
+and use types such as "Existing" and "Stale" in a context where the fund
+is the main concern.
+Here, the decision about the existence of a "Fund" is implicit.
+The dependencies of the "Fund" are also implicit.
+I express these decisions in other mediums such as UML diagrams.
 
-Now, how can we express a new knowledge about a solution in a safe way?
-By safe I mean without introducing misconceptions in the existing work
+Now, how to express a new decision in a safe way?
+By safe I mean without introducing misconceptions to the existing work
 and with reflecting the recent learning in the best possible way.
-One way to do that is by stating explicitly each
-new rule independently of the code, then introducing it to the code.
-There is the code with all the old decisions, and there is the new decision.
-We decide how the solution will look like after adding the new decision,
-that is it, how the code will behave if the decision is in.
+Can we express the new decision in our mind
+and check the new behavior manually? Yes, of course we can.
+The enemy here is the size of software.
+I don't like adding new decisions directly and without a safety net to
+the code because I got, often, bitten by bias.
+
+Can we express it using types? Yes, of course.
+The enemy here is coupling.
+Manipulating abstractions without falling for biases
+and false symmetries is challenging if the types are not highly specific.
+There should be a balancing between coupling and the specificity of the type.
+
+Can we express it through tests? Yes, of course, and this is what TDD is about.
+The enemy here is the lack of correctness.
+Tests does not cover every allowed state.
+Tests suggest generalizations and that allows bugs to get in.
+TDD does that by stating explicitly each new rule independently of the code,
+then introducing it to the code.
+We decide how the solution will look like after adding the new decision;
+how the code will behave when the decision will be in.
 Then, we put in the decision.
 
-Now, can we express the new decision in our mind
-and check for it manually? Yes, of course we can.
-The enemy here is the size of software.
-I, personally, don't like adding new decisions directly to
-the old decisions because I got, often, bitten by bias.
-Can we express it through types and laws? Yes, of course.
-The enemy here is coupling.
-It is, also, challenging to manipulate abstractions without falling for biases
-and false symmetries unless the types are highly specific.
-There should be a balancing between coupling and the specificity of the type.
-Can we express it through tests? Yes, of course,
-and this is what TDD is about.
-The enemy here is, also, coupling.
-
-Code with types is easier to refactor than code with tests.
-Tools help a lot in the former situation.
-Tests influence indirectly the code,
-but allow for more freedom of expression in the code.
-
 The right solution differs. The important is the mindset.
-To acknowledge that the model is not easy to make explicit is key.
-To scope, to implement, to validate,
-to spread the knowledge,
-and thenm, to make the knowledge easy to grasp, is a useful process.
+To acknowledge that making the model of the solution explicit is not easy,
+and sometimes impossible, is a key.
+To scope, to implement, to validate, to spread the knowledge,
+and then, to make the expression of knowledge easy to grasp,
+is a useful process.
 
-I am still studying this process.
-So, if you have a story to share, please comment.
+I am still trying with this process.
+If you have a story to share, please comment.
