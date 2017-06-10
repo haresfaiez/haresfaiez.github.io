@@ -1,4 +1,6 @@
 $paragraph-margin-bottom: 2rem;
+$heading-margin-bottom  : 1rem;
+$inline-list-default-float-list-margin: 1rem !default;
 
 @mixin horizontal-block {
   padding: {
@@ -20,7 +22,7 @@ $paragraph-margin-bottom: 2rem;
 }
 
 .vertical-outset {
-  margin-bottom: 0;
+  margin-bottom: $heading-margin-bottom;
 }
 
 .horizontal-icons a {

@@ -5,33 +5,32 @@ $sans-serif-font: "Open Sans", sans-serif !default;
 
 $default-font-size: 1rem;
 $tiny-font-size   : 0.8rem;
-$small-font-size  : 0.9rem;
 $medium-font-size : 1.3rem;
 $big-font-size    : 1.5rem;
 
 @mixin header($font-size: $medium-font-size) {
   font: {
-    weight: bold;
     size  : $font-size;
     family: $sans-serif-font;
   }
 }
 
 body {
-  font-family: $sans-serif-font;
-  font-size  : $default-font-size;
-}
-
-a {
-  font-weight: bold;
+  font: {
+    family: $sans-serif-font;
+    size  : $default-font-size;
+  }
 }
 
 .inline-list > li > a {
-  font-size: $tiny-font-size;
+  font: {
+    size  : $tiny-font-size;
+    weight: bold;
+  }
 }
 
 aside {
-  font-size: $small-font-size;
+  font-size: $tiny-font-size;
 }
 
 h1 {
@@ -42,13 +41,11 @@ h2, h3, h4, h5, h6 {
   @include header;
 }
 
-h3 {
-  font-size: 1rem;
-  font-weight: none;
-}
-
 .bloc .header {
-  font-size: 0.8rem;
+  font: {
+    size  : $tiny-font-size;
+    weight: bold;
+  }
 }
 
 .text-bloc aside {

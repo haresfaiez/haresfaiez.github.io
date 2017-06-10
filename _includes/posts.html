@@ -1,18 +1,18 @@
 <section class="bloc row">
   <div class="small-12 medium-12 large-12 columns">
-    <h2 class='header'>RECENT POSTS</h2>
+    <h1 class='header'>RECENT POSTS</h1>
     {% for post in site.posts %}
-    <article class="text-bloc">
-      <h3 class="accent vertical-outset headline">
-	<a href="{{ post.url | prepend: site.baseurl }}">
-	  {{ post.title }}
-	</a>
-      </h3>
-      <aside class='details'>
-	{{ post.date | date: "%b %-d, %Y" }}
-      </aside>
-      {{ post.excerpt }}
-    </article>
+      <article class="text-bloc">
+        <aside class='details'>
+          {{ post.date | date: "%b %-d, %Y" }}
+        </aside>
+        <h1 class="accent vertical-outset headline">
+        	<a href="{{ post.url | prepend: site.baseurl }}">
+        	  {{ post.title }}
+        	</a>
+        </h1>
+        {{ post.excerpt }}
+      </article>
     {% endfor %}
   </div>
 </section>
