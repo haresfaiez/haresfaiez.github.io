@@ -8,64 +8,66 @@ tags: featured
 ---
 
 Product development is a journey of collaborative learning.
-We learn how to solve effectively an unknown set of problems.
-This is hardly a linear process.
-It, often, entails iterations, rework, and removal of completed functionalities
-entirely from the product.
-The aim, thus, is to unconver misunderstanding
-and to identify the critical aspects of each faced problem.
-Early failures help the team find its way toward a good product.
-And so, identifying invalid assumptions about how value is created 
-deserves a deep consideration in all the activities of the development process.
+We learn, through iteratively growing a solution,
+how to solve effectively an initially unknown set of problems.
+This is not a linear process.
+It includes rework and removal of work.
+Misunderstanding and the limits in software visualization matter here.
+Failures, in the development effort, help the team find
+its way through uncertainty toward a good product.
+And so, identifying invalid assumptions about how to create value
+deserves a deep thoughts in each activity of the development process.
 
-To close the metaphor loop, here, we could say that the requirements 
-constitute the way to a good product.
 Users use a product because it solves their problems in a way that fits
 well within their contexts.
-They see solutions, not features.
-And they learn more about the product as their interactions with it increase.
-
-In an environemnt where feedback is highly valued, 
-stakeholders often try the software as it is being developed.
+They see solutions, not features,
+and they learn more about the product as their interaction with it increases.
+In an environment where feedback is highly valued,
+stakeholders try the software frequently during its development.
 That changes their view as well as their expectations.
-Using of the existing system as a reference for conversations,
-they can express their problems clearly to the team.
+Using of the existing system as a basis for conversations,
+they express their problems to the team in a clear fashion.
 
-Things change all the time.
-Taking a lot of decisions early is rarely beneficical in the long run;
-unless for having rich conversations,
-these decisions have huge cost and little value;
-Indeed, they need to be revsited frequently.
+Validated requirements constitute the way to a good product.
+The specification of the requirements these early is
+rarely useful in the long run.
+Unless for providing a rich framework for conversations,
+the cost of these decisions outweights their value.
 We work toward requirements and we get them when we are done.
-Software requirements, like design, are emergent.
+That makes more sense when we see the requirements as a view of the software
+solution.
 
 We start with assumptions.
 We assume that listing the events will help the manager find
 and update his target.
-But, does that really meet the need of the manager
-that wants to update the next event due to a typing issue?
-I am not sure of that.
-That depends on where the events are found, 
-what the managers are really using our system
-for, when they do it, and how the software fits in their
-lifes.
-All of that requires continuous investigation, toughful reflection,
+But, does that meet the need of the manager
+that needs to change the date of the next event frequently?
+I am not sure
+(By the way,
+I decided to never use a CRUD-like verb in a requirement definition,
+but that is for an other time).
+That depends on where she finds the events,
+what is she using the system for,
+when she does that, and how the software fits in her life.
+This requires continuous investigation, deep reflection,
 and a lot of trial-and-error.
 
 We work on problems,
-and solving a problem changes the setting of the next one.
+and solving each problem changes the setting of the next one.
 We approach our problems one by one.
 We identify the problem, we assume a solution, we test it, we get feedback,
-we learn, and we reflect on our understanding of the problem as well as the
+we learn, then we reflect on our understanding of the problem as well as the
 adequacy of the solution.
 We repeat this until we come up with a good solution to the right problem.
-And only when we end up with proof of viability of a solution
+Only when we end up with proof of viability of a solution
 that we take it as a requirement.
 
-Another problem is that identifying the scope of the software early
+Another problem with up-front requirements gathering
+is that identifying the scope of the software early
 hinders our ability to learn and inquire deliberately.
 The stakehodlers' views change continuously.
 They learn more about the solution.
-Their interaction with the software gives birth to a set 
-of patterns by which they establlsish rules and habits of use.
-This invalidates most of our early decisions.
+Their interaction with the software gives birth to a set
+of patterns.
+That is because users establish rules and habits of use.
+This invalidates most of the early decisions.
