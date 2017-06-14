@@ -9,6 +9,14 @@ $inline-list-default-float-list-margin: 1rem !default;
   }
 }
 
+header {
+  height: 100px;
+}
+
+.absolute {
+  margin: 0;
+}
+
 .bloc {
   @include horizontal-block;
 }
