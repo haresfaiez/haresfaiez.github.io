@@ -13,5 +13,5 @@ I am in Tunisia, I am willing to work remotely, and I am willing to relocate.
 Here can get my resume at: {{ site.resume }}.
 
 You can reach me through:
- * email: faiez.hrs@gmail.com
- * phone: +216 26 87 17 88
+ * email: {{ site.email }}
+ * phone: {{ site.phone }}
