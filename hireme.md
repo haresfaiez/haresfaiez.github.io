@@ -2,6 +2,7 @@
 layout: page
 title:  HIRE ME
 permalink: /hireme/
+absence: true
 ---
 
 I am looking for new opportunities.

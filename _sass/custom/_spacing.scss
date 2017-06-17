@@ -2,6 +2,8 @@ $paragraph-margin-bottom: 2rem;
 $heading-margin-bottom  : 1rem;
 $inline-list-default-float-list-margin: 1rem !default;
 
+$header-height: 100px;
+
 @mixin horizontal-block {
   padding: {
     top   : $paragraph-margin-bottom;
@@ -9,8 +11,13 @@ $inline-list-default-float-list-margin: 1rem !default;
   }
 }
 
-header {
-  height: 100px;
+body > header {
+  height: $header-height  ;
+}
+
+.bounded {
+  @extend .large-10;
+  padding-left: grid-calc(2, 12);
 }
 
 .absolute {
