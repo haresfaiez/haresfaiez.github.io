@@ -17,7 +17,14 @@ body > header {
 
 .bounded {
   @extend .large-10;
-  padding-left: grid-calc(2, 12);
+  padding-left: grid-calc(4, 12);
+}
+
+.left-lane {
+  text-align: right;
+  figure {
+    display: inline-block;
+  }
 }
 
 .absolute {

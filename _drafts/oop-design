@@ -1,0 +1,2 @@
+- When I need a getter to respect dependency direction,
+  I use generics.
