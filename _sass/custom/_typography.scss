@@ -1,7 +1,7 @@
-@import url(https://fonts.googleapis.com/css?family=Fanwood+Text|Open+Sans);
+@import url(https://fonts.googleapis.com/css?family=Libre+Baskerville|Karla);
 
-$serif-font     : "Fanwood Text", serif;
-$sans-serif-font: "Open Sans", sans-serif !default;
+$serif-font     : "Libre Baskerville", serif;
+$sans-serif-font: "Karla", sans-serif !default;
 
 $default-font-size: 1rem;
 $tiny-font-size   : 0.8rem;
@@ -12,6 +12,7 @@ $big-font-size    : 1.4rem;
   font: {
     size  : $font-size;
     family: $sans-serif-font;
+    weight: bold;
   }
 }
 
@@ -23,10 +24,7 @@ body {
 }
 
 .inline-list > li > a {
-  font: {
-    size  : $tiny-font-size;
-    weight: bold;
-  }
+  @include header($tiny-font-size);
 }
 
 aside {
@@ -42,17 +40,14 @@ h2, h3, h4, h5, h6 {
 }
 
 .bloc .header {
-  font: {
-    size  : $tiny-font-size;
-    weight: bold;
-  }
+  @include header($tiny-font-size);
+}
+
+.text-bloc p {
+  font-family: $serif-font;
+  text-align: justify;
 }
 
 .text-bloc aside {
   font-size: $tiny-font-size;
-}
-
-.text-bloc p {
-  font-size: $default-font-size;
-  text-align: justify;
 }
