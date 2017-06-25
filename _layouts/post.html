@@ -1,47 +1,17 @@
 ---
 layout: default
 ---
-<div class="bounded">
-  <section class="columns text-bloc">
-    <article itemscope itemtype="http://schema.org/BlogPosting">
-      <header>
-        <h1 itemprop="name headline" class="headline">{{ page.title }}</h1>
-        <aside class="details">
-          <time class="post__meta" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
-      	    {{ page.date | date: "%b %-d, %Y" }}
-      	  </time>
-          {% if page.author %}
-            <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        	    <span itemprop="name">
-        	      {{ page.author }}
-        	    </span>
-            </span>
-          {% endif %}
-        </aside>
-      </header>
-      <div class="post" itemprop="articleBody">
-        {{ content }}
-      </div>
-    </article>
-    {% if page.comments %}
-    <div>
-      <div id="disqus_thread"></div>
-      <script>
-        var disqus_config = function() {
-          this.page.url = '{{ site.url }}' + '{{ page.url }}';
-          this.page.identifier = '{{ site.url }}' + '{{ page.id }}';
-        };
-        (function() {
-          var d = document,
-            s = d.createElement('script');
-          s.src = '//haresfaiez-1.disqus.com/embed.js';
-          s.setAttribute('data-timestamp', +new Date());
-          (d.head || d.body).appendChild(s);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-      <script id="dsq-count-scr" src="//haresfaiez-1.disqus.com/count.js" async></script>
-    </div>
-    {% endif %}
+<header class="bounded">
+  <section class="small-12 medium-12 large-3 columns bloc">
+    <h1 class="header">KEYWORDS</h1>
+    <p>
+      {{ page.tags }}
+    </p>
   </section>
+  <section class="small-12 medium-12 large-8 columns text-bloc">
+    {% include post.html %}
+    {% include comment.html %}
+  </section>
+</div>
+<div class="bounded">
 </div>

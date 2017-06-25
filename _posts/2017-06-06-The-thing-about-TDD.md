@@ -3,8 +3,8 @@ layout: post
 comments: true
 title:  "The thing about TDD"
 date:   2017-06-06 21:12:00 +0100
-categories: Software, TDD, Design
-tags: featured
+categories: Design
+tags: Software, TDD, Design
 ---
 
 I have been thinking about the relation between types,
