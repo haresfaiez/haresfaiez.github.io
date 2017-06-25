@@ -12,4 +12,4 @@ functional programming, interaction design, product management...
 Everything about software indeed.
 
 Here is my email address **{{ site.email }}**.
-If you have something, drop me an email and let's talk.
+If you have something in mind, drop me an email and let's talk.
