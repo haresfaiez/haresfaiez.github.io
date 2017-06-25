@@ -4,9 +4,10 @@ $bg-color         : #FFFFFF;
 $secondary-color  : #e91e63;
 $anchor-font-color: $secondary-color;
 $hover-color      : #ad1457;
+$third-color      : #757575;
 
 $primary-color  : #424242;
-$hover-color    : #757575;
+$hover-color    : #9e9e9e;
 
 
 $highlight      : #FAFAFA;
@@ -19,11 +20,15 @@ $highlight      : #FAFAFA;
 .text-bloc {
 
   aside {
-    color: $hover-color;
+    color: $third-color;
   }
 
   .headline a {
     color: $primary-color;
+  }
+
+  .headline a:hover {
+    color: $hover-color;
   }
 }
 

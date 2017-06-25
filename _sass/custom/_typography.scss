@@ -5,8 +5,8 @@ $sans-serif-font: "Open Sans", sans-serif !default;
 
 $default-font-size: 1rem;
 $tiny-font-size   : 0.8rem;
-$medium-font-size : 1.3rem;
-$big-font-size    : 1.5rem;
+$medium-font-size : 1.2rem;
+$big-font-size    : 1.4rem;
 
 @mixin header($font-size: $medium-font-size) {
   font: {
