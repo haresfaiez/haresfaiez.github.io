@@ -1,18 +1,19 @@
-$paragraph-margin-bottom: 2rem;
-$heading-margin-bottom  : 1rem;
-$inline-list-default-float-list-margin: 1rem !default;
+$paragraph-margin: 2rem;
+$horizontal-margin: 0.8rem;
+
+$avatar-size: 200px;
 
 $header-height: 100px;
 
 @mixin horizontal-block {
   padding: {
-    top   : $paragraph-margin-bottom;
-    bottom: $paragraph-margin-bottom;
+    top   : $paragraph-margin;
+    bottom: $paragraph-margin;
   }
 }
 
 body > header {
-  height: $header-height  ;
+  height: $header-height;
 }
 
 .bounded {
@@ -24,10 +25,6 @@ body > header {
   margin: 0;
 }
 
-.bloc {
-  @include horizontal-block;
-}
-
 .highligthed-bloc {
   @include horizontal-block;
 }
@@ -37,11 +34,15 @@ body > header {
 }
 
 .vertical-outset {
-  margin-bottom: $heading-margin-bottom;
+  margin-bottom: 0;
 }
 
 .horizontal-icons a {
-  margin-right: 0.4em;
+  margin-right: $horizontal-margin;
+}
+
+.inline-list > li {
+  margin-right: $horizontal-margin;
 }
 
 .highlighter-rouge {
@@ -51,5 +52,5 @@ body > header {
 
 figure.avatar {
   margin: 0;
-  width : 8em;
+  width : $avatar-size;
 }
