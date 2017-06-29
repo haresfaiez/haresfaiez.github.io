@@ -1,12 +1,14 @@
-<ul class="inline-list vertical-outset">
-  <li>
-    <a href="/">Home</a>
-  </li>
-  {% for each in site.pages %}
-      {% unless each.absence %}
-        <li>
-          <a href="{{ each.url | prepend: site.baseurl }}">{{ each.title }}</a>
-        </li>
-      {% endunless %}
-  {% endfor %}
-</ul>
+<div class="columns">
+  <ul class="inline-list">
+    <li>
+      <a href="/">Home</a>
+    </li>
+    {% for each in site.pages %}
+        {% unless each.absence %}
+          <li>
+            <a href="{{ each.url | prepend: site.baseurl }}">{{ each.title }}</a>
+          </li>
+        {% endunless %}
+    {% endfor %}
+  </ul>
+</div>

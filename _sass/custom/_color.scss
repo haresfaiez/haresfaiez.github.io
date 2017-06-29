@@ -1,20 +1,24 @@
 $body-font-color: #616161;
 
+// Foundation override
 $bg-color         : #FFFFFF;
-$secondary-color  : #e91e63;
+$secondary-color  : #E91E63; // pink
+
+// custom
 $anchor-font-color: $secondary-color;
-$hover-color      : #ad1457;
-$third-color      : #757575;
+$third-color      : #757575; // light yellow grey
 
-$primary-color  : #424242;
-$hover-color    : #9e9e9e;
+$primary-color  : #424242; // dark yellow grey
+$hover-color    : $third-color;
 
+$purpule   : #7A1E63;
+$light-green: #00E98E;
 
 $highlight      : #FAFAFA;
 
-// Bloc
 .bloc .header {
   color: $third-color;
+  border-color: $light-green;
 }
 
 .text-bloc {
@@ -32,7 +36,6 @@ $highlight      : #FAFAFA;
   }
 }
 
-// Highlighted bloc
 .highligthed-bloc {
 
   background-color: $highlight;
@@ -51,3 +54,12 @@ $highlight      : #FAFAFA;
   color:      $anchor-font-color;
   border:     none;
 }
+
+figure {
+  background-color: $purpule;
+
+  img {
+    opacity: 1;
+  }
+}
+

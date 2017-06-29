@@ -4,9 +4,9 @@ $serif-font     : "Libre Baskerville", serif;
 $sans-serif-font: "Karla", sans-serif !default;
 
 $default-font-size: 1rem;
-$tiny-font-size   : 0.8rem;
-$medium-font-size : 1.2rem;
-$big-font-size    : 1.4rem;
+$tiny-font-size   : 0.9rem;
+$medium-font-size : 1.1rem;
+$big-font-size    : 1.3rem;
 
 @mixin header($font-size: $medium-font-size) {
   font: {
@@ -41,6 +41,9 @@ h2, h3, h4, h5, h6 {
 
 .bloc .header {
   @include header($tiny-font-size);
+  border-bottom-width: 4px;
+  border-bottom-style: solid;
+  width: 17%;
 }
 
 .text-bloc p {
