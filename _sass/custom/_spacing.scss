@@ -2,13 +2,22 @@ $paragraph-margin: 1.7rem;
 $list-margin     : 1.7rem;
 $horizontal-list-height: 7rem;
 
-$avatar-size: 200px;
+$avatar-size: 170px;
 
 @mixin horizontal-block {
   padding: {
     top   : $paragraph-margin;
     bottom: $paragraph-margin;
   }
+}
+
+.bloc .header {
+  width: 20%;
+}
+
+.columns {
+  padding-left: $paragraph-margin;
+  padding-right: $paragraph-margin;
 }
 
 .bounded {
