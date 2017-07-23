@@ -1,26 +1,44 @@
+Real world concepts aren't a good ground to base the units of software design of software upon.
+The expectations we set on
+  each of these concept is not the same in software. Think of each software as a new language with the same
+  words as the english language, but with different symentics/meaning, or as a new world where the concepts
+  are named differently than we konwn. Think of a world where the garden is eating trees and called profile
+  when joined with a dog.
+- This why it is very complex to design software upfront. It is built behaviour by beahviour, reflecting after
+  each step.
+  The meaning of the employed concepts emerge, they could change with each new behaviour.
+  For the same reason, it is hard to design the software using data types first, these reflects the real world
+  and are far from the interaction between each other and the behaviour the software needs to provide.
+  The functional programmer succeeds because they base their language is mathematics.
+  And as every language, it fails and it, itself, needs a different meaning, a meaning that embraces the ambiguity
+  of the domain.
+
 Edsger Dijkstra once said that "The purpose of abstraction is not to be vague,
 but to create a new semantic level in which one can be absolutely precise."
 Since a software is merely an intellectual construct -a product of the programmer 
 thoughts and imagination,
-each piece of a program it is abstract as well as specific,
-and that its level of abstraction is defined by its relations with
-the other computational units in its context.
+each piece of a program is both abstract and specific.
+The level of abstraction of a unit is defined by its relations to
+other computational units in its context.
+A non-specific abstraction might not be a good fit.
+I like to think of non-specific abstraction as units that accomplish a computation
+that affects the context of its use, but that the context is not aware of.
+A unit with non-explicit IO at the edge of the system for example might be a non-specific abstraction.
 
-A non-specific abstraction might not be a good fit for its context of use.
 The opposite of abstraction is continuity, and not specificity.
 If we take abstraction as the explicit omit of information about a unit in context,
 then continuity is the conservation of every detail as well as the knowledge about the context.
-Indeed, an abstraction is abstraction in context, or better,
-an abstraction from a concept in a context.
-A context is continuous by definion. If we omit a part of the conext, it is not the same conext
-anymore.
+Indeed, an abstraction is abstraction in context. Or better,
+a selection from a set of units and rules from a context.
+A context is continuous by definion. it is imaginary.
+Stories, pictures, and metphors (more about this later) are imaginary contexts.
 
-We think of a context as a story, a picture, or a metphor (more about this later).
 Abstraction usefulness has boundaries. When we abstract, we remove details.
-Those same details can bring down our assumptions about the abstraction
+Those same details can bring down our assumptions/expectations about the abstraction
 when we push it beyond its usefulness boundaries.
+///When we omit a part of the conext, it is not the same conext anymore.
 This is why we talk about a level of abstraction, and not an abstract unit in a vaccum.
-A unit is a system of abstract units where the omitted details cannot harm the goal.
+A abstarction level is a system of abstract units where the omitted details cannot harm the objective.
 Again, the abstraction is tied to its implicit and explicit relationships with the other
 abstract units in the same level.
 
