@@ -1,0 +1,3 @@
+- Imperative data validation. is hard.
+- Focus on specification over implementation.
+- Best expressed using rules.

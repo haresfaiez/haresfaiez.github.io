@@ -42,6 +42,7 @@ A abstarction level is a system of abstract units where the omitted details cann
 Again, the abstraction is tied to its implicit and explicit relationships with the other
 abstract units in the same level.
 
+- It's not about hiding details, it is about the details non relevant albeit being accessible.
 - There is a confusion in the software world between generalization, abstraction, and compression.
 - I see a confusion between the abstraction of a real world concept (a tree, a book, a paper, an activity, ...)
   and the abstraction of a computational unit (a unit that only makes sense with the actual program).
