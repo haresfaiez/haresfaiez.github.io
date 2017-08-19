@@ -1,6 +1,6 @@
-$paragraph-margin: 1.7rem;
-$list-margin     : 1.7rem;
-$horizontal-list-height: 7rem;
+$default-hotizontal-margin: 1rem;
+$default-vertical-margin  : 1.7rem;
+$paragraph-margin         : 1.7rem;
 
 $avatar-size: 170px;
 
@@ -44,7 +44,7 @@ $avatar-size: 170px;
 }
 
 .horizontal-icons a {
-  margin-right: $list-margin;
+  margin-right: $default-hotizontal-margin;
 }
 
 .inline-list {
@@ -52,11 +52,11 @@ $avatar-size: 170px;
 }
 
 .inline-list > li {
-  margin-right: $list-margin;
+  margin-right: $default-hotizontal-margin;
 }
 
 header .inline-list > li {
-  line-height: $horizontal-list-height;
+ padding: $default-vertical-margin 0;
 }
 
 .highlighter-rouge {
