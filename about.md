@@ -5,13 +5,25 @@ permalink: /about/
 ---
 
 Hi! I am Hares Faiez. I am a programmer.
-I am a software engineering graduate from the National Institute of Applied Sciences
-and Technologies of Tunis.
 
-I have been writing code since a while.
-I worked on various technologies together with multiples teams.
-Here, I tell the stories of my little discoveries
-and I share thoughts from my journey in the software world.
+I have been working on software products for a while.
+I used to work with different technologies.
+I have joined teams at different locations
+and have worked with people from various backgrounds.
 
-I will be happy to get feedback
-and learn about your stories with what I write about.
+I can help you improve the quality your software, both the code itself
+and the development process.
+Then, I can help you ingrain the best development practices for your context.
+
+I offer private training sessions, too, in agile software development, refactoring, TDD, BDD,
+evolutionary desgin and architecture, and functional programming.
+
+Worried about the slow and unreliable deploymet process?
+
+Upset about the long time of adding features and fixing bugs?
+
+Have a big ball of mud that turns out to be valuable for your business?
+
+You need to improve the case?
+
+I can help with that, get in touch.
