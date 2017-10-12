@@ -42,10 +42,6 @@ h2, h3, h4, h5, h6 {
   @include header($tiny-font-size);
 }
 
-.text-bloc p {
-  text-align: justify;
-}
-
 .text-bloc aside {
   font-size: $tiny-font-size;
 }
