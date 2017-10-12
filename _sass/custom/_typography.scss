@@ -1,18 +1,16 @@
-@import url(https://fonts.googleapis.com/css?family=Libre+Baskerville|Karla);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600);
 
-$serif-font     : "Libre Baskerville", serif;
-$sans-serif-font: "Karla", sans-serif !default;
+$sans-serif-font: 'Open Sans', sans-serif !default;
 
 $default-font-size: 1rem;
-$tiny-font-size   : 0.9rem;
-$medium-font-size : 1.1rem;
-$big-font-size    : 1.3rem;
+$tiny-font-size   : 0.889rem;
+$medium-font-size : 1.125rem;
+$big-font-size    : 1.424rem;
 
 @mixin header($font-size: $medium-font-size) {
   font: {
     size  : $font-size;
     family: $sans-serif-font;
-    weight: bold;
   }
 }
 
@@ -21,6 +19,7 @@ body {
     family: $sans-serif-font;
     size  : $default-font-size;
   }
+  line-height: 1;
 }
 
 .inline-list > li > a {
@@ -41,12 +40,9 @@ h2, h3, h4, h5, h6 {
 
 .bloc .header {
   @include header($tiny-font-size);
-  border-bottom-width: 4px;
-  border-bottom-style: solid;
 }
 
 .text-bloc p {
-  font-family: $serif-font;
   text-align: justify;
 }
 
