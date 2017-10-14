@@ -1,6 +1,6 @@
-$default-hotizontal-margin: 1rem;
-$default-vertical-margin  : 1.7rem;
-$paragraph-margin         : 1.7rem;
+$default-margin         : 1rem;
+$default-vertical-margin: 1.7rem;
+$paragraph-margin       : 1.7rem;
 
 $avatar-size: 170px;
 
@@ -11,12 +11,16 @@ $avatar-size: 170px;
   }
 }
 
+section {
+  margin: $default-margin auto $default-margin auto;
+}
+
 h1 {
   margin: 0 0 0.5rem 0;
 }
 
 .bloc .header {
-  width: 20%;
+  margin-bottom: $default-margin;
 }
 
 .columns {
@@ -35,10 +39,6 @@ h1 {
   }
 }
 
-.absolute {
-  margin: 0;
-}
-
 .highligthed-bloc {
   @include horizontal-block;
 }
@@ -48,7 +48,7 @@ h1 {
 }
 
 .horizontal-icons a {
-  margin-right: $default-hotizontal-margin;
+  margin-right: $default-margin;
 }
 
 .inline-list {
@@ -56,7 +56,7 @@ h1 {
 }
 
 .inline-list > li {
-  margin-right: $default-hotizontal-margin;
+  margin-right: $default-margin;
 }
 
 header .inline-list > li {

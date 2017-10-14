@@ -1,18 +1,15 @@
-<section class='bloc absolute'>
-  <div>
-    <h1 class='header'>Recent posts</h1>
-    {% for post in site.posts %}
-    <article class="text-bloc">
-      <aside class='details'>
-	{{ post.date | date: "%b %-d, %Y" }}
-      </aside>
-      <h1 class="accent headline">
-	<a href="{{ post.url | prepend: site.baseurl }}">
-	  {{ post.title }}
-	</a>
-      </h1>
-      {{ post.excerpt }}
-    </article>
-    {% endfor %}
-  </div>
-</section>
+<h1 class='header'>Recent posts</h1>
+
+{% for post in site.posts %}
+  <article class="text-bloc">
+    <aside class='details'>
+      {{ post.date | date: "%b %-d, %Y" }}
+    </aside>
+    <h1 class="accent headline">
+      <a href="{{ post.url | prepend: site.baseurl }}">
+        {{ post.title }}
+      </a>
+    </h1>
+    {{ post.excerpt }}
+  </article>
+{% endfor %}
