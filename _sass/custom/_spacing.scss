@@ -19,7 +19,7 @@ h1 {
   margin: 0 0 0.5rem 0;
 }
 
-.bloc .header {
+.bloc > h1 {
   margin-bottom: $default-margin;
 }
 

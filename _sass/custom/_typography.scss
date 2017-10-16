@@ -38,7 +38,7 @@ h2, h3, h4, h5, h6 {
   @include header;
 }
 
-.bloc .header {
+.bloc > h1, .centered-bloc > h1 {
   @include header($tiny-font-size);
 }
 
