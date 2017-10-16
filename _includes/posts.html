@@ -5,11 +5,10 @@
     <aside class='details'>
       {{ post.date | date: "%b %-d, %Y" }}
     </aside>
-    <h1 class="accent headline">
+    <h2 class="accent headline">
       <a href="{{ post.url | prepend: site.baseurl }}">
         {{ post.title }}
       </a>
-    </h1>
-    {{ post.excerpt }}
+    </h2>
   </article>
 {% endfor %}

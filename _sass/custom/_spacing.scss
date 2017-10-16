@@ -1,6 +1,6 @@
-$default-margin         : 1rem;
-$default-vertical-margin: 1.7rem;
-$paragraph-margin       : 1.7rem;
+$default-margin  : 1rem;
+$vertical-margin : 2rem;
+$paragraph-margin: 1.7rem;
 
 $avatar-size: 170px;
 
@@ -11,8 +11,12 @@ $avatar-size: 170px;
   }
 }
 
-section {
+article {
   margin: $default-margin auto $default-margin auto;
+}
+
+section {
+  margin: $default-margin auto $vertical-margin auto;
 }
 
 h1 {
@@ -53,14 +57,6 @@ h1 {
 
 .inline-list {
   margin-bottom: 0;
-}
-
-.inline-list > li {
-  margin-right: $default-margin;
-}
-
-header .inline-list > li {
- padding: $default-vertical-margin 0;
 }
 
 .highlighter-rouge {
