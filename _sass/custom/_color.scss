@@ -12,8 +12,13 @@ $primary-color  : #424242; // dark yellow grey
 $hover-color    : $third-color;
 
 $light-grey: #F7F7F7;
+$dark      : #000000;
 
-.bloc > h1, .centered-bloc > h1 {
+ul > li > a {
+  color: $dark;
+}
+
+.bloc > h1 {
   color: $third-color;
 }
 

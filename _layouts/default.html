@@ -3,7 +3,13 @@
   {% include head.html %}
   <body>
     {% include header.html %}
-    {{ content }}
-    {% include footer.html %}
+    <div class="columns">
+      <aside class="large-2 column">
+	{% include pages-list.html %}
+      </aside>
+      <div class="large-10 column">
+	{{ content }}
+      </div>
+      {% include footer.html %}
   </body>
 </html>

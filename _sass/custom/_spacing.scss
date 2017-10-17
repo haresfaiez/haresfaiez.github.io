@@ -12,11 +12,11 @@ $avatar-size: 170px;
 }
 
 article {
-  margin: $default-margin auto $default-margin auto;
+  padding: $default-margin 0 $default-margin 0;
 }
 
-section {
-  margin: $default-margin auto $vertical-margin auto;
+section, header {
+  padding: $default-margin 0 $vertical-margin 0;
 }
 
 h1 {
@@ -53,10 +53,6 @@ h1 {
 
 .horizontal-icons a {
   margin-right: $default-margin;
-}
-
-.inline-list {
-  margin-bottom: 0;
 }
 
 .highlighter-rouge {
