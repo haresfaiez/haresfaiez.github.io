@@ -1,3 +1,4 @@
+$light-margin    : 0.3rem;
 $default-margin  : 1rem;
 $vertical-margin : 2rem;
 $paragraph-margin: 1.7rem;
@@ -25,6 +26,18 @@ h1 {
 
 .bloc > h1 {
   margin-bottom: $default-margin;
+}
+
+.banner > h1 {
+  margin: 0;
+}
+
+.banner > p {
+  margin-top: 0;
+}
+
+.banner > a > i {
+  margin-left: $light-margin;
 }
 
 .columns {

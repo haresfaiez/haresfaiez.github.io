@@ -6,6 +6,7 @@ $default-font-size: 1rem;
 $tiny-font-size   : 0.889rem;
 $medium-font-size : 1.125rem;
 $big-font-size    : 1.424rem;
+$fat-font-size     : 1.802rem;
 
 @mixin header($font-size: $medium-font-size) {
   font: {
@@ -43,6 +44,15 @@ h2, h3, h4, h5, h6 {
 }
 
 .bloc > h1 {
+  @include header($tiny-font-size);
+}
+
+.banner > h1 {
+  @include header($fat-font-size);
+  font-weight: bold;
+}
+
+.banner > a, .banner > p {
   @include header($tiny-font-size);
 }
 
