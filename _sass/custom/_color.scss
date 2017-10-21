@@ -19,7 +19,11 @@ ul > li > a {
 }
 
 .bloc > h1 {
-  color: $third-color;
+  color: $dark;
+}
+
+.banner {
+  border-right: 1px solid $secondary-color;
 }
 
 .text-bloc {
