@@ -1,17 +1,11 @@
-$secondary-color  : #E6003C; // pink
+ul > li {
+  a {
+    color: $dark;
 
-// custom
-$anchor-font-color: $secondary-color;
-$third-color      : #757575; // light yellow grey
-
-$primary-color  : #424242; // dark yellow grey
-$hover-color    : $third-color;
-
-$light-grey: #F7F7F7;
-$dark      : #000000;
-
-ul > li > a {
-  color: $dark;
+    :hover {
+      color: $light-grey;
+    }
+  }
 }
 
 .bloc > h1 {
@@ -19,45 +13,23 @@ ul > li > a {
 }
 
 .banner {
-  border-right: 1px solid $secondary-color;
+  border-right: 1px solid $pink;
+
+  > h1 {
+    color: $dark;
+  }
 }
 
 .text-bloc {
-
   aside {
-    color: $third-color;
+    color: $light-grey;
   }
 
-  .headline a {
-    color: $primary-color;
-  }
+  a {
+    color: $dark;
 
-  .headline a:hover {
-    color: $hover-color;
-  }
-}
-
-.highligthed-bloc {
-
-  background-color: $light-grey;
-
-  * {
-    color: $primary-color;
-  }
-}
-
-.highlighter-rouge {
-  background: $primary-color;
-}
-
-.highlighter-rouge code {
-  background: none;
-  color:      $anchor-font-color;
-  border:     none;
-}
-
-figure {
-  img {
-    opacity: 1;
+    :hover {
+      color: $light-grey;
+    }
   }
 }

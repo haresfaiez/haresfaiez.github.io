@@ -1,15 +1,15 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400|Merriweather:400,700);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600|Merriweather);
 
-$sans-serif-font: 'Open Sans', sans-serif !default;
-$serif-font: 'Merriweather', sans-serif !default;
+$serif     : 'Merriweather', Times, serif !default;
+$sans-serif: 'Open Sans', sans-serif !default;
 
-$default-font-size: 1rem;
-$tiny-font-size   : 0.889rem;
-$medium-font-size : 1.125rem;
-$big-font-size    : 1.424rem;
-$fat-font-size     : 1.802rem;
+$default-size: 1rem;
+$tiny-size   : 0.889rem;
+$normal-size : 1.125rem;
+$medium-size : 1.424rem;
+$fat-size    : 1.802rem;
 
-@mixin header($font-size: $default-font-size) {
+@mixin header($font-size: $default-size) {
   font: {
     size  : $font-size;
     family: inherit;
@@ -18,10 +18,9 @@ $fat-font-size     : 1.802rem;
 
 body {
   font: {
-    family: $sans-serif-font;
-    size  : $default-font-size;
+    family: $sans-serif;
+    size  : $default-size;
   }
-  line-height: 1;
 }
 
 ul {
@@ -29,15 +28,15 @@ ul {
 }
 
 ul > li > a {
-  line-height: $fat-font-size;
+  line-height: $fat-size;
 }
 
 aside {
-  font-size: $tiny-font-size;
+  font-size: $tiny-size;
 }
 
 h1 {
-  @include header($big-font-size);
+  @include header($medium-size);
 }
 
 h2, h3, h4, h5, h6 {
@@ -45,14 +44,10 @@ h2, h3, h4, h5, h6 {
 }
 
 .bloc > h1 {
-  @include header($default-font-size);
-  font-family: $serif-font;
+  @include header($default-size);
+  font-family: $serif;
 }
 
 .banner > h1 {
-  @include header($fat-font-size);
-}
-
-.text-bloc aside {
-  font-size: $tiny-font-size;
+  @include header($fat-size);
 }

@@ -2,14 +2,16 @@
 <html>
   {% include head.html %}
   <body>
-    {% include header.html %}
-    <div class="columns">
-      <aside class="large-2 column">
-	{% include pages-list.html %}
-      </aside>
-      <div class="large-10 column">
-	{{ content }}
+    <div class="grid-x grid-padding-x">
+      {% include header.html %}
+      <div class="grid-x cell">
+	<aside class="large-2 cell">
+	  {% include pages-list.html %}
+	</aside>
+	<div class="large-8 cell">
+	  {{ content }}
+	  {% include footer.html %}
+	</div>
       </div>
-      {% include footer.html %}
   </body>
 </html>

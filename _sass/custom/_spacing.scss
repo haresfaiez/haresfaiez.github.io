@@ -40,22 +40,6 @@ h1 {
   margin-left: $light-margin;
 }
 
-.columns {
-  padding-left: $paragraph-margin;
-  padding-right: $paragraph-margin;
-}
-
-.bounded {
-  @extend .large-10;
-  padding-left: grid-calc(2, 12);
-}
-
-@media only screen and (max-width: 40em) {
-  .bounded {
-    padding: 0;
-  }
-}
-
 .highligthed-bloc {
   @include horizontal-block;
 }

@@ -1,11 +1,15 @@
 @import '../node_modules/foundation-sites/scss/util/util';
 
 $foundation-palette: (
-primary: #E6003C,
-secondary: #767676,
-success: #3adb76,
-warning: #ffae00,
-alert: #cc4b37,
+  primary  : #E6003C,
+  secondary: #767676,
+  success  : #3adb76,
+  warning  : #ffae00,
+  alert    : #cc4b37,
 );
 
-$body-font-color: #616161;
+$dark      : #000000;
+$light-grey: #757575;
+$pink      : #E6003C;
+
+
