@@ -1,0 +1,22 @@
+{
+  "name": "haresfaiez.github.io",
+  "version": "1.0.0",
+  "description": "**Jekyll personal web site**",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haresfaiez/haresfaiez.github.io.git"
+  },
+  "author": "Faiez Hares",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/haresfaiez/haresfaiez.github.io/issues"
+  },
+  "homepage": "https://github.com/haresfaiez/haresfaiez.github.io#readme",
+  "devDependencies": {
+    "foundation-sites": "^6.4.4-rc1"
+  }
+}
