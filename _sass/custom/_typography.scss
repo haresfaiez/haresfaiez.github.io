@@ -47,7 +47,3 @@ h2, h3, h4, h5, h6 {
   @include header($default-size);
   font-family: $serif;
 }
-
-.banner > h1 {
-  @include header($fat-size);
-}
