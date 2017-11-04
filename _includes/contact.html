@@ -1,23 +1,33 @@
-{% if site.twitter_handle %}
-<a class="item" href="https://twitter.com/{{ site.twitter_handle }}">
-  <i class="fa fa-twitter"></i>
-</a>
-{% endif %}
+<ul class="menu simple">
+  {% if site.twitter_handle %}
+  <li>
+    <a class="item" href="https://twitter.com/{{ site.twitter_handle }}">
+      <i class="fa fa-twitter"></i>
+    </a>
+  </li>
+  {% endif %}
 
-{% if site.github_handle %}
-<a class="item" href="https://github.com/{{ site.github_handle }}">
-  <i class="fa fa-github top"></i>
-</a>
-{% endif %}
+  {% if site.github_handle %}
+  <li>
+    <a class="item" href="https://github.com/{{ site.github_handle }}">
+      <i class="fa fa-github top"></i>
+    </a>
+  </li>
+  {% endif %}
 
-{% if site.goodreads_handle %}
-<a class="item" href="https://goodreads.com/user/show/{{ site.goodreads_handle }}">
-  <i class="fa fa-book top"></i>
-</a>
-{% endif %}
+  {% if site.goodreads_handle %}
+  <li>
+    <a class="item" href="https://goodreads.com/user/show/{{ site.goodreads_handle }}">
+      <i class="fa fa-book top"></i>
+    </a>
+  </li>
+  {% endif %}
 
-{% if site.behance_handle %}
-<a class="item" href="https://behance.net/{{ site.behance_handle }}">
-  <i class="fa fa-behance"></i>
-</a>
-{% endif %}
+  {% if site.behance_handle %}
+  <li>
+    <a class="item" href="https://behance.net/{{ site.behance_handle }}">
+      <i class="fa fa-behance"></i>
+    </a>
+  </li>
+  {% endif %}
+</ul>

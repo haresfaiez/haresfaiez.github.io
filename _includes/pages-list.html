@@ -1,14 +1,12 @@
-<div class="columns">
-  <ul>
+<ul class="vertical menu">
+  <li>
+    <a href="/">Home</a>
+  </li>
+  {% for each in site.pages %}
+    {% unless each.private %}
     <li>
-      <a href="/">Home</a>
+      <a href="{{ each.url | prepend: site.baseurl }}">{{ each.title }}</a>
     </li>
-    {% for each in site.pages %}
-        {% unless each.absence %}
-          <li>
-            <a href="{{ each.url | prepend: site.baseurl }}">{{ each.title }}</a>
-          </li>
-        {% endunless %}
-    {% endfor %}
-  </ul>
-</div>
+    {% endunless %}
+  {% endfor %}
+</ul>

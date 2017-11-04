@@ -8,10 +8,10 @@
 @include foundation-global-styles;
 @include foundation-xy-grid-classes;
 @include foundation-typography;
+@include foundation-menu;
 
 @import "font-awesome/scss/font-awesome";
 
 @import "custom/color";
 @import "custom/typography";
-@import "custom/grid";
 @import "custom/spacing";

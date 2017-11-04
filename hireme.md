@@ -1,8 +1,7 @@
 ---
-layout: page
-title:  HIRE ME
+layout:    page
+title:     Hire me
 permalink: /hireme/
-absence: true
 ---
 
 I am looking for new opportunities.
