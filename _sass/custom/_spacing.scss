@@ -24,8 +24,10 @@ article {
   padding: 0 0 $light-margin 0;
 }
 
-section, header {
-  padding: $default-margin 0 $vertical-margin 0;
+div#announcement > section {
+  $medium-gutter: map-get($grid-margin-gutters, medium) * 5;
+  $small-gutter : map-get($grid-margin-gutters, small) * 4;
+  @include xy-gutters($gutters: (small: $small-gutter, medium: $medium-gutter), $gutter-position: top bottom);
 }
 
 h1 {
