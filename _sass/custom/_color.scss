@@ -1,25 +1,11 @@
-.menu a {
-  color: $dark;
-}
-
-.menu a:hover {
+aside {
   color: $light-grey;
 }
 
-.bloc > h1 {
+.menu a, .text-bloc a {
   color: $dark;
 }
 
-.text-bloc {
-  aside {
-    color: $light-grey;
-  }
-
-  a {
-    color: $dark;
-
-    :hover {
-      color: $light-grey;
-    }
-  }
+.menu a:hover, .text-bloc a:hover {
+  color: $light-grey;
 }

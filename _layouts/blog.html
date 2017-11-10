@@ -1,18 +1,21 @@
 ---
 layout: default
 ---
-<h1>Recent Posts</h1>
+<section class="large-10 cell">
+  <h1>Recent Posts</h1>
 
-{% for post in site.posts %}
-  <article class="text-bloc">
-    <aside class='details'>
-      {{ post.date | date: "%b %-d, %Y" }}
-    </aside>
-    <a href="{{ post.url | prepend: site.baseurl }}">
+  {% for post in site.posts %}
+    <article class="text-bloc">
+      <aside class='details'>
+        {{ post.date | date: "%b %-d, %Y" }}
+      </aside>
       <h2 class="accent headline">
-        {{ post.title }}
+        <a href="{{ post.url | prepend: site.baseurl }}">
+          {{ post.title }}
+        </a>
       </h2>
       {{ post.excerpt }}
-    </a>
+    </article>
+  {% endfor %}
   </article>
-{% endfor %}
+</section>
