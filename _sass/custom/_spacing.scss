@@ -1,7 +1,7 @@
 $light-margin    : 0.3rem;
 $default-margin  : 1rem;
 $vertical-margin : 2rem;
-$paragraph-margin: 1.7rem;
+$paragraph-margin: 1.5rem;
 
 $avatar-size: 170px;
 
@@ -20,8 +20,8 @@ body {
   padding: $default-margin;
 }
 
-h1 {
-  margin-bottom: $default-margin;
+h1, article {
+  margin-bottom: $paragraph-margin;
 }
 
 div#announcement > section {

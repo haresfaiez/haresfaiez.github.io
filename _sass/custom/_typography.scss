@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans|Merriweather);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
 $serif     : 'Merriweather', Times, serif !default;
 $sans-serif: 'Open Sans', sans-serif !default;
@@ -11,7 +11,7 @@ $fat-size    : 1.424rem;
 @mixin header($font-size: $default-size) {
   font: {
     size  : $font-size;
-    family: $serif;
+    family: $sans-serif;
   }
 }
 
