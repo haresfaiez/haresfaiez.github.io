@@ -20,14 +20,14 @@ body {
   padding: $default-margin;
 }
 
-h1, article {
+h1, h2, article {
   margin-bottom: $paragraph-margin;
 }
 
-div#announcement > section {
+div#announcement {
   $medium-gutter: map-get($grid-margin-gutters, medium) * 5;
   $small-gutter : map-get($grid-margin-gutters, small) * 4;
-  @include xy-gutters($gutters: (small: $small-gutter, medium: $medium-gutter), $gutter-position: top bottom);
+  @include xy-gutters($gutters: (small: $small-gutter, medium: $medium-gutter), $gutter-position: bottom);
 }
 
 .highligthed-bloc {
