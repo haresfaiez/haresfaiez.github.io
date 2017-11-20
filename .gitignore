@@ -1,4 +1,5 @@
 _site
+_style/node_modules
 .sass-cache
 .jekyll-metadata
 *.swo
