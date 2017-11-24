@@ -4447,11 +4447,11 @@ ul.no-bullet, ol.no-bullet {
 .fa-percent:before {
   content: ""; }
 
-h1 {
-  color: #424242; }
-
 #announcement-left {
   border-right: 1px solid #f0f0f0; }
+
+#announcement p {
+  color: #424242; }
 
 aside {
   color: #757575; }
@@ -4472,7 +4472,12 @@ ul {
 aside {
   font-size: 0.889rem; }
 
-h1, h2 {
+h1 {
+  font-size: 1.424rem;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600; }
+
+h2 {
   font-size: 1.125rem;
   font-family: "Open Sans", sans-serif; }
 
@@ -4486,7 +4491,7 @@ h3, h4, h5, h6 {
 body {
   padding: 1rem; }
 
-h1, h2, article {
+h1, article {
   margin-bottom: 1.5rem; }
 
 div#announcement {

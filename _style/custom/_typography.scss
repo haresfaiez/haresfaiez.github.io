@@ -30,7 +30,12 @@ aside {
   font-size: $tiny-size;
 }
 
-h1, h2 {
+h1 {
+  @include header($fat-size);
+  font-weight: 600;
+}
+
+h2 {
   @include header($medium-size);
 }
 

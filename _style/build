@@ -1,0 +1,2 @@
+#!/bin/bash
+node compile.js $1 && printf '0a\n---\n---\n.\nw\n' | ed $1
