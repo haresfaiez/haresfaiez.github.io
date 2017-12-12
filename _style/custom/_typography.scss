@@ -1,38 +1,47 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
 
 $serif     : Times, serif !default;
 $sans-serif: 'Open Sans', sans-serif !default;
 
-$default-size: 1rem;
-$tiny-size   : 0.889rem;
-$medium-size : 1.125rem;
-$fat-size    : 1.424rem;
-
-@mixin header($font-size: $default-size) {
-  font: {
-    size  : $font-size;
-    family: $sans-serif;
-  }
-}
+$default-size: 1.1rem;
+$tiny-size   : 0.889em;
+$medium-size : 1.125em;
+$fat-size    : 2em;
 
 body {
   font: {
     family: $sans-serif;
     size  : $default-size;
+    weight: 300;
   }
+}
+
+@mixin header($font-size: $default-size) {
+  font: {
+    family: inherit;
+    size  : $font-size;
+    weight: inherit;
+  }
+}
+
+footer {
+  font-size: 1rem;
+}
+
+p {
+  font-size: 1.125rem;
+}
+
+strong {
+  font-weight: 400;
 }
 
 ul {
   list-style-type: none;
 }
 
-aside {
-  font-size: $tiny-size;
-}
-
 h1 {
   @include header($fat-size);
-  font-weight: 600;
 }
 
 h2 {
@@ -41,4 +50,8 @@ h2 {
 
 h3, h4, h5, h6 {
   @include header;
+}
+
+.menu a {
+  font-size: 1rem;
 }

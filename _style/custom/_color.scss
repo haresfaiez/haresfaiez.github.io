@@ -1,9 +1,23 @@
-#announcement-left {
-  border-right: 1px solid #f0f0f0;
+#title {
+  a {
+    color: inherit;
+  }
+
+  h1 {
+    background: $light-brown;
+  }
 }
 
-#announcement p {
-  color: $dark-grey;
+footer {
+  background: $dark-grey;
+
+  a {
+    color: $light-grey;
+  }
+
+  aside {
+    color: #fff;
+  }
 }
 
 aside {

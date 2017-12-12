@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   {% include head.html %}
   <body>
-      <div class="grid-container grid-x">
-	<aside class="large-2 cell">
-	  {% include pages-list.html %}
-          {% include contact.html %}
-	</aside>
-	<div class="large-9 cell grid-x">
-	  {{ content }}
-	</div>
-      </div>
+    {% include header.html %}
+    <main class="grid-container grid-y">
+      {{ content }}
+    </main>
+    {% include footer.html %}
   </body>
 </html>

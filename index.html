@@ -1,17 +1,12 @@
 ---
 layout: default
 ---
-<div id="announcement">
-  <h1>Latest</h1>
-  <div class="grid-x grid-margin-x">
-    <section id="announcement-left" class="large-6 cell">
-      {% include banner.html %}
-    </section>
-    <section class="large-5 cell">
-      {% include hireme.html %}
-    </section>
+<div class="grid-x grid-margin-x">
+  <section class="auto cell">
+    {% include notes.html %}
+  </section>
+  <div class="large-5 cell">
+    {% include hireme.html %}
+    {% include about.html %}
   </div>
-</div>
-<div class="grid-x">
-  {% include about-me.html %}
 </div>

@@ -16,7 +16,7 @@
      * 3. Prevent adjustments of font size after orientation changes in
      *    IE on Windows Phone and in iOS.
      */
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
 html {
   font-family: sans-serif;
   /* 1 */
@@ -4447,11 +4447,18 @@ ul.no-bullet, ol.no-bullet {
 .fa-percent:before {
   content: ""; }
 
-#announcement-left {
-  border-right: 1px solid #f0f0f0; }
+#title a {
+  color: inherit; }
 
-#announcement p {
-  color: #424242; }
+#title h1 {
+  background: #EFEBE9; }
+
+footer {
+  background: #212121; }
+  footer a {
+    color: #757575; }
+  footer aside {
+    color: #fff; }
 
 aside {
   color: #757575; }
@@ -4464,41 +4471,64 @@ aside {
 
 body {
   font-family: "Open Sans", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 300; }
+
+footer {
   font-size: 1rem; }
+
+p {
+  font-size: 1.125rem; }
+
+strong {
+  font-weight: 400; }
 
 ul {
   list-style-type: none; }
 
-aside {
-  font-size: 0.889rem; }
-
 h1 {
-  font-size: 1.424rem;
-  font-family: "Open Sans", sans-serif;
-  font-weight: 600; }
+  font-family: inherit;
+  font-size: 2em;
+  font-weight: inherit; }
 
 h2 {
-  font-size: 1.125rem;
-  font-family: "Open Sans", sans-serif; }
+  font-family: inherit;
+  font-size: 1.125em;
+  font-weight: inherit; }
 
 h3, h4, h5, h6 {
-  font-size: 1rem;
-  font-family: "Open Sans", sans-serif; }
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: inherit; }
 
-.menu a, .menu .button {
-  padding-left: 0; }
+.menu a {
+  font-size: 1rem; }
 
-body {
-  padding: 1rem; }
+#title * {
+  display: inline; }
 
-h1, article {
-  margin-bottom: 1.5rem; }
+#title h1 {
+  padding: 0 0.3rem; }
 
-div#announcement {
-  margin-bottom: 2.5rem; }
-  @media print, screen and (min-width: 40em) {
-    div#announcement {
-      margin-bottom: 4.6875rem; } }
+body > * {
+  margin-top: 1rem;
+  padding: 1rem 0; }
+
+footer {
+  margin-top: 2rem; }
+
+.grid-container {
+  max-width: 65rem; }
+
+.menu a {
+  padding-top: 0;
+  padding-bottom: 0; }
+
+article {
+  margin-bottom: 1rem; }
+
+section {
+  margin-bottom: 2rem; }
 
 .highligthed-bloc {
   padding-top: 1.5rem;
@@ -4507,7 +4537,3 @@ div#announcement {
 .highlighter-rouge {
   width: 100%;
   padding: 5px; }
-
-figure.avatar {
-  margin: 0;
-  width: 170px; }

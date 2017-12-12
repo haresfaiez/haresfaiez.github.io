@@ -3,8 +3,6 @@ $default-margin  : 1rem;
 $vertical-margin : 2rem;
 $paragraph-margin: 1.5rem;
 
-$avatar-size: 170px;
-
 @mixin horizontal-block {
   padding: {
     top   : $paragraph-margin;
@@ -12,22 +10,42 @@ $avatar-size: 170px;
   }
 }
 
-.menu a, .menu .button {
-  padding-left: 0;
+#title {
+  * {
+    display: inline;
+  }
+
+  h1 {
+    padding: 0 $light-margin;
+  }
 }
 
-body {
-  padding: $default-margin;
+body > * {
+  margin-top: $default-margin;
+  padding   : $default-margin 0;
 }
 
-h1, article {
-  margin-bottom: $paragraph-margin;
+footer {
+  margin-top: $default-margin * 2;
 }
 
-div#announcement {
-  $medium-gutter: map-get($grid-margin-gutters, medium) * 5;
-  $small-gutter : map-get($grid-margin-gutters, small) * 4;
-  @include xy-gutters($gutters: (small: $small-gutter, medium: $medium-gutter), $gutter-position: bottom);
+.grid-container {
+  max-width: 65rem;
+}
+
+.menu a {
+  padding: {
+    top   : 0;
+    bottom: 0;
+  }
+}
+
+article {
+  margin-bottom: $default-margin;
+}
+
+section {
+  margin-bottom: $vertical-margin;
 }
 
 .highligthed-bloc {
@@ -37,9 +55,4 @@ div#announcement {
 .highlighter-rouge {
   width  : 100%;
   padding: 5px;
-}
-
-figure.avatar {
-  margin: 0;
-  width : $avatar-size;
 }
