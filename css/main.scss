@@ -4450,8 +4450,8 @@ ul.no-bullet, ol.no-bullet {
 #title a {
   color: inherit; }
 
-#title h1 {
-  background: #EFEBE9; }
+#title aside a {
+  color: #0D47A1; }
 
 footer {
   background: #212121; }
@@ -4507,8 +4507,8 @@ h3, h4, h5, h6 {
 #title * {
   display: inline; }
 
-#title h1 {
-  padding: 0 0.3rem; }
+#title aside {
+  font-weight: 400; }
 
 body > * {
   margin-top: 1rem;
