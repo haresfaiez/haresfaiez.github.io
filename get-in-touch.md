@@ -4,8 +4,9 @@ title: Get in touch
 permalink: /get-in-touch/
 ---
 Hi! I am Hares Faiez. I am a programmer.
-I am passionate about front-end development and product design.
-I enjoy reading, writing, running, and taking pictures. 
+I like reading, writing, running, and taking pictures.
+I write about software, mostly software design.
+I am passionate about programming languages and product design.
  
 I enjoy exploring new programming approaches
 and discussing unusual ways of solving design problems.
