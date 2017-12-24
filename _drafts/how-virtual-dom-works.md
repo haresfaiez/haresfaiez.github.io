@@ -1,99 +1,125 @@
-Many web applications now are concieved as an aggregation of components.
-Each component owns a part of the web page.
-Components are rarely static. They change their style, content, and even their structure.
+Many web applications, now, are concieved as an aggregation of components.
+Each component owns a part of the screen.
+Components are rarely static. They change style, content, and structure.
 
-React is designed such that the views of components are immutable.
-From a library client perspective, when something needs to change inside a component,
-the library creates the new view of the component, it removes the old view of that component
-from the page, and it puts the new view in.
-If we apply these operations directly to the DOM, a decrease on the performance of the web
-application becomes inevitable.
-In fact, each one of these causes the browser to redraw the whole page.
+React is designed such that the view associated with each component is immutable.
+When something changes in a component, the library removes the old view from the page,
+creates a new view for the component, and puts the new view in.
+When applied direclty to the DOM, the first and the last operation incurs
+a significant cost.
+In fact, each of these causes the browser to redraw the whole page.
 
 One solution to cope with that cost is the virtual DOM.
-"virtual-dom" is an implementation of a collection of ideas that
-allows us to be generous with changing the structure of the document
-while relying on the library to optimize changes to the original DOM.
-
-Here, I will try to dig inside "virtual-dom", an impelemntation of the virtual DOM.
-I will try to go through the implementation of the "diff" algorithm
-that generate the patches and the algorithm that applies the patches to
-the initial structure.
-
-A "virtual-dom" based application uses the "virtual-dom" API to
+Virtual DOM allows us to be generous with regard to changing
+the structure of the document while optimizing the modification of the primitive DOM.
+A virtual DOM-based application uses the virtual DOM API to
 modify the structure of the document.
-To update the document:
-	* Create the result structure
-	* Find a set of atomic operations (patches) that transforms the initial
-	  structure into the result structure
-	* Apply the patches to the existing structure
 
-I will use "primitive DOM" when I talk about the real DOM (the one
+I use "primitive DOM", here, when I talk about the real DOM (the one
 used by the browser to display the page) and "virtual DOM" when I talk about
-a structure represented by "virtual-dom".
+the structure represented by "virtual-dom".
+
+To update the document:
+	* Create the virtual DOM of the result structure
+	* Find the set of atomic operations (patches) that transforms the initial
+	  primitive DOM into a result primitive DOM structure
+	* Apply the patches to the existing primitive DOM
+
+I will try to dig inside "virtual-dom", an impelemntation of the virtual DOM.
+I will go through the implementation of the "diff" module
+that generates a set of patches and the "patch" module that applies the patches to
+the initial structure.
 
 There are two principal operations:
 
   * **Diff**
-  The "diff" algorithm takes two virtual dom elements (the initial and the result,
-  I will call them the source and the destination)
-  and produces a set of patches.
+  The "diff" module takes two virtual dom elements (the initial and the result,
+  I call them the source and the destination) and produces a set of patches.
 
-  The output of this operation is a Json object containing the former
-  virtual DOM root element and the array of patches (the differences
-  that, when applied in order, gives the latter virtual DOM).
+  The output of this operation is a Json object containing the source
+  virtual DOM element and the array of patches (the differences
+  that, when applied in order, transforms the source to the destination).
+  A virtual DOM element may have properties and children.
 
   ```
   Diff = {
    source : VDom,
-   patches: Patch[]
+   patches: Transformation[]
   }
   ```
-  The keys below the 'a' key are numbers, and the value of each
-  key is a diff or a set of diffs.
-  While building the diff output, we increment the index when:
-    * we remove a child widget (index + 1)
-    * we remove a child with direct(non-descendent) hooks (index + 1)
-	* we insert a node from b
-	* we analyse a child node
 
-
-  Each patch in the result has a type.
-  I will go through the possible types one by one.
+  There are 6+1 types of transformations:
     *Text*
-  
+	This is used when the second element is a text.
+	When we compare any source element to a text element, we remove the whole source
+	and we put the destination text instead.
+ 
 	*Node*
-  
+	This is used to insert a new node, when the destination element is a node.
+	A node element might contains properties and children.
+	So, when the source element node and the destination element node are different
+	or the source is not a node at all, we use this transformation.
+	When the source root element and the destination root element are the same,
+	we go on and look at the difference between their properties and children.
+	A *Node* transformation does not allow the replacement of a source node by
+	a destination node. It just append a node.
+	We use a collection of *Remove* transformations and one *Node* transformation
+	if we need to replace a source node with a different destination node.
+ 
 	*Remove*
-    Some edge-cases exists while removing a branch(a sub-tree), a VDom element as
-    we need a reference to all widget elements (to remove safely in the patch operation,
-    because widgets have a destroy function):
-      * a widget/text element is removed with a single remove command
-  	* a node needs to be cleared first, clear means:
-  	  * record a remove command for each widget child
-  	  * record a thunk command for each thunk child
-  	  * record a props command with undefined hook keys for each sub-[sub-]element with hooks
-  	  
-      NB: note that for each command record, the index is incremented
-  
+	You might be wondering why we need multiple *Remove* transformations
+	when we need to replace one node with another.
+	One *Remove* transformation is needed to destroy an element and its children.
+	But, when the source element contains some widget elements somewhere between its
+	children, one *Remove* transformation per widget is required.
+	Indeed, a widget element is destroyed by calling their "destroy" method.
+ 
 	*Insert*
+	This transformation is used when we have a destination Virtual DOM element,
+	but no source Virtual DOM element.
+	The subject of the insertion can be a node, a text, or a widget.
+	The difference between the effect of *Insert* and other transformations
+	such as *Node*, *Text*, and *Widget* is in the effect during the patch phase.
+	*Insert* trigger in an "domParent.appendChild" while others calls for a
+	"domParent.replaceElement", taking the former element into account.
   
-	*Reorder*
+	*Order*
+	To understand what *Order* means, we need to take a look at the piece of code responsible
+	for calculating the difference between the children of two similar elements.
+	A source element and a destination element are considered the same if both have the
+	same tagname, key, and namespace.****
+	Here are two facts about the implementation:
+	  * A virtual DOM element, as is a primitive DOM element, is a tree.
+	    Physically, "virtual-dom" puts the children of an element in an array inside
+	    the element data structure.
+	  * Some elements have a key that identify each element globally. When we modify an
+	    element with some children that have keys, we need to compare the children with the
+	    same key against each other when we calculate the difference.
+	The difference between the children of two elements is calculated by iterating over each
+	children array and comparing the elements with the same indexes in the two arrays.
+	In order to compare two elements with the same key with each other, we need them at
+	the same index. Hence, we change the order of the destination element children and
+	we add the operations that transform the reordered arrays to the given destination
+	element array as an *Order* transformation.
+	Here is an example: ****
   
 	*Props*
+    When the source and the destination elements are similar -that is it, they have the same tagname,
+	namespace, and key, we compare the properties in addition to their children.
     For the difference between two props, we put *Updated* when:
       * the former and the new node have properties with different value
   	* both are object, but with different *.__proto__
   	* the new value is a hook
   	* the difference between the former and the new object as a value if the new is not a hook and the two objects have the same prototype
 
-    When the former and new node have the same tagname, namespace, and key, we compare the properties (Props command) and the children.
-  
 	*Widget*
+	This is used when the destination element is a widget.
   
     *Thunk*
+	This type is handled differently. Indeed, ...
 	This used to take control over the diff calculation of
 	two elements.
+	*Remove* could be used on all element types except *Thunk*.
 	
 
   ```
@@ -111,7 +137,7 @@ There are two principal operations:
     * Reorder the new tree
 	  Some nodes have a key(a unique identifier), the element that have a key and that exists in the initial and the result
 	  tree must stay the same. We move them, and we don't recreate them.
-	  The children diff algorithm, starts by transforming the new tree into a new data structure containing a new organization and how to get from there to the orginal organization:
+	  The children diff module, starts by transforming the new tree into a new data structure containing a new organization and how to get from there to the orginal organization:
 	    {new element with the indexes of  keyed elements follows the initial tree, {moves to tranform the left-side tree into the result tree}}
 	  So that diff are run for elements with teh same keys (as we use two arrays for trees) than, in the patch, we reorder the trees.
 	
@@ -148,9 +174,8 @@ There are two principal operations:
 
 
   * **Patch**
-  The "patch" algorithm takes a set of patches and the primitive DOM element associated
-  withe the initial virtual DOM structure and produces a primitive DOM element.
-  Here, we take the structure resulting from the diff operation
-  and we apply it to the real dom.
+  The "patch" module takes a set of patches and the primitive DOM element associated
+  with the source virtual DOM element and produces a primitive DOM associated with
+  the destination virtual DOM element.
   We use *Widget* to specify how the translation from the virtual DOM
   to the real DOM should go.
