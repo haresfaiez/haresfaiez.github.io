@@ -29,8 +29,7 @@ Using of the existing system as a basis for conversations,
 they express their problems to the team in a clear fashion.
 
 Validated requirements constitute the way to a good product.
-The specification of the requirements these early is
-rarely useful in the long run.
+The specification of the requirements early is rarely useful in the long run.
 Unless for providing a rich framework for conversations,
 the cost of these decisions outweights their value.
 We work toward requirements and we get them when we are done.
@@ -43,9 +42,6 @@ and update his target.
 But, does that meet the need of the manager
 that needs to change the date of the next event frequently?
 I am not sure
-(By the way,
-I decided to never use a CRUD-like verb in a requirement definition,
-but that is for an other time).
 That depends on where she finds the events,
 what is she using the system for,
 when she does that, and how the software fits in her life.

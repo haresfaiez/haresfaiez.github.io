@@ -34,20 +34,20 @@ The knowledge translates as decisions to the code.
 When programming, we iterate.
 And at each visit, we express the knowledge about the next feature
 or we change an existing decision as a result of an insight.
-Insights come as surfacing an invisible association
-or noticing a hidden symmetry.
-Decisions are, also, fixed after the discovery of an ambiguity or a bug.
 Each of these decisions is interdependent with other decisions.
 There is a significant work of design in deciding which decisions
 should be explicit, which move to an external configuration,
 and which are best to be implicit.
 
 The decisions are like:
+
   * Each opportunity have a global identity.
   * The identity of the contract is the identity of its source.
   * The user provides the source identity.
   * A fund have an identity, a name, and a target.
 
+See, most of these are code-independent. Software solutions are discovered
+away from the keyboard.
 There could be no unit called "Opportunity" or "Fund" in the code.
 We may refer to a "Fund" as a "destination" when talking about an "opportunity"
 and use types such as "Existing" and "Stale" in a context where the fund
@@ -59,7 +59,7 @@ I express these decisions in other mediums such as UML diagrams.
 Now, how to express a new decision in a safe way?
 By safe I mean without introducing misconceptions to the existing work
 and with reflecting the recent learning in the best possible way.
-Can we express the new decision in our mind
+Can we express the new decision in our mind, write it down,
 and check the new behavior manually? Yes, of course we can.
 The enemy here is the size of software.
 I don't like adding new decisions directly and without a safety net to
@@ -67,14 +67,9 @@ the code because I got, often, bitten by bias.
 
 Can we express it using types? Yes, of course.
 The enemy here is coupling.
-Manipulating abstractions without falling for biases
-and false symmetries is challenging if the types are not highly specific.
-There should be a balancing between coupling and the specificity of the type.
+There should be a balancing between coupling and the reusability of the type.
 
 Can we express it through tests? Yes, of course, and this is what TDD is about.
-The enemy here is the lack of correctness.
-Tests does not cover every allowed state.
-Tests suggest generalizations and that allows bugs to get in.
 TDD does that by stating explicitly each new rule independently of the code,
 then introducing it to the code.
 We decide how the solution will look like after adding the new decision;

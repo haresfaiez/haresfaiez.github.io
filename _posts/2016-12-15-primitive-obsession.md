@@ -9,10 +9,9 @@ tags:       featured
 
 Each program is a collection of decisions. It solves a problem, at least.
 It communicates the structure of the solution and, perhaps, the reason behind each decision.
-A program is, also, a collection of units, each has a set of responsibilities,
+A program is, also, a collection of units. Each has a set of responsibilities,
 a role, and an implementation.
-When the units fit well together,
-the program communicates the solution well.
+When the units fit well together, the program communicates the solution well.
 
 The responsibilities of each unit specify the problems the unit solves (what it is doing),
 the role specifies its contribution to the program (why it is doing it),
@@ -34,21 +33,21 @@ of each unit in contexts other than which it was designed for in the first place
 
 The difference between the responsibilities and the role are expressed
 in multiple fashion.
-One way to it is "Responsibilities in the core, role specification at the edges";
+One way to it is "Responsibilities in the core, role specification in the shell";
 This is the approach used by functional programming languages.
-Eah type is a fixed set of values, and when we need to include more meaning
-in the type, we wrap it inside a new rich type.
+Each type is a fixed set of values, and when we need to add meaning
+to the type, we wrap it inside a new type.
 Another way is
-"The role details in the core, and the specification of the responsibilites in the edges";
-This is the approach taken by class-based object languages.
-The interface is the a specification of the unit, and the hidden state
-induces variations between different contexts of use.
+"The role in the core, and the specification of the responsibilites in the shell";
+This is the approach of class-based object languages.
+The interface is a fixed specification of the unit, and the hidden state
+varies between different contexts of use.
 
 A type is a specification of a programming unit.
-It could bee seen from a variety of lenses.
-But, I will take it as a communication mechanism for the remaining of this post.
+It could be seen from a variety of lenses.
+I will look at it as a communication mechanism for the remaining of this post.
 Each type allows the programmer to enforce constraints on the role,
-the responsibilities, and the implementaion.
+the responsibilities, and the implementation.
 Choosing what unit to include in the structure
 and what constraints to impose on this units
 requires continuous refinment and a reflective mindset.
@@ -86,10 +85,10 @@ accept(Integer anEvenNumber)
 There is a waste of knowledge.
 That turns out to be a source of bugs as the signature of the client
 goes to higher abstract forms, especially when there is not enough test
-coverage in the system to cover the the situations that involves the inital assignment.
+coverage in the system to cover all the situations that involve the inital assignment.
 
 It would be better to name it "anEvenNumber".
-Except  that the name of the argument is better to be focused on the role the argument
+The name of the argument is better to be focused on the role the argument
 plays in the body of the procedure, and not its nature.
 Mixing the role and the type of the arguemnt in the name won't
 make the code easy to understand.
@@ -102,21 +101,23 @@ EvenNumber two  = new EvenNumber(1);
 EvenNumber four = new EvenNumber(2);
 ```
 
-The "accept" procedure will be:
+The "accept" procedure will be, then:
 
 ```
 accept(EvenNumber itsRole)
 ```
 
-And now, the context of the initial computation of the numbers may not be wholly required.
-The required aspect of it, that of the nature of two and four is well communicated.
-And, yes, you could just use EvenNumber as a wrapper, like this:
+And now, the context of the initial computation of the numbers may not be required
+for the maintainer of the latter procedure.
+The required aspect of it, that of the nature of the numbers is well communicated.
+
+
+And, yes, we could just use EvenNumber as a wrapper, like this:
 
 ```
 EvenNumber two  = new EvenNumber(2);
 EvenNumber four = new EvenNumber(4);
 ```
 
-But, here, we have an implicit duplication in the nature of the argument.
-But, as always, it is a trade-off where the use of the structure influences its internal
+As always, it is a trade-off where the use of the structure influences its
 implementation, wich itself changes as the software grows.
