@@ -16,7 +16,7 @@
      * 3. Prevent adjustments of font size after orientation changes in
      *    IE on Windows Phone and in iOS.
      */
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300|Pacifico);
 html {
   font-family: sans-serif;
   /* 1 */
@@ -4450,9 +4450,6 @@ ul.no-bullet, ol.no-bullet {
 #title a {
   color: inherit; }
 
-#title aside a {
-  color: #0D47A1; }
-
 #post h2 {
   color: #E6003C; }
 
@@ -4509,6 +4506,10 @@ h3, h4, h5, h6 {
 
 #post h2, #post h3 {
   font-weight: 400; }
+
+#title {
+  font-family: "Pacifico", Times, serif;
+  font-size: 1rem; }
 
 #title * {
   display: inline; }
