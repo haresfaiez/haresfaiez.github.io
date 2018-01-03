@@ -10,14 +10,8 @@ $paragraph-margin: 1.5rem;
   }
 }
 
-#title {
-  * {
-    display: inline;
-  }
-
-  aside {
-    font-weight: 400;
-  }
+#about {
+  padding: $default-margin;
 }
 
 body > * {
@@ -27,6 +21,10 @@ body > * {
 
 footer {
   margin-top: $default-margin * 2;
+}
+
+h1 {
+  margin-bottom: $default-margin;
 }
 
 .grid-container {
