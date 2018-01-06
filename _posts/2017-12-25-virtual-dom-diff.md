@@ -36,6 +36,11 @@ that generates the set of patches.
 Then, in the next post, I will dig inside the "patch" module that applies the
 patches to the initial primitive DOM.
 
+I don't intend to cover every detail of "virtual-dom" implementation. To get the most of these
+posts, I suggest that you open the "virtual-dom" code and documentation, and keep them is sight
+as you go through. That is it, my goal is to support you with understanding the implementation 
+of the library.
+
 I use "primitive DOM", here, when I talk about the real DOM (the one
 used by the browser to draw the page) and "Virtual DOM" when I talk about
 the structure representing the "virtual-dom".
@@ -56,7 +61,7 @@ Diff = Diff
   }
 ```
 
-There are 6+1 types for **Transformation**:
+There are 7+1 types for **Transformation**:
 
 ### Text
 This is used when the second element is a plain text.
@@ -147,7 +152,8 @@ There are three types of properties:
               the destination have the same regular property. Elsewhere, it puts the value
               "undefined" as a hint to remove the property from the primitive DOM element.
   2. Object : A property might have sub-properties. A "style", for example, is an object where
-              each CSS descriptor is an entry pair. "attributes", also, is another object property.
+              each CSS descriptor is an entry pair. "attributes", also,
+			  is another object property.
               Objects are iterated over and entries with the same key are compared against each
               others.
               We will get back to these special properties in the following post.
