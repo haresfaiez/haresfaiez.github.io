@@ -27,6 +27,18 @@ h1 {
   margin-bottom: $default-margin;
 }
 
+#subscription {
+  padding: $default-margin;
+
+  div:first-of-type {
+    margin-top: $light-margin;
+  }
+}
+
+#subscription.addon {
+  margin: $vertical-margin 0;
+}
+
 .grid-container {
   max-width: 65rem;
 }

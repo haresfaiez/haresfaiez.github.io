@@ -52,6 +52,14 @@ h3, h4, h5, h6 {
   font-size: 1rem;
 }
 
+#subscription.addon {
+  font-size: 1rem;
+
+  .hint {
+    font-weight: 400;
+  }
+}
+
 #post {
   h2, h3 {
     font-weight: 400;

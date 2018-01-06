@@ -14,11 +14,21 @@
   }
 }
 
+#subscription {
+  border: 1px solid $light-grey;
+}
+
+#subscription.addon {
+  .hint {
+    color: $pink;
+  }
+}
+
 footer {
   background: $dark-grey;
 
   a {
-    color: $light-grey;
+    color: $grey;
   }
 
   aside {
@@ -27,7 +37,7 @@ footer {
 }
 
 aside {
-  color: $light-grey;
+  color: $grey;
 }
 
 .menu a {
@@ -35,5 +45,5 @@ aside {
 }
 
 .menu a:hover, .text-bloc a:hover {
-  color: $light-grey;
+  color: $grey;
 }
