@@ -1,2 +1,4 @@
 #!/bin/bash
-node compile.js $1 && printf '0a\n---\n---\n.\nw\n' | ed $1
+
+echo -e "---\n---";
+./node_modules/node-sass/bin/node-sass --output-style compressed ./main.scss
