@@ -4,6 +4,9 @@
   "description": "**Jekyll personal web site**",
   "main": "index.js",
   "scripts": {
+    "scss": "node-sass --output-style compressed ./main.scss > ../css/main.scss",
+    "build": "npm run scss && ./publish ../css/main.scss",
+    "clean": "rm ../css/main.scss",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
