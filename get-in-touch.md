@@ -3,15 +3,13 @@ layout: page
 title: Get in touch
 permalink: /get-in-touch/
 ---
-Hi! My name is Faiez Hares. I am a programmer.
-I like reading, writing, running, and taking pictures.
-I write about software. most of my posts are about software design.
-Sometimes, I complain about languages too.
+Hello! My name is Faiez Hares. I am a programmer. I build software and I rant about software.
+From time to time, I also complain about software.
 I like to study programming languages and product design.
+I am trying to get better at writing code and at figuring what code to write.
+I enjoy running, not for long distances yet.
  
-I enjoy exploring new programming approaches
-and discussing unusual ways of solving design problems.
-
-I will be happy to discuss some ideas with you and to get feedback about my work.
+I will be happy to discuss ideas and to get feedback about my work; both online
+or over a cup of cofee. I am also open to speak in meetups and conferences.
 Here is my email address **{{ site.email }}**.
 If you have something in mind, drop me a note and let's talk.
