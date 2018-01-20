@@ -5,59 +5,60 @@ title:  "Virtual DOM internals, the diff module"
 date:   2017-12-25 10:25:00 +0100
 tags: featured
 ---
-Many web applications, now, are concieved as an aggregation of components.
-Each component owns a part of the screen.
-Components are rarely static. They change their look, content, and structure.
+Many web applications now are concieved as an aggregation of components
+where each component owns a part of the screen.
+Components are rarely static. They change look, content, and structure.
 
-React is designed such that the view of each component is immutable.
-When something changes in a component, the library removes the old view from the page,
-builds a new view from scratch, and puts the new view in.
-When applied direclty to the DOM, the first and the last operations incur
-a significant cost.
-In fact, each of them forces the browser to redraw the whole page.
+Some front-end tools and frameworks are designed such that the view of a component
+is immutable. When an aspect of the component changes, its content is being modified for
+example or its style is being updated.
+The library starts by creating a new view of the component independently from
+the existing view. It, only, uses the input given to it by the programmer at the creation time.
+See, creating the component for the first time or for the nth time is the same.
+Then, it removes the existing view. After that, it puts the created view in.
+When applied direclty to the DOM, the the two last operations incur a significant performance
+cost. Indeed, each of these operations forces the browser to redraw the whole page.
 
-To cope with such cost, React uses Virtual DOM.
-Virtual DOM allows developers to be generous with regard to changing
-the structure of the document.
-In the meantime, it optimizes the modification of the primitive DOM.
+To cope with such cost, libraries uses the ideas behind virtual DOM.
+Virtual DOM allows programmers to be generous with regard to changing the structure of the
+document. In the meantime, it mitigates the performance cost.
 
-To update the document using a Virtual DOM library:
+To update a document using a virtual DOM library, you need the initial virtual DOM structure
+or an empty structure if you are about to create the component for the first time. Then :
 
-  1. Create the result element as a Virtual DOM structure.
+  1. Create the result element as a virtual DOM structure.
   2. Find the set of atomic operations (patches) that transform the initial
-     Virtual DOM element to a result Virtual DOM element.
+     virtual DOM element to a result virtual DOM element.
   3. Apply the patches to the existing primitive DOM element.
 
-I will talk, here, about "virtual-dom", an impelemntation of Virtual DOM.
-There are two principal modules to "virtual-dom".
-The other modules either support them, or decorate them through more legible interfaces.
-I start by taking a look at the implementation of the "diff" module
-that generates the set of patches.
-Then, in the next post, I will dig inside the "patch" module that applies the
-patches to the initial primitive DOM.
+I will talk, here, about "virtual-dom", an impelemntation of virtual DOM.
+There are two main modules to "virtual-dom".
+The other modules either support these, or decorate them through legible interfaces.
+I start by taking a look at the implementation of the "diff" module that generates the set of
+patches. Then, in the next post, I dig inside the "patch" module that applies the patches to
+the initial primitive DOM.
 
-I don't intend to cover every detail of "virtual-dom" implementation. To get the most of these
-posts, I suggest that you open the "virtual-dom" code and documentation, and keep them is sight
-as you go through. That is it, my goal is to support you with understanding the implementation 
-of the library.
+I don't intend to cover all the details of "virtual-dom". To get the most of these posts, I
+suggest that you open the "virtual-dom" implementation and documentation, and keep
+them is sight as you go through. My goal is to support you understand the implementation of the
+library.
 
-I use "primitive DOM", here, when I talk about the real DOM (the one
-used by the browser to draw the page) and "Virtual DOM" when I talk about
-the structure representing the "virtual-dom".
+I use "primitive DOM", here, when I talk about the real DOM (the one used by the browser to
+draw a page) and "virtual DOM" when I talk about the structure representing the "virtual-dom".
 
 ## The diff module
 
-The "diff" module takes two Virtual dom elements (the initial and the result,
+The "diff" module takes two virtual dom elements (the initial and the result,
 I call them the source and the destination) and produces a set of patches (transformations),
-that, when applied in order, transforms the source into the destination).
+that, when applied in order, transforms the source into the destination.
 
-The output is a Json object containing the source Virtual DOM element
+The output is a Json object containing the source virtual DOM element
 and an array of transformations.
 
-```haskell
-Diff = Diff
-  { source :: VDom
-  , patches:: Transformation[]
+```javascript
+difference =
+  { source
+  , transformations
   }
 ```
 
@@ -70,7 +71,7 @@ what its type is, and we put the destination text instead.
 
 ### Node
 This is used when the destination element is a node.
-A Virtual DOM node translates directly to a HTML element.
+A virtual DOM node translates directly to a HTML element.
 The diff module uses a **Node** transformation whenever the source element is different than
 the destination node.
 If the source and the destination are the same, then "virtual-dom" examines
@@ -111,9 +112,9 @@ taking the primitive source element as an argument.
 ### Order
 To understand what **Order** means, we need to take a closer look at the implementation.
 
-  1. A Virtual DOM element, as is a primitive DOM element, is a tree.
+  1. A virtual DOM element, as is a primitive DOM element, is a tree.
      "virtual-dom" stores the children of an element as an array.
-     Each element of the array is, itself, a Virtual DOM element,
+     Each element of the array is, itself, a virtual DOM element,
      and thus, can have children in its own.
   2. Some elements have keys that identify them globally.
 
@@ -132,13 +133,13 @@ to the initial destination array as an **Order** transformation.
 When the source and the destination are similar, "virtual-dom" compares their properties.
 "virtual-dom" stores properties as a Json. The order of the properties does not matter.
 
-So for an image element, we might have the following Virtual DOM element:
+So for an image element, we might have the following virtual DOM element:
 
 ```javascript
 Logo =
 { type      : "VNode"
 , properties:
-  { src: "./logo.jpg",
+  { src: "logo.jpg",
     alt: "Company name"
   }
 }
@@ -169,8 +170,8 @@ There are three types of properties:
 This is the "+1" type.
 While the widget takes control over the patch process,
 a thunk is used to take control over the diff process.
-A thunk has a render method that takes the previous Virtual dom element (in case there is one)
-and returns the destination Virtual dom element.
+A thunk has a render method that takes the previous virtual dom element (in case there is one)
+and returns the destination virtual dom element.
 So, when the source or the destination is a thunk, "virtual-dom" starts by
 executing its/their "render" method(s). Then, it uses the rendered result(s) instead
 of the element in the diff process.

@@ -5,24 +5,21 @@ title:  "Virtual DOM internals, the patch module"
 date:   2018-01-06 23:00:00 +0100
 tags: featured
 ---
-I introduced "virtual-dom" in the last post.
-I presented its main modules. Then, I focused on the diff module.
-Here, I will take a closer look at the patch module.
-The patch module receives a set of transformations from the diff module and builds
-the destination primitive DOM element.
+I introduced "virtual-dom" in the last post. I said that it has two main modules. I focused on
+the first there, the diff module. Here, I will take a closer look at the patch module.
+The patch module takes a set of transformations from the diff module output and builds
+a destination primitive DOM element.
 
 ## Interpreting the diff module output
 
 I said that the diff output contains the source virtual DOM element and a set of
-transformations. Each one of these transformations is composed from an index and
-one or multiple operations.
-
-Normally, each transformation have only one operation.
+transformations. Each transformation, is composed from an index and a set of operations.
+Normally, each transformation has only one operation.
 But, in some situations, more than a single operation is used to transform a node.
 For example, to replace a widget with a text, we need a **Remove** operation for
 the widget and a **Text** operation for the text. 
 
-There are four situations where a transfarmation should have an array of operations.
+In fact, there are four situations where a transfarmation should have an array of operations.
 
   1. Either the source or the destination is a widget.
   2. The source element needs to be removed and there are some hooks attached to it.
@@ -72,26 +69,20 @@ This is another reason why keeping the source virtual DOM element is important.
 It is impossible to generate virtual DOM tree from a primitive DOM tree.
 
 Normally, properties are added using
-
 ```javascript
 node[propertykey] = properyValue;
 ```
-
 They are removed by choosing a null object, an empty string, or a javascript "null" as value.
 
 When the property key is "attributes" or "style", "virtual-dom" treats them differently.
 "attributes" are added using 
-
 ```javascript
 node.setAttribute
 ```
-
 and removed using
-
 ```javascript
 node.removeAttribute
 ```
-
 "style" are treated one-by-one instead of one whole property.
 
 When the diff module compares a property object on the source to an object property associated
