@@ -7,6 +7,14 @@
   </li>
   {% endif %}
 
+  {% if site.linkedin_handle %}
+  <li>
+    <a class="item" href="https://linkedin.com/in/{{ site.linkedin_handle }}">
+      <i class="fa fa-linkedin"></i>
+    </a>
+  </li>
+  {% endif %}
+
   {% if site.github_handle %}
   <li>
     <a class="item" href="https://github.com/{{ site.github_handle }}">
@@ -19,6 +27,14 @@
   <li>
     <a class="item" href="https://goodreads.com/user/show/{{ site.goodreads_handle }}">
       <i class="fa fa-book top"></i>
+    </a>
+  </li>
+  {% endif %}
+
+  {% if site.instagram_handle %}
+  <li>
+    <a class="item" href="https://instagram.com/{{ site.instagram_handle }}">
+      <i class="fa fa-instagram top"></i>
     </a>
   </li>
   {% endif %}
