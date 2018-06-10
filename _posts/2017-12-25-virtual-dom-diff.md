@@ -110,13 +110,13 @@ parent.replaceElement
 taking the primitive source element as an argument.
 
 ### Order
-To understand what **Order** means, we need to take a closer look at the implementation.
+before introducing the meaning of **Order**, let's take a closer look at the implementation
+of virtual DOM trees:
 
-  1. A virtual DOM element, as is a primitive DOM element, is a tree.
-     "virtual-dom" stores the children of an element as an array.
-     Each element of the array is, itself, a virtual DOM element,
-     and thus, can have children in its own.
-  2. Some elements have keys that identify them globally.
+  1. A virtual DOM element, as is a primitive DOM element, is a tree. "virtual-dom" stores the
+     children of an element as an array. Each element of the array is, itself, a virtual DOM
+	 element, and thus, can have children in its own.
+  2. Some elements have keys that identify each from its siblings.
 
 The difference between the children of two elements is calculated by iterating over each
 element's children.
