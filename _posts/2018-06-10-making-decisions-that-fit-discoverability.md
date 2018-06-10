@@ -10,7 +10,7 @@ I wrote about collective decision-making in the previous post.
 Along the same journey, here, I am giving the subject a closer look.
 I am focusing on the activities that precedes deciding how to change the code.
 In this step, the goal is to build a model of the existing solution that enable
-us to introduce the change safely and with strong guarentee.
+us to introduce the change safely and with strong guarantee.
 
 ## Holistic understanding vs. discoverability
 
@@ -19,7 +19,7 @@ us to introduce the change safely and with strong guarentee.
 >
 > --Niklaus Wirth
 
-So, what does **Niklaus Wirth** meant by "system"? Do I need need to understand
+So, what does **Niklaus Wirth** meant by "system"? Do I need to understand
 how the processor works to a significant degree of detail in order to write a Prolog program?
 I don't think so.
 The key, here, is the word "significant"; what is significant? to whom? when? and why?
@@ -42,7 +42,7 @@ and "when?" (now, as I am adding a feature we didn't anticipate).
 The "why?" is about old decisions which influence the work I am doing now (I talked about that
 in the previous post)
 
-Answering the "what is significant?" depends on what we see as relevent points of view
+Answering the "what is significant?" depends on what we see as relevant points of view
 (storage cost, required time, dependencies..., and especially the state of the system after
 the change).
 We approach the identification of relevant points of view in two ways:
@@ -50,7 +50,7 @@ We approach the identification of relevant points of view in two ways:
  * Thorough understanding
  * discoverability
 
-We will leave thorough understanding to the time to deal with, and we will discoverability.
+We will leave thoroughf understanding to the time to deal with, and we will discuss discoverability.
 
 ## Optimizing for discoverability
 The questions, indeed, are:
@@ -67,7 +67,7 @@ The questions, indeed, are:
 ## Refactoring as a support for discoverability
 Refactoring for discoverability is a thing.
 Refactoring after change is not about projecting our assumptions into the future,
-but, about keeping the ability to reason about the code in future.
+but, about keeping the ability to reason about the code in the future.
 And this is, also, why I refactor before changing the code;
 to be able to reason about the change I am introducing.
 If what I am about to do doesn't help me or help a colleague reason about the next change,
@@ -80,20 +80,16 @@ Refactoring is a mean to eliminate most edge cases and to simplify reasoning abo
 others.
 
 ## Abstraction as a support for discoverability
-There is no abstraction in vaccum.
+There is no abstraction in vacuum.
 We cannot talk about "abstraction" or "an" abstraction, only a level of abstraction.
 I cannot come in and point to a microservice and shout out "This is a very good abstraction?"
 One cannot just hide a bunch of details down there and call it abstraction.
 
 An important benefit from using mathematical abstractions is that
 you get more premises, and thus levels, about the code for free, which simplify discoverability.
-Not only they simplify reasoning, they give you tools and type systes to help you reason
+Not only they simplify reasoning, they give you tools and type systems to help you reason
 about the code.
 
 ## Compression as a support for discoverability
-Least amount of code. Refactor to compressed code. More knowledge in less code
-also makes discoverability simple.
-
-
-
-
+It is about writing the least amount of code to communicate an idea.
+Refactor to compressed code. More knowledge in less code also makes discoverability simple.
