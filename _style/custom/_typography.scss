@@ -16,11 +16,11 @@ body {
   }
 }
 
-@mixin header($font-size: $default-size) {
+@mixin header($font-size: $default-size, $weight: inherit) {
   font: {
     family: inherit;
     size  : $font-size;
-    weight: inherit;
+    weight: $weight;
   }
 }
 
@@ -37,7 +37,7 @@ ul {
 }
 
 h1 {
-  @include header($fat-size);
+  @include header($fat-size, 600);
 }
 
 h2 {
@@ -46,6 +46,11 @@ h2 {
 
 h3, h4, h5, h6 {
   @include header;
+}
+
+aside {
+  font-size: $tiny-size;
+  font-weight: 400;
 }
 
 .menu a {

@@ -10,6 +10,13 @@ $paragraph-margin: 1.5rem;
   }
 }
 
+#title {
+  h1 {
+    padding-bottom: 10px;
+    width: 100px;
+  }
+}
+
 #about {
   padding: $default-margin;
 }
