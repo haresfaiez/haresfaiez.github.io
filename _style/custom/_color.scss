@@ -2,10 +2,17 @@
   a {
     color: inherit;
   }
+  h1 {
+    border-bottom: 5px solid $yellow;
+  }
 }
 
 #about {
   background: $light-grey-bg;
+}
+
+h1 {
+  color: $blue-grey;
 }
 
 #post {
@@ -37,7 +44,7 @@ footer {
 }
 
 aside {
-  color: $grey;
+  color: $blue;
 }
 
 .menu a {
