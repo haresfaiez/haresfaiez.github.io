@@ -8,9 +8,10 @@ tags: featured
 
 I wrote about collective decision-making in the previous post.
 Along the same journey, here, I am giving the subject a closer look.
-I am focusing on the activities that precedes deciding how to change the code.
-In this step, the goal is to build a model of the existing solution that enable
-us to introduce the change safely and with strong guarantee.
+I am focusing on the activities that precede a decision on how exactly to
+change the code.
+The goal, in this step, is to build a model of the existing solution which enables
+the introducion of the change safely and with a strong guarantee.
 
 ## Holistic understanding vs. discoverability
 
@@ -25,42 +26,45 @@ I don't think so.
 The key, here, is the word "significant"; what is significant? to whom? when? and why?
 
 I understand the saying as an invitation to avoid complexity and a call to build programs
-as aggregation of simple blocks. Again, simple to who? when? and why?
+as aggregation of simple blocks. Again, simple to whom? when? and why?
 
-When I write a simple program, I am more likely to keep it all in my head than I am for
-a complex program.
-Holding a program in my head does not mean being able recite every state-transition
-of the system in real-time. That is what compilers and machines do.
-But, it means that I am able find my way toward reasoning about every particular interaction in the
-system from the points of view that are relevant to how I am changing the solution.
-I am confident enough to build a model which allow me to change the code safely.
-That confidence in the model comes from the certainty that what is left outside the model won't
-be harmed from the change we are making.
-
-That is a beginning of the answer for the "who?" (me, a team member that is changing the code)
+The answer to the "who?" is "me" (a team member willing to change the code)
 and "when?" (now, as I am adding a feature we didn't anticipate).
 The "why?" is about old decisions which influence the work I am doing now (I talked about that
 in the previous post)
 
-Answering the "what is significant?" depends on what we see as relevant points of view
+Answering the "what is significant?" depends on what we see as relevant points of view now, many
+of whom are outside the source code.
 (storage cost, required time, dependencies..., and especially the state of the system after
 the change).
-We approach the identification of relevant points of view in two ways:
+
+When I write a simple program, I am more likely to keep it all in my head than I do with
+a complex program.
+Holding a program in my head does not mean being able recite every state-transition
+in real-time. That is what compilers and machines do.
+It means that I am able to find my way toward reasoning about every particular interaction in the
+system from a relevant point of view.
+Relevant to how I am changing the solution.
+I am confident enough to build a model which allows me to change the code safely.
+That confidence in the model comes from the certainty that what is left outside the model won't
+be harmed from the change I am making.
+
+We approach the identification of relevant points of view, and thus building a model in two ways:
 
  * Thorough understanding
  * discoverability
 
-We will leave thoroughf understanding to the time to deal with, and we will discuss discoverability.
+We will leave thorough understanding to the time to deal with, and we will discuss discoverability.
 
 ## Optimizing for discoverability
-The questions, indeed, are:
+The questions I look forward to answer are:
 
-  - When I need to introduce a feature, will I be able to
+  * When I need to introduce a feature, will I be able to
      identify, and then to reason about the pieces that need to be changed?
      Will a teammate be able to?
-  - What changes do I need to make easy for the future?
-  - Do I really need to do a refactoring or start the next task?
-  - Do I really need to eliminate duplication? When? What if it doing so
+  * What changes do I need to make easy for the future?
+  * Do I really need to do a refactoring or start the next task?
+  * Do I really need to eliminate duplication? When? What if it doing so
     make reasoning about bigger parts more complex? What if I am sure that I won't be
     touching that code for a long time? What if that exact part is formally verified?
 
@@ -81,15 +85,16 @@ others.
 
 ## Abstraction as a support for discoverability
 There is no abstraction in vacuum.
-We cannot talk about "abstraction" or "an" abstraction, only a level of abstraction.
-I cannot come in and point to a microservice and shout out "This is a very good abstraction?"
+We cannot talk about "an" abstraction, only "a level" of abstraction.
+I will come and point to some microservice and shout out "This is a very good abstraction?"
 One cannot just hide a bunch of details down there and call it abstraction.
 
-An important benefit from using mathematical abstractions is that
-you get more premises, and thus levels, about the code for free, which simplify discoverability.
-Not only they simplify reasoning, they give you tools and type systems to help you reason
-about the code.
+An important benefit of using mathematical abstractions is that
+one gets more premises, and thus a whole level or event many levels,
+about the code for free. That simplifies discoverability.
+Not only they simplify reasoning, they give you tools and type checkers that help you reason
+about the source code.
 
 ## Compression as a support for discoverability
 It is about writing the least amount of code to communicate an idea.
-Refactor to compressed code. More knowledge in less code also makes discoverability simple.
+Refactor to compressed code. More knowledge in less code makes discoverability simple.
