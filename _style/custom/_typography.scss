@@ -7,6 +7,7 @@ $default-size: 1.1rem;
 $tiny-size   : 0.889em;
 $medium-size : 1.125em;
 $fat-size    : 1.4em;
+$huge-size   : 4em;
 
 body {
   font: {
@@ -37,7 +38,7 @@ ul {
 }
 
 h1 {
-  @include header($fat-size, 600);
+  @include header($fat-size, 400);
 }
 
 h2 {
@@ -55,6 +56,16 @@ aside {
 
 .menu a {
   font-size: 1rem;
+}
+
+header {
+  h1 {
+    font-weight: normal;
+  }
+}
+
+#title {
+  @include header($huge-size, 600);
 }
 
 #subscription.addon {

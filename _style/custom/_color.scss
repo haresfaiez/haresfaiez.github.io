@@ -1,9 +1,16 @@
+.button.secondary {
+  background: $light-grey-bg2;
+  color: $pink;
+
+  &:hover {
+    background: darken($light-grey-bg2, 5%);
+    color: $pink;
+  }
+}
+
 #title {
   a {
     color: inherit;
-  }
-  h1 {
-    border-bottom: 5px solid $yellow;
   }
 }
 
