@@ -68,6 +68,14 @@ section {
   padding: 5px;
 }
 
-#title {
-  margin: $vertical-margin 0 $huge-margin 0;
+.banner {
+  h1 {
+    margin-bottom: 0;
+  }
+
+  p {
+    width: 70%;
+  }
+
+  margin: 0 0 $huge-margin 0;
 }

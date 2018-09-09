@@ -7,7 +7,7 @@ $default-size: 1.1rem;
 $tiny-size   : 0.889em;
 $medium-size : 1.125em;
 $fat-size    : 1.4em;
-$huge-size   : 3.6em;
+$huge-size   : 2.6em;
 
 body {
   font: {
@@ -80,4 +80,8 @@ header {
   h2, h3 {
     font-weight: 400;
   }
+}
+
+.button {
+  font-weight: 400;
 }
