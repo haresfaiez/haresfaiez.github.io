@@ -3,7 +3,6 @@ layout: post
 comments: true
 title:  "The thing about TDD"
 date:   2017-06-06 21:12:00 +0100
-categories: Design
 tags: Software, TDD, Design
 ---
 

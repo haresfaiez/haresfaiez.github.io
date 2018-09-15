@@ -50,7 +50,7 @@ Another part of the patch module is the virtual DOM-to-primitve DOM transformati
 This sub-module is used by the patch process above. But, it may be used independently.
 Three steps are required to create a primitive DOM element from a virtual DOM element.
 
-###Create the element
+### Create the element
 
 The are three types of element: a text element, a widget element, and a node element.
 A node element and a text element are created using the DOM api.

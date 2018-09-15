@@ -3,7 +3,6 @@ layout: post
 comments: true
 title:  "Making decisions that fit as a team"
 date:   2018-03-25 10:27:24 +0100
-categories: Software, design
 tags: featured
 ---
 

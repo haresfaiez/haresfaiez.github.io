@@ -3,7 +3,6 @@ layout:     post
 comments:   true
 title:      "Paying technical debt on need"
 date:       2017-11-04 14:37:00 +0100
-categories: Design
 tags:       Software, Design
 ---
 
