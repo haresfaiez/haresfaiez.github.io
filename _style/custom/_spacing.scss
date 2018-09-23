@@ -69,12 +69,8 @@ section {
 }
 
 .banner {
-  h1 {
+  p:first-child {
     margin-bottom: 0;
-  }
-
-  p {
-    width: 70%;
   }
 
   margin: 0 0 $huge-margin 0;

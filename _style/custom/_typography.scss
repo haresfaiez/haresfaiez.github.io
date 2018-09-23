@@ -65,7 +65,7 @@ header {
 }
 
 #title {
-  @include header($huge-size, 600);
+  @include header($huge-size);
 }
 
 #subscription.addon {
