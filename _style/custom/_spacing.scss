@@ -72,12 +72,28 @@ section {
   p:first-child {
     margin-bottom: 0;
   }
-
+  section {
+    margin: 0;
+    padding: $default-margin;
+  }
+  a {
+    font-weight: 400;
+  }
   margin: 0 0 $huge-margin 0;
 }
 
 #post {
   h2 {
     margin-top: $vertical-margin;
+  }
+}
+
+figure {
+  margin-bottom: $vertical-margin;
+  
+  img {
+    display: block;
+    width: 100%;
+    margin-bottom: inherit;
   }
 }
