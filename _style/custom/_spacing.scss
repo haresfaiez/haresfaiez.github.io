@@ -79,6 +79,12 @@ section {
   a {
     font-weight: 400;
   }
+
+ .fa-bookmark {
+    position: relative;
+    top: -$paragraph-margin;
+
+}
   margin: 0 0 $huge-margin 0;
 }
 
