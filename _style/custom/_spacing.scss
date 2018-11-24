@@ -13,6 +13,10 @@ $huge-margin     : 6rem;
 
 #about {
   padding: $default-margin;
+
+  a.button {
+    margin-bottom: 0;
+  }
 }
 
 body > * {
@@ -52,7 +56,11 @@ h1 {
 }
 
 article {
-  margin-bottom: $default-margin;
+  margin-bottom: $paragraph-margin;
+
+  aside {
+    margin-bottom: $light-margin;
+  }
 }
 
 section {

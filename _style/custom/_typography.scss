@@ -1,18 +1,16 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600');
 
-$serif     : 'Pacifico', Times, serif !default;
+$serif     : 'PT Serif', Times, serif !default;
 $sans-serif: 'Open Sans', sans-serif !default;
 
 $default-size: 1.1rem;
 $tiny-size   : 0.889em;
-$medium-size : 1.125em;
-$fat-size    : 1.4em;
-$huge-size   : 2.6em;
+$medium-size : 1.2em;
+$fat-size    : 2em;
 
 body {
   font: {
     family: $sans-serif;
-    size  : $default-size;
     weight: 300;
   }
 }
@@ -25,10 +23,6 @@ body {
   }
 }
 
-footer {
-  font-size: 1rem;
-}
-
 strong {
   font-weight: 400;
 }
@@ -38,7 +32,11 @@ ul {
 }
 
 h1 {
-  @include header($fat-size, 400);
+  @include header($medium-size, 600);
+}
+
+header h1 {
+  @include header($fat-size, auto);
 }
 
 h2 {
@@ -51,21 +49,14 @@ h3, h4, h5, h6 {
 
 aside {
   font-size: $tiny-size;
-  font-weight: 400;
 }
 
 .menu a {
   font-size: 1rem;
 }
 
-header {
-  h1 {
-    font-weight: normal;
-  }
-}
-
 #title {
-  @include header($huge-size);
+  @include header($fat-size);
 }
 
 #subscription.addon {
@@ -79,6 +70,10 @@ header {
 #post {
   h2, h3 {
     font-weight: 400;
+  }
+
+  p {
+    font-size: $default-size;
   }
 }
 
