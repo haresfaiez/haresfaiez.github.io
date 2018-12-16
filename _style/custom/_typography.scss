@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Fira+Mono');
 
 $serif     : 'PT Serif', Times, serif !default;
 $sans-serif: 'Open Sans', sans-serif !default;
@@ -79,4 +79,11 @@ aside {
 
 .button {
   font-weight: 400;
+}
+
+code {
+  font: {
+    family: 'Fira Mono', monospace;
+    size: 1rem;
+  }
 }

@@ -68,3 +68,24 @@ aside {
     color: $blue;
   }
 }
+
+code {
+  background: $light-grey-bg;
+  border: none;
+  font-color: $purple;
+}
+
+.highlight {
+  background: $light-grey-bg;
+
+  code {
+    border: none;
+    background: none;
+  }
+}
+
+blockquote {
+  p {
+    color: $grey;
+  }
+}
