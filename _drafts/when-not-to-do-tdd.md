@@ -16,3 +16,8 @@
 - When I am in the middle of the process of isolating code
 
 - When I copy-past code
+
+- I don't the first test, I try to work it out differently, most of the time through input/output (through the ui, through input)
+- I explicitly avoid writing tests for some logic (i can test it through the ui/other-input cheaply), the person who changes the code should know how to do it
+- The primary purpose for writing tests is for checking edge cases (exactly to loop down into a highly controlled and small sequence of instructions in the execution)
+- I don't write a test I don't really really need it (for design purposes)
