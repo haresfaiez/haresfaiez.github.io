@@ -42,9 +42,9 @@ function bounds(numbers) {
     if (!subject.length) return { min, max };
 
     const fst = subject[0];
-    return exectue(subject.slice(1)
-                 , fst < min ? fst : min
-                 , fst > max ? fst : max);
+    return execute(subject.slice(1)
+                 , fst > max ? fst : max
+                 , fst < min ? fst : min);
   }
 
   return execute(numbers.slice(1), numbers[0], numbers[0]);
@@ -129,4 +129,3 @@ I am all for simplifying each function, and for composing programs from small fu
 But, I believe also that living with big functions is not such a bad idea.
 Short functions do not necessarily make grasping code easier.
 It is about the mental load, wich comes primarily from the context of a function, not size.
-
