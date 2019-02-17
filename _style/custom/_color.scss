@@ -1,3 +1,7 @@
+.button {
+  box-shadow: 1px 1px 0px 1px $shadow-grey;
+}
+
 .button.secondary {
   background: $light-grey-bg2;
   color: $pink;
