@@ -7,106 +7,98 @@ tags: featured
 ---
 
 ![My desk notes]({{site.baseurl}}/res/img/2019-03-16.png)
-A picture of the notes on my desk last week.
 
-It has been a while since I became aware of two struggles I have as I write code;
-checking incoming dependencies of a block I am about to change, and checking for
-the possible outcomes of a function I am using.
-I think about adding a new item to the list; testing, manual exploratory testing.
-I catch myself now from time to time before touching the code and give consideration to each of these.
-Nevertheless, I still blow stuff up.
-
-# Assumptions
-One cause for such struggles is that I make false assumptions about what I am working on.
+It has been a while since I became aware of two struggles I have when I write code;
+checking incoming dependencies of a block, and checking for the possible outcomes of a function I am using.
+In other words, I have difficulty assessing the potential input and output of a block of code.
+I am catching myself from time to time and give consideration to each of these.
+Nevertheless, I still blow stuff up. One cause for this is false assumptions.
 I use thinking shortcuts and mental associations that, when right, save time, and when wrong,
 cost time and energy and increases cycle time.
-I need to be aware and assess the cost of one expectation being erroneous better.
 
-Let's say I am creating a button. When I click on it,
-I want to read a color code from a remote service then use it as a background for the button.
+# Assumptions
+Let's say I am creating a button. When I click on that button,
+I want to read a color code from a remote service and use the result to change the background.
 
-I start by writing this list on my notebook before I start:
-  * show a button on the screen
+I start by writing a list on my notebook. In this case, it will be:
+  * put a button on the page
   * change the background of the button manually
   * use the remote service to set the background for the button
   * use the service on a click on the button
 
-So, what kind of facts I cannot think of that introduce bugs?
+So, what kind of false assumptions I can make as I work through the list?
 Here is what I can think of:
-  * the service is down
-  * the service is slow the moment of sending the request
-  * the service does not allow me to read the color
-  * the parsing of the response returned by the service fails
-  * the text on the button has the same color as the background of the button
-  * the click event bubbling have unintended side-effects on the button parent elements
+  * the service is always up
+  * the service is fast the moment of sending the request
+  * the service allows me to read the color
+  * the service will always give me the color in the encoding I need
+  * the text on the button has a different color than the background
+  * the click event bubbling does not have unintended side-effects on the parent elements
 
-Some of these are discovered as I play with the example a bit.
-Others need a deep understanding of the system and the use of auxiliary tools.
-Others are not detectable in isolation.
+I might spot a couple of these when I try the example.
+But, others require a deep understanding of the system, more control through auxiliary tools.
+Some are not detectable in isolation.
 
-When I focus on "changing the color of the button after a click", related concerns
-like the service being down and the unintended side-effects of the click become secondary,
-not blocks of code that need deep consideration.
-In other words, the model I build of the solution at that time abstracts away the interaction with the remote
-service and view it as a black box.
-I might assume it does not fail because it is not failing while I am creating the button.
+When I focus on "changing the color of the button after a click", adjacent concerns
+-like the service being down and the click having unintended side-effects on the parent- become secondary.
+I might not look at them as blocks of code that need deep consideration.
+In other words, the model I build of the solution abstracts away the interaction with the remote
+service. I might assume it does not fail because it does not fail as I create the button.
+As "real world" examples, think of storing passwords as flat text, granting full cross-origin access,
+putting security tokens in the code, ..., you get the idea.
 
-This is a simple example. It has a few interacting components. But, it conveys the idea.
-As "real world" examples, think about storing passwords as flat text, granting full cross-origin access,
-storing security tokens in the code, ..., you get the idea.
-Same in these cases, the model built to solve the task at hand abstracts away critical details.
+There a distinction between what "may get wrong" and what "may come in the future".
+The possibility that the remote service address changes is in the future.
+The fact that the service might be down is in the present.
 
 Coupling, you might say. A highly coupled system complicates tasks otherwise simple. I agree.
 But, you cannot write a totally decoupled system. Components need to interact to produce results.
-If a component does not interact with other components, it is dead code.
-Decoupled modules in the code potentially mean implicit coupling too.
+Potentially, decoupling modules introduces implicit coupling.
+Finally, decoupling has a cost. And, its cost will likely exceed its benefit.
 
-There a distinction I want to make between what "may get wrong" and what "may come in the future".
-The possibility that the remote address changes is in the future.
-The fact that the remote server being down is in the present.
-
-To approach these issues, I try to build small models of the parts I am trying to change.
-The time I take for constructing the model is probably more than the time I spend coding.
+To approach these issues, I try to build a model of the blocks I changing.
+The time I take for refining a model probably exceeds the time I spend writing the code.
 Not for everything though, it depends on the task.
-Finally, I use the model to validate the change and its impact, or I build a new model.
-I prefer building a new model to focus on other concerns than the task itself, non-functional concerns
-for example.
+After a change, either I use the model to validate the change and its impact, or I build a new model
+that puts a non-primary concern into focus (the service in the last example).
 
 # Models
-I work in small steps. I take the code from one state to another following the smallest possible step.
-Here is what I use to deal with false assumptions.
+I work in small steps. I take the code from one state to the next using the smallest step possible.
+Here is how I manage false assumptions.
 
 ## Modeling before making a change
-I focus on prevention. I know what might go wrong and I account for it.
-My team started using example mapping in the last weeks and I found it surprisingly useful to decide
-how to approach a feature.
-When everyone tries to find the scenarios, each from a different point of view, I get a holistic idea about
-the constraints. I learn about the model each one has of the system before and after the task.
-I make less wrong assumptions that way myself.
-Baby steps and TDD (T for test or type) work well.
-A test gives me a possibility to model a tiny capability in the code, then think about how it fails.
-I use diagrams, small informal views, and shapes. They work well too.
-Diagrams, indeed, are non-code models.
-Formal verification using TLA+ in my next experiment now.
+I focus on prevention. I find what might go wrong and I account for it in a model.
+My team started using example mapping. I found it surprisingly useful to decide how to approach a feature.
+When everyone looks for relevant scenarios, from his own point of view, I get a holistic idea about
+the constraints. I learn about the model each one has of the system before and after the feature.
+And, I make less wrong assumptions.
+Baby steps and TDD (T for test or type) check the model in the code.
+They, also, help at refining the model. A code which makes a test pass highlights missed conditions.
+A test gives me a possibility to model a tiny capability in the code, then think about how it might fail.
+I use diagrams, small informal views, and shapes for the model. Or, I just keep notes in the editor or
+in my notebook.
+Formal verification with TLA+ in my next experiment.
 
 ## Modeling while changing the code
-I focus on atomic changes like renaming a local variable, changing the order of a couple of lines,
-reversing an if-else block, or moving a function.
-Before a change, I find what the impact might be, then prepare the code for change, keep note
-of the impacted areas, or change the code manually or automatically.
-Then, I validate that the change was what I intended.
+I focus on atomic changes; like renaming a local variable, changing the order of lines,
+reversing a conditional block, or moving a function.
+Before a change, I find what the impact might be and how it might fail.
+Then, I prepare the code for change, then change the code.
+The change is either manual or automatic.
+Finally, I check if the change introduces unintended failure points.
 Automated refactoring tools have gone a long way in making those changes safe.
+Here, strong static typing supports reasoning more than dynamic typing.
 
 ## Modeling after making the change
-I focus on inspection. I build a model from the change I made.
-I tend to take a risk in changing things toward a better shape.
+I focus on inspection. I build a model from the change I made and the impacted areas.
+Sometimes, I tend to take a risk in changing things toward a better shape.
 Then, I stop and see what I have done (using a `git diff`) and think about what
-might fail and what could have been done better. The important thing here is keeping the diff manageable.
+might fail and what could have been done better.
+The important thing for me is keeping the diff manageable.
 
-I am experimenting with this lately. There are many approaches to analyzing a diff and building models.
-I look at the change for some time, maybe ask some questions, study it line by line,
-draw a bird view of a system, ...
-I, also, explore it manually.
+This is my focus now. There are different approaches to analyzing a diff and building models.
+I analyze the change, maybe ask some questions, study it line by line, draw a bird view of a system,
+I explore the changed system manually...
 
 > "All problems in computer science are materialized view maintenance."
 >
@@ -114,5 +106,5 @@ I, also, explore it manually.
 
 A materialized view, indeed, is a model of the knowledge expressed through the code.
 
-I skip some steps in some situations. I know that not doing this have a risk, and I accept that.
+I don't do all this for every change. I know that there is a risk sometimes, and I accept that.
 Moving to the next thing can be more important.
