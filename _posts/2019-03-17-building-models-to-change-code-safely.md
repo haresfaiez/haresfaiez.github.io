@@ -8,13 +8,24 @@ tags: featured
 
 ![My desk notes]({{site.baseurl}}/res/img/2019-03-16.png)
 
-It has been a while since I became aware of two struggles I have when I write code;
-checking incoming dependencies of a block, and checking for the possible outcomes of a function I am using.
-In other words, I have difficulty assessing the potential input and output of a block of code.
-I am catching myself from time to time and give consideration to each of these.
-Nevertheless, I still blow stuff up. One cause for this is false assumptions.
-I use thinking shortcuts and mental associations that, when right, save time, and when wrong,
-cost time and energy and increases cycle time.
+
+It has been a while since I became aware of two struggles I usually encounter;
+checking the incoming dependencies and the possible outcomes of a function.
+As I see it now, what I find hard is finding the possible inputs (not the allowed input) to a
+slice of the code.
+A well-designed system allows me to control the boundaries of the code exercised by a test.
+I test the bits that influence the result without any other part getting in the way.
+A well-designed system, I think, should allow me also to reason about the input
+and the output of any slice in the code.
+
+Finding the input and output of a part of code depends on the language and the
+boundaries of the slice. That is supposed to be easier to do in a strongly typed language.
+I remain skeptical in that regard.
+Tooling can help me navigate one or two levels. But, then, modules becomes more and
+more abstract and the number of possible execution paths became combinatorial.
+
+When I get the input wrong, most of the time it is because I use thinking shortcuts and mental associations
+that, when right, save time, and when wrong, cost time and energy and increases cycle time.
 
 # Assumptions
 Let's say I am creating a button. When I click on that button,
@@ -63,36 +74,59 @@ After a change, either I use the model to validate the change and its impact, or
 that puts a non-primary concern into focus (the service in the last example).
 
 # Models
-I work in small steps. I take the code from one state to the next using the smallest step possible.
-Here is how I manage false assumptions.
+I work in small steps. I try to manage misleading assumptions by building models of the code
+with every step.
 
 ## Modeling before making a change
 I focus on prevention. I find what might go wrong and I account for it in a model.
-My team started using example mapping. I found it surprisingly useful to decide how to approach a feature.
-When everyone looks for relevant scenarios, from his own point of view, I get a holistic idea about
-the constraints. I learn about the model each one has of the system before and after the feature.
-And, I make less wrong assumptions.
-Baby steps and TDD (T for test or type) check the model in the code.
-They, also, help at refining the model. A code which makes a test pass highlights missed conditions.
-A test gives me a possibility to model a tiny capability in the code, then think about how it might fail.
-I use diagrams, small informal views, and shapes for the model. Or, I just keep notes in the editor or
-in my notebook.
+Then, I account for the model in the code.
+
+Lately, My team started using example mapping. It is surprisingly useful for deciding how to approach a feature.
+When everyone looks for relevant scenarios from his own point of view, others get a better idea about
+the constraints.
+
+Baby steps and TDD ("T" here is for both, test and type) check tiny rules of the model in the code.
+They help at refining the model when an unexpected constraint emerges.
+A test is a way to model a small and concrete capability, then think about how it fails.
+
+I use diagrams, small informal views, and shapes for modeling too.
+I use something I call "impact map". It is a mind map of the components affected by the change.
+It helps me think more clearly.
+
+I might also keep notes in the editor or in my notebook.
 Formal verification with TLA+ in my next experiment.
+
+As I see it, none of the models here need to be consistent. Humans work with inconsistent models,
+any consistent models should be in the code.
+
 
 ## Modeling while changing the code
 I focus on atomic changes; like renaming a local variable, changing the order of lines,
 reversing a conditional block, or moving a function.
 Before a change, I find what the impact might be and how it might fail.
-Then, I prepare the code for change, then change the code.
-The change is either manual or automatic.
-Finally, I check if the change introduces unintended failure points.
+Then, I prepare the code for change and introduce my change.
+The change can be manual or automatic.
+Finally, I check if the change introduces unintended failures.
 Automated refactoring tools have gone a long way in making those changes safe.
-Here, strong static typing supports reasoning more than dynamic typing.
+Here, strong static typing supports reasoning more than weak typing.
 
 ## Modeling after making the change
-I focus on inspection. I build a model from the change I made and the impacted areas.
-Sometimes, I tend to take a risk in changing things toward a better shape.
-Then, I stop and see what I have done (using a `git diff`) and think about what
+I focus on inspection. I build models from the change I made and the impacted areas.
+Each model focuses on an aspect of the solution.
+
+
+Although the tests pass and the code type-checks, I won't have so much confidence that a program works as expected.
+In the same way that the user cannot tell what he needs until he interacts with
+the product, a programmer cannot tell whether what he wrote is free of defects until he tries it.
+We make rules, and those can easily biased and wrong.
+The code is at least one level of abstraction above the end product.
+And in that rising of abstraction, bugs emerge.
+
+> "Beware of bugs in the above code; I have only proved it correct, not tried it."
+>
+> -- Donald Knuth
+
+I stop and see what I have done (using a `git diff`) and think about what
 might fail and what could have been done better.
 The important thing for me is keeping the diff manageable.
 
@@ -100,11 +134,8 @@ This is my focus now. There are different approaches to analyzing a diff and bui
 I analyze the change, maybe ask some questions, study it line by line, draw a bird view of a system,
 I explore the changed system manually...
 
+# So...
+
 > "All problems in computer science are materialized view maintenance."
 >
 > -- [Neil Conway](https://twitter.com/cmeik/status/1019240930585563136)
-
-A materialized view, indeed, is a model of the knowledge expressed through the code.
-
-I don't do all this for every change. I know that there is a risk sometimes, and I accept that.
-Moving to the next thing can be more important.
