@@ -41,10 +41,10 @@ function bounds(numbers) {
   function execute(subject, max, min)  {
     if (!subject.length) return { min, max };
 
-    const fst = subject[0];
+    const head = subject[0];
     return execute(subject.slice(1)
-                 , fst > max ? fst : max
-                 , fst < min ? fst : min);
+                 , head > max ? head : max
+                 , head < min ? head : min);
   }
 
   return execute(numbers.slice(1), numbers[0], numbers[0]);
