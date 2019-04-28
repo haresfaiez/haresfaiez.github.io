@@ -32,7 +32,7 @@ strong {
 }
 
 ul {
-  list-style-type: none;
+  list-style-type: circle;
 }
 
 h1 {
@@ -72,6 +72,7 @@ aside {
 }
 
 #post {
+  font-size: $default-size;
   h2, h3 {
     font-weight: 400;
   }
