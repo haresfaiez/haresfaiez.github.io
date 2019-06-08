@@ -27,7 +27,7 @@ p {
   font-size: $default-size;
 }
 
-strong {
+.button, strong, .strong {
   font-weight: 400;
 }
 
@@ -76,10 +76,6 @@ aside {
   h2, h3 {
     font-weight: 400;
   }
-}
-
-.button {
-  font-weight: 400;
 }
 
 code {
