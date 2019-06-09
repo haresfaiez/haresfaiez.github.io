@@ -1,6 +1,8 @@
 @charset "utf-8";
 
 @import "settings";
+
+@import "node_modules/foundation-sites/scss/util/util";
 @import "node_modules/foundation-sites/scss/foundation";
 
 @include foundation-global-styles;
@@ -10,7 +12,9 @@
 @include foundation-button;
 @include foundation-forms;
 
-@import "font-awesome/scss/font-awesome";
+$fa-font-path: "fonts/fontawesome" !default;
+@import "fontawesome/scss/fontawesome";
+@import "fontawesome/scss/brands";
 
 @import "custom/color";
 @import "custom/typography";
