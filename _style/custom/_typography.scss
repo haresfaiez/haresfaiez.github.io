@@ -75,6 +75,10 @@ aside {
   .post {
     font-family: $serif;
 
+    h1 {
+      font-size: $medium-size;
+    }
+
     h1, h2, h3 {
       font-family: $sans-serif;
     }

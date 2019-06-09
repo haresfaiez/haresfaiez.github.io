@@ -100,8 +100,9 @@ section {
   header > h1 {
     margin-bottom: $default-margin;
   }
-  h2 {
+  h1, h2 {
     margin-top: $vertical-margin;
+    margin-bottom: $default-margin;
   }
 }
 
