@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Fira+Mono');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Fira+Mono|Martel:300');
 
-$serif     : 'PT Serif', Times, serif !default;
+$serif     : 'Martel', Times, serif !default;
 $sans-serif: 'Open Sans', sans-serif !default;
 
 $default-size: 1.1rem;
@@ -72,6 +72,13 @@ aside {
 }
 
 #post {
+  .post {
+    font-family: $serif;
+
+    h1, h2, h3 {
+      font-family: $sans-serif;
+    }
+  }
   font-size: $default-size;
   h2, h3 {
     font-weight: 400;
