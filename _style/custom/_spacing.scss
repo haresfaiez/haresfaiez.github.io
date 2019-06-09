@@ -28,7 +28,7 @@ footer {
   margin-top: $default-margin * 2;
 }
 
-h1 {
+h1, header > h1 + aside {
   margin-bottom: $vertical-margin;
 }
 
@@ -97,6 +97,9 @@ section {
 }
 
 #post {
+  header > h1 {
+    margin-bottom: $default-margin;
+  }
   h2 {
     margin-top: $vertical-margin;
   }
