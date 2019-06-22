@@ -26,7 +26,7 @@ I list here the first improvements.
 I would like you to hear about your experience -how design decisions made, here or elsewhere,
 impede your interaction with a page.
 
-# Web fonts and CSS-generated content
+## Web fonts and CSS-generated content
 Although the support of web fonts is improving, a page needs to work well without them.
 Web fonts interpretation and application introduce points of failures.
 The browser might fail to fetch a font, the font might be overridden by a user plugin,
@@ -55,7 +55,7 @@ The header will take more space, which I find less beautiful.
 Adding a new reference, later, will require a change to the design of the home page.
 But, as I prioritize accessibility, such change is crucial.
 
-# Localizability
+## Localizability
 It is a common practice to put the name of the website in the top left corner.
 I am not following that. I keep a home icon instead.
 The small home icon appears on every page. It was pink and noticeable. It attracts the eye, in the same way that
@@ -82,7 +82,7 @@ is written and published by me.
 Finally, I will move the date closer to the title.
 They will appear as a single component; a component describing the page.
 
-# Headings
+## Headings
 To simplify the skimming,  memorization, and readability of posts.
 I break down each post into many parts, each with a different heading.
 I prefer to keep one heading level for a post. But, I use two in extreme situations.
@@ -104,7 +104,7 @@ Note that subheadings and a paragraph will have different fonts and sizes.
 That will make them distinguishable.
 I will keep the color variation. It helps with skimming.
 
-# Validation
+## Validation
 [WAVE](wave.webaim.or) is a web accessibility validation tool.
 I use it to validate my website.
 WAVE identifies accessibility issues in the view and structure of a web page.
