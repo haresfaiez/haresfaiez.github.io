@@ -48,6 +48,10 @@ h1, header > h1 + aside {
   max-width: 65rem;
 }
 
+header menu {
+  display: flex;
+  flex-direction: row-reverse;
+}
 .menu a {
   padding: {
     top   : 0;
