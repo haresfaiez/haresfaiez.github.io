@@ -6,6 +6,7 @@ $sans-serif: 'Open Sans', sans-serif !default;
 $default-size: 1.1rem;
 $tiny-size   : 0.889rem;
 $medium-size : 1.2rem;
+$big-size    : 1.3rem;
 $fat-size    : 2rem;
 
 body {
@@ -72,20 +73,24 @@ aside {
 }
 
 #post {
+  font-size: $default-size;
+
   .post {
     font-family: $serif;
 
-    h1 {
-      font-size: $medium-size;
+    h2 {
+      font-size: $big-size;
+      font-weight: 600;
     }
 
-    h1, h2, h3 {
-      font-family: $sans-serif;
+    h3 {
+      font-size: $medium-size;
+      font-weight: 400;
     }
   }
-  font-size: $default-size;
-  h2, h3 {
-    font-weight: 400;
+
+  h1, h2, h3 {
+    font-family: $sans-serif;
   }
 }
 
