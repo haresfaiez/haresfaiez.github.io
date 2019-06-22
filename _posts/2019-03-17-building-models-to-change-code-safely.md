@@ -5,6 +5,15 @@ title:  "Building models to change code safely"
 date:   2019-03-17 07:26:00 +0100
 tags: featured
 ---
+quote about mental models from https://www.youtube.com/watch?v=pPKemLH5y5c
+"when look at the system that's based on mutual learning, you start to see how crucial those points on the lines of representation are and you can think of like your chat ups interfaces and you start to realize that your tooling
+is really important, your build system, what information does that give you how it tell you about the failed test all of those little interface pieces are really crucial to the learning in this system.
+The other thing this means is when you're doing your work of making decisions about how to change the system, you're not operating with it directly, you are not moving objects around the table, you are working with your
+mental models of the system, that's how we make decisions and your mental model Woods's?? lam says for every sufficiently complex system everybody's mental model is necessarily incomplete and out-of-date and everybody's
+mental model is incomplete and out-of-date in different ways"
+
+
+
 
 At a high level, all problems have easy solutions;
 Need some data from a third-party vendor? Well, You just call the service that gives it to you.
