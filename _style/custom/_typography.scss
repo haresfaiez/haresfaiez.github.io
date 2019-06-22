@@ -78,13 +78,15 @@ aside {
   .post {
     font-family: $serif;
 
+    h2, h3 {
+      font-size: $medium-size;
+    }
+
     h2 {
-      font-size: $big-size;
       font-weight: 600;
     }
 
     h3 {
-      font-size: $medium-size;
       font-weight: 400;
     }
   }
