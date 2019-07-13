@@ -6,59 +6,53 @@ date:   2019-06-22 12:37:00 +0100
 tags: featured
 ---
 
-Murphy's law states that
-> "things will go wrong in any given situation, if you give them a chance."
+People use different technologies than what most of us are familiar with.
+They are used to navigate the web in customized settings.
+When they cannot read fluently, they use screen readers or they save the page for a next break.
+And if they fail to digest the content then, either they ignore it or they ask for help -which is
+not easy.
+They might not distinguish colors, fail to keep up with videos, you name it.
 
-The number of components involved in displaying this page is huge.
-Things may work well, now.
-But, due to the flexibility and interdependence of these building blocks, devices fail to paint this page
-in different settings.
-Not everyone uses the same tool to navigate the web.
-People face impediments with technologies you are familiar with.
-They cannot read, distinguish colors, or access some resources,...
-The context of navigation itself varies, even for the same person.
-A web page, however, should strive to embrace the widest possible audience,
-allowing every visitor to meet his needs.
+Not all disabilities are permanent. One might fall-ill, might break a hand,
+or might become short-sighted.
+These are situations where a web page optimized for a relaxed, middle-aged, eager-for-delight,
+"regular" man fails to reach its visitor.
 
-Following this rule, I am improving the accessibility of my blog.
-Better accessibility allows a wider audience to learn about my ideas.
-I list here the first improvements.
-I would like you to hear about your experience -how design decisions made, here or elsewhere,
-impede your interaction with a page.
+There is a lot we can do as programmers to make our work accessible to the wider audience.
+I document the improvements I am making to my blog and the reasons behind each decision here.
+I will keep editing this post as I make accessibility improvements and I publish what I do in the newsletter.
 
 ## Web fonts and CSS-generated content
-Although the support of web fonts is improving, a page needs to work well without them.
+
 Web fonts interpretation and application introduce points of failures.
-The browser might fail to fetch a font, the font might be overridden by a user plugin,
-or the content might contain a character the font does not support well.
+The browser could fail to fetch a font. A user plugin could override the font.
+The text itself could include a character missing from the font file...
+And after all, there is Murphy's law:
+> "things will go wrong in any given situation, if you give them a chance."
 
-I use four font families; a serif font for the post body, a sans-serif font
-for titles and short notices, a font for code examples, and [Font Awesome](https://fontawesome.com)
-for icons. I have fallback alternatives for the serif and the sans-serif fonts.
-Icons, though, fail to show up when Font Awesome is not loaded.
+I use four fonts; a serif font for the post body, a sans-serif font
+for titles and short notices, **Fira code** for code examples, and [Font Awesome](https://fontawesome.com)
+for icons.
 
-CSS allows for the selection of fallback fonts to handle font loading failures.
-Browsers, too, use a fallback font in such situations.
-But, neither of these is of much help in my situation.
+To handle failures, I use fallbacks for each of the first three fonts.
+When a problem happens to a load of a font, the content will be there and will be accessible to screen readers.
 
-I use CSS generated content for icons. Without CSS, all icons are invisible.
-For
-[decorative icons](https://fontawesome.com/how-to-use/on-the-web/other-topics/accessibility),
-that does not matter. The text already communicates the intent.
-But, semantic icons are essential. I use them for social media references. They help people get in touch with me.
-Even if CSS works well and the icons are all visible, the meaning behind some of them might not be clear.
+But, icons display fails in many ways.
+First, they are invisible when either of the CSS file or the font file is missing.
+I use CSS generated content for icons. Font Awesome maps each glyph to a character non-writable
+by a regular font and non-readable by a screen reader.
+Then, even if the icons show up, the intent behind each could be unclear.
 
-I will add the description next to each icon.
-That communicates the meaning of the link destination to the visitors,
-even when they are not familiar with the icon.
-The header will take more space, which I find less beautiful.
-Adding a new reference, later, will require a change to the design of the home page.
-But, as I prioritize accessibility, such change is crucial.
+I added a description to each icon to communicate the intent or the destination -for clickable icons.
+Even when not familiar with the icon, visitors have more information.
+The header containing my social media references takes more space now. I find it less beautiful
+-and adding another reference later will require a modification to the whole page design.
+But, accessibility is more important in this situation.
 
 ## Localizability
 It is a common practice to put the name of the website in the top left corner.
-I am not following that. I keep a home icon instead.
-The small home icon appears on every page. It was pink and noticeable. It attracts the eye, in the same way that
+I don't follow this. I keep a home icon instead.
+The small home icon appears on every page. It is pink and noticeable. It attracts the eye, in the same way that
 a name for the site would.
 
 But, with a home icon always in the top left corner,
