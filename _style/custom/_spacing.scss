@@ -12,7 +12,7 @@ $huge-margin     : 6rem;
 }
 
 #about {
-  padding: $default-margin;
+  padding: $default-margin 0;
 
   a.button {
     margin-bottom: 0;
@@ -28,8 +28,8 @@ footer {
   margin-top: $default-margin * 2;
 }
 
-h1, header > h1 + aside {
-  margin-bottom: $vertical-margin;
+h1{
+  margin-bottom: $default-margin;
 }
 
 #subscription {
@@ -68,7 +68,7 @@ article {
 }
 
 section {
-  margin-bottom: $vertical-margin;
+  margin-top: $vertical-margin;
 }
 
 .highligthed-bloc {
