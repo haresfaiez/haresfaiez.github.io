@@ -1,14 +1,29 @@
-$light-margin    : 0.3rem;
 $default-margin  : 1rem;
-$vertical-margin : 2rem;
+$double-margin   : 2rem;
 $paragraph-margin: 1.5rem;
-$huge-margin     : 6rem;
 
 @mixin horizontal-block {
   padding: {
     top   : $paragraph-margin;
     bottom: $paragraph-margin;
   }
+}
+
+.grid-container {
+  max-width: 65rem;
+}
+
+h1 {
+  margin-bottom: $default-margin;
+}
+
+header menu {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+section {
+  margin-top: $double-margin;
 }
 
 #about {
@@ -19,56 +34,26 @@ $huge-margin     : 6rem;
   }
 }
 
-body > * {
-  margin-top: $default-margin;
-  padding   : $default-margin 0;
-}
-
-footer {
-  margin-top: $default-margin * 2;
-}
-
-h1{
-  margin-bottom: $default-margin;
-}
-
 #subscription {
   padding: $default-margin;
-
-  div:first-of-type {
-    margin-top: $light-margin;
-  }
 }
 
 #subscription.addon {
-  margin: $vertical-margin 0;
+  margin: $double-margin 0;
 }
 
-.grid-container {
-  max-width: 65rem;
+footer {
+  margin-top: $double-margin * 2;
 }
 
-header menu {
-  display: flex;
-  flex-direction: row-reverse;
-}
-.menu a {
-  padding: {
-    top   : 0;
-    bottom: 0;
+#post {
+  header > h1 {
+    margin-bottom: $default-margin;
   }
-}
-
-article {
-  margin-bottom: $paragraph-margin;
-
-  aside {
-    margin-bottom: $light-margin;
+  h1, h2, h3 {
+    margin-top: $double-margin;
+    margin-bottom: $default-margin;
   }
-}
-
-section {
-  margin-top: $vertical-margin;
 }
 
 .highligthed-bloc {
@@ -80,38 +65,8 @@ section {
   padding: 5px;
 }
 
-.banner {
-  p:first-child {
-    margin-bottom: 0;
-  }
-  section {
-    margin: 0;
-    padding: $default-margin;
-  }
-  a {
-    font-weight: 400;
-  }
-
- .fa-bookmark {
-    position: relative;
-    top: -$paragraph-margin;
-
-}
-  margin: 0 0 $huge-margin 0;
-}
-
-#post {
-  header > h1 {
-    margin-bottom: $default-margin;
-  }
-  h1, h2, h3 {
-    margin-top: $vertical-margin;
-    margin-bottom: $default-margin;
-  }
-}
-
 figure {
-  margin-bottom: $vertical-margin;
+  margin-bottom: $double-margin;
   
   img {
     display: block;
