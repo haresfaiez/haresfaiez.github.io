@@ -1,14 +1,12 @@
-.button {
-  box-shadow: 1px 1px 0px 1px $shadow-grey;
-}
-
 .button.secondary {
-  background: $light-grey-bg2;
+  border: 1px solid $light-grey;
+  background: white;
   color: $pink;
 
-  &:hover {
-    background: darken($light-grey-bg2, 5%);
-    color: $pink;
+  &:hover, &:active {
+    border: 1px solid $light-grey;
+    background: white;
+    color: $grey;
   }
 }
 

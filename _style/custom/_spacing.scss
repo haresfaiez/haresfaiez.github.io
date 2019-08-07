@@ -27,10 +27,13 @@ section {
 }
 
 #about {
+  display: flex;
+  flex-direction: column;
   padding: $default-margin 0;
 
   a.button {
     margin-bottom: 0;
+    align-self: end;
   }
 }
 
