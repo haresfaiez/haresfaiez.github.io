@@ -1,4 +1,7 @@
-{% for post in site.posts %}
+<section class="auto">
+  <h2>Latest</h2>
+
+  {% for post in site.posts limit:site.latest-posts-count %}
   <article class="text-bloc">
     <aside class='details'>
       {{ post.date | date: "%b %-d, %Y" }}
@@ -9,4 +12,5 @@
       </a>
     </h2>
   </article>
-{% endfor %}
+  {% endfor %}
+</section>

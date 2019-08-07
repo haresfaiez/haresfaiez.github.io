@@ -2,11 +2,6 @@
 layout: default
 ---
 {% include about.html %}
-<div class="grid-x grid-margin-x">
-  <section class="auto cell">
-    {% include notes.html %}
-  </section>
-  <div class="large-5 cell">
-    {% include subscription-home.html %}
-  </div>
-</div>
+{% include latest-posts.html %}
+{% include subscription.html %}
+{% include archive.html %}
