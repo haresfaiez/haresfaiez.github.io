@@ -1,5 +1,6 @@
 $default-margin  : 1rem;
 $double-margin   : 2rem;
+$big-margin      : 3rem;
 $paragraph-margin: 1.5rem;
 
 @mixin horizontal-block {
@@ -23,17 +24,14 @@ header menu {
 }
 
 section {
-  margin-top: $double-margin;
+  margin-top: $big-margin;
 }
 
 #about {
-  display: flex;
-  flex-direction: column;
   padding: $default-margin 0;
 
   a.button {
     margin-bottom: 0;
-    align-self: end;
   }
 }
 
