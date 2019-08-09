@@ -37,14 +37,8 @@ h1 {
 }
 
 footer {
-  background: $dark-grey;
-
-  a {
+  &, a {
     color: $grey;
-  }
-
-  aside {
-    color: #fff;
   }
 }
 
