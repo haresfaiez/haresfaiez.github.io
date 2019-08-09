@@ -3,5 +3,11 @@ layout: default
 ---
 {% include header-without-name.html %}
 {% include about.html %}
-{% include subscription.html %}
-{% include latest-posts.html %}
+<div class="grid-x">
+  <section class="large-8 cell">
+    {% include latest-posts.html %}
+  </section>
+  <section class="large-4 cell">
+    {% include subscription.html %}
+  </section>
+</div>

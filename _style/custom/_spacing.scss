@@ -1,6 +1,5 @@
 $default-margin  : 1rem;
 $double-margin   : 2rem;
-$big-margin      : 3rem;
 $paragraph-margin: 1.5rem;
 
 @mixin horizontal-block {
@@ -12,6 +11,7 @@ $paragraph-margin: 1.5rem;
 
 .grid-container {
   max-width: 65rem;
+  margin: 3rem auto;
 }
 
 h1 {
@@ -24,7 +24,7 @@ header menu {
 }
 
 section {
-  margin-top: $big-margin;
+  margin-top: $double-margin;
 }
 
 #about {
@@ -37,6 +37,16 @@ section {
 
 #subscription {
   padding: $default-margin;
+
+  form > div {
+    display: flex;
+    align-items: end;
+
+    .button {
+      padding: 0.7rem;
+      margin-left: 0.3rem;
+    }
+  }
 }
 
 #subscription.addon {
