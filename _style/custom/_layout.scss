@@ -54,12 +54,12 @@ section {
 }
 
 #post {
-  header > h1 {
-    margin-bottom: $default-margin;
+  header {
+    margin: $double-margin 0;
   }
-  h1, h2, h3 {
-    margin-top: $double-margin;
-    margin-bottom: $default-margin;
+
+  h2, h3 {
+    margin: $double-margin 0 $default-margin 0;
   }
 }
 
