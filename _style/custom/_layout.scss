@@ -11,7 +11,7 @@ $paragraph-margin: 1.5rem;
 
 .grid-container {
   max-width: 60rem;
-  margin: 3rem auto;
+  margin: $double-margin auto;
 }
 
 h1 {
@@ -21,6 +21,7 @@ h1 {
 header menu {
   display: flex;
   flex-direction: row-reverse;
+  margin-top: 0;
 }
 
 section {
