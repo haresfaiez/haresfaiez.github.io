@@ -32,10 +32,14 @@ h2 {
 }
 
 h3 {
-  @include header($medium-size, 600)
+  @include header($medium-size, 400)
 }
 
 #post {
+  h3 {
+    @include header($medium-size, 600)
+  }
+
   p {
     font-family: $serif;
   }
