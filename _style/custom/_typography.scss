@@ -1,99 +1,56 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Fira+Mono|Martel:300');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Fira+Mono|Martel:400,700');
 
 $serif     : 'Martel', Times, serif !default;
 $sans-serif: 'Open Sans', sans-serif !default;
 
-$default-size: 1.1rem;
-$tiny-size   : 0.889rem;
-$medium-size : 1.2rem;
-$big-size    : 1.5rem;
-$fat-size    : 2rem;
+$tiny-size  : 0.889em;
+$medium-size: 1.2em;
+$big-size   : 1.6em;
+$fat-size   : 2.6em;
 
 body {
   font: {
     family: $sans-serif;
-    weight: 300;
+    weidght: 400;
   }
 }
 
-@mixin header($font-size: $default-size, $weight: inherit) {
+@mixin header($font-size: 1em, $weight: 700) {
   font: {
-    family: inherit;
+    family: $sans-serif;
     size  : $font-size;
     weight: $weight;
   }
 }
 
-#about > h1 {
-  @include header($fat-size, 400);
+h1 {
+  @include header($fat-size)
 }
 
-p {
-  font-size: $default-size;
+h2 {
+  @include header($big-size)
 }
 
-.button, strong, .strong {
-  font-weight: 400;
+h3 {
+  @include header($medium-size, 600)
+}
+
+#post {
+  p {
+    font-family: $serif;
+  }
 }
 
 ul {
   list-style-type: circle;
 }
 
-h1 {
-  @include header($big-size, 400);
-}
-
-header h1 {
-  @include header($fat-size, auto);
-}
-
-h2 {
-  @include header($medium-size);
-}
-
-h3, h4, h5, h6 {
-  @include header;
-}
-
 aside {
   font-size: $tiny-size;
 }
 
-.menu a {
-  font-size: 1rem;
-}
-
-#title {
-  @include header($fat-size);
-}
-
 #subscription.addon {
   font-size: 1rem;
-
-  .hint {
-    font-weight: 400;
-  }
-}
-
-#post {
-  font-size: $default-size;
-
-  .post {
-    font-family: $serif;
-
-    h2, h3 {
-      font-size: $medium-size;
-    }
-
-    strong, h2, h3 {
-      font-weight: 400;
-    }
-  }
-
-  h1, h2, h3 {
-    font-family: $sans-serif;
-  }
 }
 
 code {

@@ -16,14 +16,8 @@
   }
 }
 
-h1 {
+h1, h2, h3 {
   color: $blue-grey;
-}
-
-#post {
-  .post h2 {
-    color: $pink;
-  }
 }
 
 #subscription {

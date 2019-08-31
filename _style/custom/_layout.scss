@@ -1,5 +1,7 @@
+$small-margin  : 0.3rem;
 $default-margin  : 1rem;
 $double-margin   : 2rem;
+$huge-margin     : 3rem;
 $paragraph-margin: 1.5rem;
 
 @mixin horizontal-block {
@@ -59,7 +61,15 @@ section {
     margin: $double-margin 0;
   }
 
-  h2, h3 {
+  h2 {
+    margin-bottom: $small-margin;
+  }
+
+  h2 {
+    margin: $huge-margin 0 $default-margin 0;
+  }
+
+  h3 {
     margin: $double-margin 0 $default-margin 0;
   }
 }
