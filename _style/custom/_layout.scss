@@ -24,6 +24,7 @@ header menu {
   display: flex;
   flex-direction: row-reverse;
   margin-top: 0;
+  padding: 0;
 }
 
 section {
@@ -102,4 +103,20 @@ figure {
 
 footer {
   margin-top: $huge-margin + $default-margin;
+}
+
+
+@media print, screen and (max-width: 40em) {
+  header menu {
+    flex-direction: column;
+
+    ul {
+      flex-direction: column !important;
+      align-items: baseline !important;
+
+      li {
+        margin: 1rem 0 0 0 !important;
+      }
+    }
+  }
 }
