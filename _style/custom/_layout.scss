@@ -13,7 +13,7 @@ $paragraph-margin: 1.5rem;
 
 .grid-container {
   max-width: 50rem;
-  margin: $double-margin auto;
+  margin   : 2rem 0 2em 35%;
 }
 
 h1 {
@@ -44,11 +44,6 @@ section {
 }
 
 aside.float-right {
-  position: absolute;
-  top     : 0;
-  right   : 0;
-  width   : 25%;
-  height  : 100%;
   padding-top: 20%;
 }
 
@@ -126,6 +121,10 @@ footer {
 @media print, screen and (max-width: 80em) {
   aside.float-right {
     display: none;
+  }
+
+  .grid-container {
+    margin   : 2rem auto;
   }
 }
 
