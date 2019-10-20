@@ -1,11 +1,13 @@
 ---
 layout: default
 ---
-{% include header.html %}
-
-<section class="cell grid-x">
-  <div class="large-10 cell">
-    {% include post.html %}
-    {% include comment.html %}
-  </div>
-</section>
+<main class="grid-container">
+  {% include header.html %}
+  <section class="cell grid-x">
+    <div class="large-11 cell">
+      {% include post.html %}
+      {% include comment.html %}
+    </div>
+  </section>
+  {% include footer.html %}
+</main>

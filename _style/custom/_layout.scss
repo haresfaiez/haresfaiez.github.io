@@ -12,7 +12,7 @@ $paragraph-margin: 1.5rem;
 }
 
 .grid-container {
-  max-width: 60rem;
+  max-width: 50rem;
   margin: $double-margin auto;
 }
 
@@ -31,6 +31,10 @@ section {
   margin-top: $double-margin;
 }
 
+.button {
+  border-radius: 5px;
+}
+
 #about {
   padding: $default-margin 0;
 
@@ -39,14 +43,28 @@ section {
   }
 }
 
+aside.float-right {
+  position: absolute;
+  top     : 0;
+  right   : 0;
+  width   : 25%;
+  height  : 100%;
+  padding-top: 20%;
+}
+
 #subscription {
   padding: $default-margin;
+  height: 100%;
 
   form > div {
     display: flex;
     flex-direction: column;
     div {
       width: 100%;
+    }
+
+    .email {
+      max-width: 400px;
     }
 
     .button {
@@ -105,6 +123,11 @@ footer {
   margin-top: $huge-margin + $default-margin;
 }
 
+@media print, screen and (max-width: 80em) {
+  aside.float-right {
+    display: none;
+  }
+}
 
 @media print, screen and (max-width: 40em) {
   header menu {
