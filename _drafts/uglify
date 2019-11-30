@@ -1,0 +1,285 @@
+* ast.js
+  - call DEFNODE(type, props, methods, base) -> Constructor (Props -> Token) for each token type [1]
+  - define a tree walker
+
+* parse.js
+  - has two main fns: tokenizer and parse [2]
+  - tokenizer
+    - has a structure S
+        var S = {
+        text            : $TEXT,
+        filename        : filename,
+        pos             : 0,
+        tokpos          : 0,
+        line            : 1,
+        tokline         : 0,
+        col             : 0,
+        tokcol          : 0,
+        newline_before  : false,
+        regex_allowed   : false,
+        comments_before : [],
+        directives      : {},
+        directive_stack : []
+    }
+    - all fns work on S
+    - token() creates an AST_Token
+    - returns a fn next_token() which sees(peeks?) the next chars and returns the result of either
+      read_regexp ; token ; read_string ; handle_dot ; tok ; read_num ; token ; read_operator ; read_wordy
+    ?? node vs ast_scope
+
+  - parse
+    - has a structure S
+        var S = {
+        input         : (typeof $TEXT == "string"
+                         ? tokenizer($TEXT, options.filename,
+                                     options.html5_comments, options.shebang)
+                         : $TEXT),
+        token         : null,
+        prev          : null,
+        peeked        : null,
+        in_function   : 0,
+        in_directives : true,
+        in_loop       : 0,
+        labels        : []
+    }
+    - all fns works on S
+    - S.input() computes the next token
+    - next has `S.token = S.input()`
+    - creates AST_* instances
+    - usually, every AST_x type has a x_ fn
+    - wraps all in an AST_Toplevel object
+
+* scope.js
+  - attaches to AST_* functions useful for scope-ish operations [3]
+
+* transform.js (`transform`)
+  - defines a method `transform` on some AST_x element types [4]
+  - replaces each element component with the result of `transform` on that component (`descend()`)
+  - returns the transformed element
+  - passes on treeWalker in each `transform` call
+
+
+compress.js
+minify.js
+mozilla-ast.js
+output.js
+propmangle.js
+sourcemap.js
+
+
+[1]:
+AST_Token : Token : type value line col pos endline endcol endpos nlb comments_before comments_after file raw : - :  null
+AST_Node : Node : start end :
+AST_Debugger : Debugger :  null : - :  AST_Statement
+AST_Directive : Directive : value quote : - :  AST_Statement
+AST_SimpleStatement : SimpleStatement : body : - :  AST_Statement
+AST_BlockStatement : BlockStatement :  null : - :  AST_Block
+AST_EmptyStatement : EmptyStatement :  null : - :  AST_Statement
+AST_StatementWithBody : StatementWithBody : body : - :  AST_Statement
+AST_LabeledStatement : LabeledStatement : label : - :  AST_StatementWithBody
+AST_IterationStatement : IterationStatement :  null : - :  AST_StatementWithBody
+AST_DWLoop : DWLoop : condition : - :  AST_IterationStatement
+AST_Do : Do :  null : - :  AST_DWLoop
+AST_While : While :  null : - :  AST_DWLoop
+AST_For : For : init condition step : - :  AST_IterationStatement
+AST_ForIn : ForIn : init object : - :  AST_IterationStatement
+AST_With : With : expression : - :  AST_Block
+AST_Toplevel : Toplevel : globals : - :  AST_Scope
+AST_Lambda : Lambda : name argnames uses_arguments length_read : - :  AST_Scope
+AST_Accessor : Accessor :  null : - :  AST_Lambda
+AST_Function : Function : inlined : - :  AST_Lambda
+AST_Defun : Defun : inlined : - :  AST_Statement
+AST_Exit : Exit : value : - :  AST_Jump
+AST_Return : Return :  null : - :  AST_Exit
+AST_Throw : Throw :  null : - :  AST_Exit
+AST_LoopControl : LoopControl : label : - :  AST_Jump
+AST_Break : Break :  null : - :  AST_LoopControl
+AST_Continue : Continue :  null : - :  AST_Block
+AST_SwitchBranch : SwitchBranch :  null : - :  AST_Block
+AST_Default : Default :  null : - :  AST_SwitchBranch
+AST_Case : Case : expression : - :  AST_Block
+AST_Catch : Catch : argname : - :  AST_Block
+AST_Finally : Finally :  null : - :  AST_Statement
+AST_Var : Var :  null : - :  AST_Definitions
+AST_VarDef : VarDef : name value :
+AST_New : New :  null : - :  AST_Call
+AST_Sequence : Sequence : expressions :
+AST_PropAccess : PropAccess : expression property :
+AST_Dot : Dot :  null : - :  AST_PropAccess
+AST_Sub : Sub :  null : - :  AST_PropAccess
+AST_Unary : Unary : operator expression :
+AST_UnaryPrefix : UnaryPrefix :  null : - :  AST_Unary
+AST_UnaryPostfix : UnaryPostfix :  null : - :  AST_Unary
+AST_Binary : Binary : operator left right :
+AST_Conditional : Conditional : condition consequent alternative :
+AST_Assign : Assign :  null :
+AST_Object : Object : properties :
+AST_ObjectProperty : ObjectProperty : key value :
+AST_ObjectKeyVal : ObjectKeyVal : quote : - :  AST_ObjectProperty
+AST_ObjectSetter : ObjectSetter :  null : - :  AST_ObjectProperty
+AST_ObjectGetter : ObjectGetter :  null : - :  AST_ObjectProperty
+AST_Symbol : Symbol : scope name thedef :
+AST_SymbolAccessor : SymbolAccessor :  null : - :  AST_Symbol
+AST_SymbolDeclaration : SymbolDeclaration : init : - :  AST_Symbol
+AST_SymbolVar : SymbolVar :  null : - :  AST_SymbolDeclaration
+AST_SymbolFunarg : SymbolFunarg :  null : - :  AST_SymbolVar
+AST_SymbolDefun : SymbolDefun :  null : - :  AST_SymbolDeclaration
+AST_SymbolLambda : SymbolLambda :  null : - :  AST_SymbolDeclaration
+AST_SymbolCatch : SymbolCatch :  null : - :  AST_SymbolDeclaration
+AST_Label : Label : references : - :  AST_Symbol
+AST_SymbolRef : SymbolRef : fixed : - :  AST_Symbol
+AST_LabelRef : LabelRef :  null : - :  AST_Symbol
+AST_This : This :  null : - :  AST_Symbol
+AST_Constant : Constant :  null :
+AST_String : String : value quote : - :  AST_Constant
+AST_Number : Number : value literal : - :  AST_Constant
+AST_RegExp : RegExp : value : - :  AST_Constant
+AST_Atom : Atom :  null : - :  AST_Constant
+AST_Null : Null :  null : - :  AST_Atom
+AST_NaN : NaN :  null : - :  AST_Atom
+AST_Undefined : Undefined :  null : - :  AST_Atom
+AST_Hole : Hole :  null : - :  AST_Atom
+AST_Infinity : Infinity :  null : - :  AST_Atom
+AST_Boolean : Boolean :  null : - :  AST_Atom
+AST_False : False :  null : - :  AST_Boolean
+AST_True : True :  null :
+
+[2]:
+is_letter(code)
+is_surrogate_pair_head(code)
+is_surrogate_pair_tail(code)
+is_digit(code)
+is_alphanumeric_char(code)
+is_unicode_digit(code)
+is_unicode_combining_mark(ch)
+is_unicode_connector_punctuation(ch)
+is_identifier_start(code)
+is_identifier_char(ch)
+is_identifier_string(str)
+parse_js_number(num)
+JS_Parse_Error(message, filename, line, col, pos)
+js_error(message, filename, line, col, pos)
+is_token(token, type, val)
+
+tokenizer($TEXT, filename, html5_comments, shebang)
+    peek()
+    next(signal_eof, in_string)
+    forward(i)
+    looking_at(str)
+    find_eol()
+    find(what, signal_eof)
+    start_token()
+    token(type, value, is_comment)
+    skip_whitespace()
+    read_while(pred)
+    parse_error(err)
+    read_num(prefix)
+    read_escaped_char(in_string)
+    read_octal_escape_sequence(ch)
+    hex_bytes(n)
+    skip_line_comment(type)
+    read_name()
+    read_operator(prefix)
+        grow(op)
+    handle_slash()
+    handle_dot()
+    read_word()
+    with_eof_error(eof_error, cont)
+    next_token(force_regexp)
+
+parse($TEXT, options)
+    is(type, value)
+    peek()
+    next()
+    prev()
+    croak(msg, line, col, pos)
+    token_error(token, msg)
+    token_to_string(type, value)
+    unexpected(token)
+    expect_token(type, val)
+    expect(punc)
+    has_newline_before(token)
+    can_insert_semicolon()
+    semicolon(optional)
+    parenthesised()
+    embed_tokens(parser)
+    handle_regexp()
+    labeled_statement()
+    simple_statement(tmp)
+    break_cont(type)
+    if_()
+    for_()
+    regular_for(init)
+    for_in(init)
+    block_(strict_defun)
+    switch_body_()
+    try_()
+    as_atom_node()
+    expr_list(closing, allow_trailing_comma, allow_empty)
+    as_property_name()
+    as_name()
+    _make_symbol(type)
+    strict_verify_symbol(sym)
+    as_symbol(type, noerror)
+    mark_pure(call)
+    make_unary(ctor, token, expr)
+    expr_ops(no_in)
+    is_assignable(expr)
+    in_loop(cont)
+
+[3]:
+AST_Toplevel : figure_out_scope
+AST_Toplevel : def_global
+AST_Scope : init_scope_vars
+AST_Lambda : init_scope_vars
+AST_Symbol : mark_enclosed
+AST_Symbol : reference
+AST_Scope : find_variable
+AST_Scope : def_function
+AST_Scope : def_variable
+AST_Lambda : resolve
+AST_Scope : resolve
+AST_Toplevel : resolve
+AST_Symbol : unmangleable
+AST_Label : unmangleable
+AST_Symbol : unreferenced
+AST_Symbol : definition
+AST_Symbol : global
+AST_Toplevel : mangle_names
+AST_Toplevel : find_colliding_names
+AST_Toplevel : expand_names
+AST_Node : tail_node
+AST_Sequence : tail_node
+AST_Toplevel : compute_char_frequency
+
+
+[4]:
+AST_Node
+AST_LabeledStatement
+AST_SimpleStatement
+AST_Block
+AST_Do
+AST_While
+AST_For
+AST_ForIn
+AST_With
+AST_Exit
+AST_LoopControl
+AST_If
+AST_Switch
+AST_Case
+AST_Try
+AST_Catch
+AST_Definitions
+AST_VarDef
+AST_Lambda
+AST_Call
+AST_Sequence
+AST_Dot
+AST_Sub
+AST_Unary
+AST_Binary
+AST_Conditional
+AST_Array
+AST_Object
+AST_ObjectProperty
