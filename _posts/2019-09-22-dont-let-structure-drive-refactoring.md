@@ -12,7 +12,7 @@ tags: featured
 > --Kent Beck, [SB Changes](https://medium.com/@kentbeck_7670/bs-changes-e574bc396aaa)
 
 Structure and behavior are frames to think about code. Structure describes the units;
-functions, files, and modules. Behavior is what the application responds
+functions, files, and modules. Behavior is how the application responds
 to user actions.
 
 ## Design by accident
