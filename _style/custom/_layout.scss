@@ -4,6 +4,13 @@ $double-margin   : 2rem;
 $huge-margin     : 3rem;
 $paragraph-margin: 1.5rem;
 
+$px-small-margin: 5px;
+$px-medium-margin: 10px;
+
+$px-line-height: 40px;
+
+$border-radius: 5px;
+
 @mixin horizontal-block {
   padding: {
     top   : $paragraph-margin;
@@ -32,30 +39,32 @@ section {
 }
 
 .button {
-  border-radius: 5px;
+  border-radius: $border-radius;
+}
+
+.button.underlined {
+  padding: $px-small-margin $px-medium-margin;
 }
 
 #about {
   padding: $default-margin 0;
 
-  a.button {
-    margin-bottom: 0;
+  #reach-me {
+    align-items: center;
+
+    > *:not(:last-child) {
+      margin: 0 $px-medium-margin $px-small-margin 0;
+    }
   }
 }
 
-aside.float-right {
-  padding-top: 20%;
-}
-
 #subscription {
-  padding: $default-margin;
-  height: 100%;
+  height: $px-line-height;
 
   form > div {
     display: flex;
-    flex-direction: column;
-    div {
-      width: 100%;
+    input {
+      border-radius: $border-radius;
     }
 
     .email {
@@ -64,13 +73,17 @@ aside.float-right {
 
     .button {
       padding: 0.7rem;
-      margin-left: 0.3rem;
+      margin-left: $small-margin;
     }
   }
-}
 
-#subscription.addon {
-  margin: $double-margin 0;
+  #mce-responses {
+    display: none;
+  }
+
+  .addon {
+    margin: $double-margin 0;
+  }
 }
 
 #post {
@@ -97,12 +110,12 @@ aside.float-right {
 
 .highlighter-rouge {
   width  : 100%;
-  padding: 5px;
+  padding: $px-small-margin;
 }
 
 figure {
   margin-bottom: $double-margin;
-  
+
   img {
     display: block;
     width: 100%;
@@ -124,7 +137,7 @@ footer {
   }
 
   .grid-container {
-    margin   : 2rem auto;
+    margin   : $double-margin auto;
   }
 }
 
@@ -137,7 +150,7 @@ footer {
       align-items: baseline !important;
 
       li {
-        margin: 1rem 0 0 0 !important;
+        margin: $default-margin 0 0 0 !important;
       }
     }
   }

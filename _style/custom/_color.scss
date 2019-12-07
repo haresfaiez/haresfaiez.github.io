@@ -10,6 +10,13 @@
   }
 }
 
+.button.underlined {
+  border-radius: 0;
+  border-bottom: 2px solid $pink;
+  background: $white;
+  color: $pink;
+}
+
 #title {
   a {
     color: inherit;
@@ -18,10 +25,6 @@
 
 h1, h2, h3 {
   color: $blue-grey;
-}
-
-aside.float-right {
-  background: $light-grey-bg;
 }
 
 #subscription.addon {
