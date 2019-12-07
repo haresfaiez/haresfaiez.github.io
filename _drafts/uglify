@@ -1,3 +1,5 @@
+# focus on happy path
+
 * ast.js
   - call DEFNODE(type, props, methods, base) -> Constructor (Props -> Token) for each token type [1]
   - define a tree walker
@@ -58,12 +60,43 @@
   - returns the transformed element
   - passes on treeWalker in each `transform` call
 
+* propmangle.js [[BREAKPOINT]]
+  - mangles object properties (a,  in { a: 1 }, foo.a, foo["a"], Object.defineProperty("a", ...)...)
+    (mangle: rename variables and fns to shorter names (usually one-letter names))
+  - defines a fn mangle_properties(Ast, Options) -> Transformed_Ast which
+    step 1: find candidates to mangle
+      - uses ast.walk
+    step 2: transform the tree, renaming properties
+      - uses ast.transform
 
-compress.js
+  - the output varies if options.debug is enabled
+
+* minify.js
+  - defines a fn minify(files, options) -> result
+    result = {
+       ast: toplevel
+       code: stream.get()
+       map: options.output.source_map.toString()
+       timings: {
+           parse: 1e-3 * (timings.rename - timings.parse),
+           rename: 1e-3 * (timings.compress - timings.rename),
+           compress: 1e-3 * (timings.scope - timings.compress),
+           scope: 1e-3 * (timings.mangle - timings.scope),
+           mangle: 1e-3 * (timings.properties - timings.mangle),
+           properties: 1e-3 * (timings.output - timings.properties),
+           output: 1e-3 * (timings.end - timings.output),
+           total: 1e-3 * (timings.end - timings.start)
+       }
+       warnings
+     }
+
+  -
+
+* compress.js (this is the kind of files the bearded wizard warned you about)
+
 minify.js
 mozilla-ast.js
 output.js
-propmangle.js
 sourcemap.js
 
 
