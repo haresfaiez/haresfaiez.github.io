@@ -2,7 +2,12 @@
 
 * ast.js
   - call DEFNODE(type, props, methods, base) -> Constructor (Props -> Token) for each token type [1]
-  - define a tree walker
+  - define a TreeWalker(Visit)
+    has a method _visit(Node, Descend) ->
+    Visit returns true/false if we should not decend/or-we-should
+    Descend is defined by the node, it takes the walker down the constituants of the node
+  - define AST_*._walk (Visitor) -> calls Visitor._visit(this, fn), fn calls _walk on each component AST_
+    Visitor is an instance of TreeWalker(fn)
 
 * parse.js
   - has two main fns: tokenizer and parse [2]
@@ -55,23 +60,54 @@
   - attaches to AST_* functions useful for scope-ish operations [3]
 
 * transform.js (`transform`)
+  - defines TreeTransformer(Before, After) -> { TreeWalker.call(this) }
+    TreeTransformer.prototype = new TreeWalker
+    uses TreeWalker push/pop methods
+    uses its own before/after
+    transform(TreeWalker, in_list) -> Before() || (After() || this)
+     {
+     - calls before
+     - if undefined, calls descend and after
+     }
   - defines a method `transform` on some AST_x element types [4]
   - replaces each element component with the result of `transform` on that component (`descend()`)
   - returns the transformed element
   - passes on treeWalker in each `transform` call
+  - AST_x::transform::descend is similar to AST_x::_walk
+    this.[subComponent]._walk -> self.[subComponent] = self.[subComponent].transform(tw)
 
-* propmangle.js [[BREAKPOINT]]
-  - mangles object properties (a,  in { a: 1 }, foo.a, foo["a"], Object.defineProperty("a", ...)...)
+* propmangle.js
+  - mangles object properties (a,  in { a: 1 }, setter/getter, foo.a, foo["a"], Object.defineProperty("a", ...)...)
     (mangle: rename variables and fns to shorter names (usually one-letter names))
+    AST_Call
+    AST_Conditional
+    AST_Dot
+    AST_ObjectKeyVal
+    AST_ObjectProperty
+    AST_Sequence
+    AST_String
+    AST_Sub
+    use add/addStrings -> mangle/mangleStrings, have the same map as walk -> transform
+  - fns use
+    options:
+    names_to_mangle: names of properties that can be mangled (all except unmangleable, reserved, and numbers)
+    unmangleable: names of properties that should not be mangled (does not match existing options.regex, reserved, isNotInCache-and-isNotInNamesToMangle)
+    A property name can be in both, names_to_mangle and unmangleable ? precedence?
   - defines a fn mangle_properties(Ast, Options) -> Transformed_Ast which
     step 1: find candidates to mangle
       - uses ast.walk
+      - builds names_to_mangle and unmangleable
     step 2: transform the tree, renaming properties
       - uses ast.transform
+      - does not transfrom the ast, it just sets the key/property/... to mangled version
+      - mangled version is base54(++cname), cname is a counter init at -1
 
-  - the output varies if options.debug is enabled
+  - the output varies when options.debug is enabled
+     // debug mode: use a prefix and suffix to preserve readability, e.g. o.foo -> o._$foo$NNN_
+     if debug is enabled mangle(Name) -> "_$" + Name + "$" + debug_suffix + "_";
+  - the output varies when options.cache is falsey
 
-* minify.js
+* minify.js [[BREAKPOINT]]
   - defines a fn minify(files, options) -> result
     result = {
        ast: toplevel
@@ -94,7 +130,7 @@
 
 * compress.js (this is the kind of files the bearded wizard warned you about)
 
-minify.js
+
 mozilla-ast.js
 output.js
 sourcemap.js
