@@ -50,14 +50,15 @@
         labels        : []
     }
     - all fns works on S
+    - builds body[AST_*] as a collection of AST_* // while (!is("eof")) body.push(statement(true))
+      then - toplevel = new AST_Toplevel({ start: start, body: body, end: end }); // if options.toplevel is false
+           - otherwise // toplevel.body = toplevel.body.concat(body); toplevel.end = end;
     - S.input() computes the next token
     - next has `S.token = S.input()`
     - creates AST_* instances
     - usually, every AST_x type has a x_ fn
     - wraps all in an AST_Toplevel object
-
-* scope.js
-  - attaches to AST_* functions useful for scope-ish operations [3]
+    - return an ast toplevel
 
 * transform.js (`transform`)
   - defines TreeTransformer(Before, After) -> { TreeWalker.call(this) }
@@ -77,6 +78,8 @@
     this.[subComponent]._walk -> self.[subComponent] = self.[subComponent].transform(tw)
 
 * propmangle.js
+  - defines fn reserve_quoted_keys(AST, Reserved)
+    adds properties keys accessed with obj['key'] and obj.key(where quote is truthy)
   - mangles object properties (a,  in { a: 1 }, setter/getter, foo.a, foo["a"], Object.defineProperty("a", ...)...)
     (mangle: rename variables and fns to shorter names (usually one-letter names))
     AST_Call
@@ -106,35 +109,94 @@
      // debug mode: use a prefix and suffix to preserve readability, e.g. o.foo -> o._$foo$NNN_
      if debug is enabled mangle(Name) -> "_$" + Name + "$" + debug_suffix + "_";
   - the output varies when options.cache is falsey
+  - minify(AST|File, Options)
 
-* minify.js [[BREAKPOINT]]
+* minify.js
+  - options: compress, mangle, mangle_props, enclose, wrap, cache
   - defines a fn minify(files, options) -> result
     result = {
        ast: toplevel
        code: stream.get()
-       map: options.output.source_map.toString()
+       map: //source map
        timings: {
-           parse: 1e-3 * (timings.rename - timings.parse),
-           rename: 1e-3 * (timings.compress - timings.rename),
-           compress: 1e-3 * (timings.scope - timings.compress),
-           scope: 1e-3 * (timings.mangle - timings.scope),
-           mangle: 1e-3 * (timings.properties - timings.mangle),
-           properties: 1e-3 * (timings.output - timings.properties),
-           output: 1e-3 * (timings.end - timings.output),
-           total: 1e-3 * (timings.end - timings.start)
+           start
+           parse
+           rename
+           compress // compress toplevel
+           scope // toplevel.figure_out_scope(options.mangle)
+           mangle // toplevel.compute_char_frequency(options.mangle and toplevel.mangle_names(options.mangle)
+           properties //toplevel = mangle_properties
+           output // fill result.code
+           end
+           total
        }
        warnings
      }
 
-  -
+  - pseudocode:
+    function minify(files, options) {
+      // init cache: options.mangle.cache|properties.cache -> cache is a dictionary
+
+      // parse: options.parse.filename=lastfile, options.parse.toplevel = parse(file, options.parse)
+      // concatenates ast of all files
+      //             source_maps[name] = source_map_content;??
+      for (var name in files) {
+        options.parse.filename = name;
+        options.parse.toplevel = parse(files[name], options.parse);
+        // put each file source map in source_maps[name]
+      }
+
+      // wrap the result in fn(options.before:) {code} (options.after:)
+      // enclose? toplevel = toplevel.enclose(options.enclose) //files[toplevel.start.file] = replace(.*-1, '')
+      // wrap? toplevel = toplevel.wrap(options.wrap) //files[toplevel.start.file] = replace(.*-1, '')
+
+      //if options.rename = options.rename || (options.compress && options.mangle);
+      toplevel.figure_out_scope(options.mangle);
+      toplevel.expand_names(options.mangle);
+
+      if (options.compress) toplevel = new Compressor(options.compress).compress(toplevel);
+
+      // if (options.mangle)
+      toplevel.figure_out_scope(options.mangle);
+      toplevel.compute_char_frequency(options.mangle);
+      toplevel.mangle_names(options.mangle);
+      toplevel = mangle_properties(toplevel, options.mangle.properties);
+
+      result.ast = toplevel;
+
+      // if we need output.code
+      // if (options.sourceMap)
+      if (options.sourceMap.includeSources) {
+        foreach file->name -> options.output.source_map.get().setSourceContent(name, files[name]);
+      } else {
+        options.output.source_map.get()._sourcesContents = null;
+      }
+      // result.code = OutputStream(options.output) -> toplevel.print -> get
+
+      //if (options.sourceMap)
+      result.map = options.output.source_map.toString();
+      // if url: inline|url
+      result.code = result.code.replace(/\n\/\/# sourceMappingURL=\S+\s*$/, "");
+      // add to result.code a //# sourceMappingUrl=data:app....|url
+
+      // update options.nameCache.vals|props from options.mangle.cache|properties.cache
+
+      result.warnings = warnings;
+      return result;
+    }
+
+* sourcemap.js [[BREAKPOINT]]
+
+* scope.js
+  - attaches to AST_* functions useful for scope-ish operations [3]
+  - figure_out_scope
+  - expand_names
 
 * compress.js (this is the kind of files the bearded wizard warned you about)
 
 
 mozilla-ast.js
 output.js
-sourcemap.js
-
 
 [1]:
 AST_Token : Token : type value line col pos endline endcol endpos nlb comments_before comments_after file raw : - :  null
