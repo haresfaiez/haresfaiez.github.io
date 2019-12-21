@@ -40,7 +40,7 @@ h3 {
     @include header($medium-size, 600)
   }
 
-  p {
+  p, ul, ol {
     font-family: $serif;
   }
 }

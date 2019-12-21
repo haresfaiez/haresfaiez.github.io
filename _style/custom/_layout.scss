@@ -1,26 +1,20 @@
-$small-margin  : 0.3rem;
-$default-margin  : 1rem;
-$double-margin   : 2rem;
-$huge-margin     : 3rem;
-$paragraph-margin: 1.5rem;
-
-$px-small-margin: 5px;
-$px-medium-margin: 10px;
-
-$px-line-height: 40px;
-
 $border-radius: 5px;
+
+$half-margin   : 0.5rem;
+$default-margin: 1rem;
+$medium-margin : 2rem;
+$huge-margin   : 4rem;
 
 @mixin horizontal-block {
   padding: {
-    top   : $paragraph-margin;
-    bottom: $paragraph-margin;
+    top   : 1.5rem;
+    bottom: 1.5rem;
   }
 }
 
 .grid-container {
   max-width: 50rem;
-  margin   : 2rem 10% 2em 35%;
+  margin   : $medium-margin 10% 2em 35%;
 }
 
 h1 {
@@ -31,35 +25,38 @@ header menu {
   display: flex;
   flex-direction: row-reverse;
   margin-top: 0;
+  margin-bottom: 0;
   padding: 0;
 }
 
-section {
-  margin-top: $double-margin;
+section, footer {
+  margin-top: $huge-margin;
 }
 
 .button {
   border-radius: $border-radius;
 }
 
-.button.underlined {
-  padding: $px-small-margin $px-medium-margin;
+.button.transparent {
+  padding: $half-margin $half-margin $half-margin 0;
 }
 
 #about {
-  padding: $default-margin 0;
-
   #reach-me {
     align-items: center;
 
     > *:not(:last-child) {
-      margin: 0 $px-medium-margin $px-small-margin 0;
+      margin: 0;
+    }
+
+    > :last-child {
+      margin-left: $half-margin;
     }
   }
 }
 
 #subscription {
-  height: $px-line-height;
+  height: 40px;
 
   form > div {
     display: flex;
@@ -73,7 +70,7 @@ section {
 
     .button {
       padding: 0.7rem;
-      margin-left: $small-margin;
+      margin-left: 0.3rem;
     }
   }
 
@@ -82,25 +79,21 @@ section {
   }
 
   .addon {
-    margin: $double-margin 0;
+    margin: $medium-margin 0;
   }
 }
 
 #post {
   header {
-    margin: $double-margin 0;
+    margin: 0 0 $medium-margin 0;
   }
 
   h2 {
-    margin-bottom: $small-margin;
-  }
-
-  h2 {
-    margin: $huge-margin 0 $default-margin 0;
+    margin: $medium-margin 0 $default-margin 0;
   }
 
   h3 {
-    margin: $double-margin 0 $default-margin 0;
+    margin: $medium-margin 0 $default-margin 0;
   }
 }
 
@@ -110,11 +103,11 @@ section {
 
 .highlighter-rouge {
   width  : 100%;
-  padding: $px-small-margin;
+  padding: 5px;
 }
 
 figure {
-  margin-bottom: $double-margin;
+  margin-bottom: $medium-margin;
 
   img {
     display: block;
@@ -128,7 +121,8 @@ figure {
 }
 
 footer {
-  margin-top: $huge-margin + $default-margin;
+  margin-top: $huge-margin;
+  padding-top: $default-margin;
 }
 
 @media print, screen and (max-width: 80em) {
@@ -137,7 +131,7 @@ footer {
   }
 
   .grid-container {
-    margin   : $double-margin auto;
+    margin   : $medium-margin auto;
   }
 }
 
