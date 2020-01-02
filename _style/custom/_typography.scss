@@ -4,7 +4,7 @@ $serif     : 'Martel', Times, serif !default;
 $sans-serif: 'Open Sans', sans-serif !default;
 
 $tiny-size  : 0.889em;
-$medium-size: 1.2em;
+$medium-size: 1.1em;
 $big-size   : 1.6em;
 $fat-size   : 2.6em;
 
@@ -35,13 +35,24 @@ h3 {
   @include header($medium-size, 400)
 }
 
+p, h3 {
+  font-family: $serif;
+}
+
 #post {
+  span, ul, ol {
+    font-family: $serif;
+  }
+
   h3 {
     @include header($medium-size, 600)
   }
 
-  p, ul, ol {
-    font-family: $serif;
+  a {
+    font: {
+      family: $sans-serif;
+      weight: 600;
+    }
   }
 }
 

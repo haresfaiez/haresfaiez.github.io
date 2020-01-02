@@ -43,11 +43,15 @@ aside {
   color: $blue;
 }
 
-.menu a {
+header a {
   color: $dark;
+
+  &:hover {
+    color: $grey;
+  }
 }
 
-.menu a:hover, .text-bloc a:hover {
+.text-bloc a:hover {
   color: $grey;
 }
 
@@ -78,3 +82,4 @@ blockquote {
     color: $grey;
   }
 }
+
