@@ -12,9 +12,18 @@ $huge-margin   : 4rem;
   }
 }
 
+.page {
+  display: flex;
+  justify-content: center;
+  margin: $medium-margin 0;
+
+  main {
+    width: 45%;
+  }
+}
+
 .grid-container {
   max-width: 50rem;
-  margin   : $medium-margin 10% 2em 35%;
 }
 
 h1, h2, h3 {
@@ -66,6 +75,7 @@ section, footer {
 
     .email {
       max-width: 400px;
+      width: 250px;
     }
 
     .button {

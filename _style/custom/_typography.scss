@@ -3,10 +3,12 @@
 $serif     : 'Martel', Times, serif !default;
 $sans-serif: 'Open Sans', sans-serif !default;
 
-$tiny-size  : 0.889em;
-$medium-size: 1.1em;
-$big-size   : 1.6em;
-$fat-size   : 2.6em;
+$tiny  : 0.889em;
+$medium: 1.2em;
+$big   : 1.6em;
+$fat   : 2.6em;
+
+$paragraph: 1.1em;
 
 body {
   font: {
@@ -24,19 +26,21 @@ body {
 }
 
 h1 {
-  @include header($fat-size)
+  @include header($fat)
 }
 
 h2 {
-  @include header($big-size)
+  @include header($big)
 }
 
 h3 {
-  @include header($medium-size, 400)
+  @include header($medium, 400)
 }
 
-p, h3 {
-  font-family: $serif;
+#about {
+  font: {
+    size: $medium;
+  }
 }
 
 #post {
@@ -45,12 +49,18 @@ p, h3 {
   }
 
   h3 {
-    @include header($medium-size, 600)
+    @include header($medium, 600)
+  }
+
+  p {
+    font: {
+      family: $serif;
+      size: $paragraph;
+    }
   }
 
   a {
     font: {
-      family: $sans-serif;
       weight: 600;
     }
   }
@@ -61,7 +71,7 @@ ul {
 }
 
 aside {
-  font-size: $tiny-size;
+  font-size: $tiny;
 }
 
 #subscription.addon {
