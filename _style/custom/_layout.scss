@@ -136,6 +136,10 @@ footer {
 }
 
 @media print, screen and (max-width: 80em) {
+  .page main {
+    width: 85%;
+  }
+
   aside.float-right {
     display: none;
   }
