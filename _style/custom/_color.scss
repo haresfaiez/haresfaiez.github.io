@@ -11,8 +11,12 @@
 }
 
 .button.transparent {
-  background: $white;
+  background: $light-pink;
   color: $pink;
+
+  &:hover {
+    background: adjust-color($light-pink, $alpha: -0.5);
+  }
 }
 
 #title {

@@ -46,20 +46,12 @@ section, footer {
   border-radius: $border-radius;
 }
 
-.button.transparent {
-  padding: $half-margin $half-margin $half-margin 0;
-}
-
 #about {
   #reach-me {
     align-items: center;
 
     > *:not(:last-child) {
-      margin: 0;
-    }
-
-    > :last-child {
-      margin-left: $half-margin;
+      margin: 0 $half-margin 0 0;
     }
   }
 }
@@ -79,7 +71,6 @@ section, footer {
     }
 
     .button {
-      padding: 0.7rem;
       margin-left: 0.3rem;
     }
   }
@@ -150,6 +141,18 @@ footer {
 }
 
 @media print, screen and (max-width: 40em) {
+  #subscription form > div, #reach-me {
+      display: block;
+  }
+
+  #about #reach-me > *:not(:last-child) {
+    margin: $half-margin 0;
+  }
+
+  #about {
+    margin-bottom: $huge-margin * 2;
+  }
+
   header menu {
     flex-direction: column;
 
