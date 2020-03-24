@@ -6,24 +6,32 @@ date:     2020-03-21 20:47:00 +0100
 tags:     featured
 ---
 
-I started digging into [UglifyJS](https://github.com/mishoo/UglifyJS2/) internals a couple of months ago.
-I [introduced](/2019/12/25/uglifyjs-internals-overview.html) the building blocks but left the `Compressor` for this post.
-Even here, I won't be able to decipher the `Compressor` inner structure in detail.
-The code remains the single source of truth. But, you may get an idea about how it works.
-As with the last one, I will keep updating this post as I learn more about the library.
+I started delving into [UglifyJS](https://github.com/mishoo/UglifyJS2/) internals a couple of months ago.
+I [wrote](/2019/12/25/uglifyjs-internals-overview.html) about the building blocks in the previous post.
+`Compressor` remains the most complicated module of the library.
+
+It minimizes the number of nodes in the result AST.
+UglifyJS parses the input file and hands the result to `Compressor`, which creates the optimized AST.
+The `Output` module transforms that into a shorter code.
+
+I will introduce different parts of the module below.
+While the code remains the single source of truth, you may learn about how `Compressor` plays with nodes.
+I will keep updating this post as I learn more about the library. You are welcome to send suggestions and improvements in
+the meantime.
 
 ## Usage
-`Compressor` is a standalone module. It can be used as follows:
+`Compressor` depends only on `AST_Node` and its subtypes. You give it an instance of `AST_TopLevel`.
+It gives you back an optimized one.
+
+To compress a `node` you write:
 
 ```
 compressor = new Compressor(options)
 compressedNode = compressor.compress(node)
 ```
 
-You give it an AST node, an instance of `AST_TopLevel`. It compresses it and gives you back the result.
-
-UglifyJS compresses the code after parsing the input text into an `AST_TopLevel` node and before mangling the names.
-In the minification module, it for the `compress` option, then optimizes the parse result.
+UglifyJS compresses the code after it parses the input into an `AST_TopLevel` node and before it mangles the names.
+In the minification module, the minifier checks for the `compress` option then optimizes the parse result.
 
 ````
 if (options.compress)
@@ -31,8 +39,8 @@ if (options.compress)
 
 ```
 
-This is the only use of the `Compressor` in UglifyJS. Even in the tests, it is considered a part of the minification.
-It no tests on its own.
+That is the only use of `Compressor` in UglifyJS.
+Even in the test harness, `Compressor` is considered a part of the minification. It has no tests of its own.
 
 ## Overview
 
