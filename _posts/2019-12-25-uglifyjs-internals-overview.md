@@ -7,18 +7,18 @@ tags:     featured
 ---
 
 [UglifyJS](https://github.com/mishoo/UglifyJS2) is Javascript source code optimizer.
-It compresses Javascript source files so that code travels faster across the network.
-UglifyJS takes as an input the content of a file, the aggregation of the content of many files,
-or a string, and gives back the compressed code and a source-map file.
-
-As I am exploring the library code, I am writing this post to clarify the big picture of
-how Uglify works. I will iterate on it as understand the code more.
-The detailed documentation of UglifyJS is on [Mihai Bazon's blog](http://lisperator.net/uglifyjs/).
-It gives you a closer look at the implementation of the concepts explained here.
+It compresses Javascript files so that code travels faster across the network.
 
 ## AST
-UglifyJS builds an [Abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST)
- to represent the source code. It is a convenient structure to operate on the input.
+Given a Javascript file, UglifyJS parses its content and builds an
+[Abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST).
+Each node in the tree holds a definition and a context of a token.
+
+A node that represents a variable definition has a list of accesses to that variable so that UglifyJS
+removes it when the list is empty.
+Similarly, if the children of a statement node are pure variable declarations and its parent is a
+function definition node, then it can be safely deleted.
+These operations are hard to perform when the code is represented as a string.
 
 UglifyJS defines a class named `AST_${typeName}` for each AST node type.
 For example, the definition of a function is represented by an instance of `AST_SymbolDefun`,
@@ -78,6 +78,46 @@ new AST_Object({
 })
 ```
 
+## Scope
+
+Parallel to the AST, there is a tree of lexical scopes.
+It is built inside the AST. When an AST node introduces a new lexical scope, it inherits `AST_Scope`.
+So, to find the scopes tree, you only need to ignore the nodes that do not inherit `AST_Scope`.
+
+The root node of the AST is always an instance of `AST_Toplevel`, which inherits `AST_Scope`.
+
+The other type that inherits `AST_Scope` is `AST_Lambda`.
+`AST_Lambda` is a function definition. It is inherited by `AST_Accessor` (a getter/setter function),
+`AST_Function` (a function expression), and `AST_Defun` (a function definition).
+
+A Function definition is a statement and a function expression is an expression.
+There is a distinction between the two because the function statement needs a name while a function expression
+does not and because the compressor optimizes them differently.
+
+The documentation defines the properties `AST_Scope` as:
+```
+variables: "[Object/S] a map of name -> SymbolDef for all variables/functions defined in this scope",
+functions: "[Object/S] like `variables`, but only lists function declarations",
+uses_with: "[boolean/S] tells whether this scope uses the `with` statement",
+uses_eval: "[boolean/S] tells whether this scope contains a direct call to the global `eval`",
+parent_scope: "[AST_Scope?/S] link to the parent scope",
+enclosed: "[SymbolDef*/S] a list of all symbol definitions that are accessed from this scope or any subscopes",
+cname: "[integer/S] current index for mangling variables (used internally by the mangler)",
+```
+
+In addition to those, `AST_Toplevel` defines `globals` (a list for undeclared names).
+`AST_Lambda` defines the name of the function, its arguments, and `uses_arguments` (a boolean that
+is true when the function accesses the arguments array).
+
+Outside the context of these nodes, only `AST_Symbol` knows about `AST_Scope` as it holds a reference to
+its scope.
+`AST_Symbol` is inherited by symbols (accessors, declaration in var/function name or argument/catch block,
+a reference to a symbol/label, `this`, or a label).
+
+UglifyJS has a module `scope` where it defines methods that operate on the scope for `AST_Toplevel`,
+`AST_Lambda`, `AST_Scope`, `AST_Symbol`, and `AST_Sequence`.
+Operation includes enriching an existing scope, like defining a global variable for `AST_Toplevel`
+or adding more information to the context of `AST_Scope` nodes.
 
 ## TreeWalker
 A `TreeWalker` is a [visitor](https://en.wikipedia.org/wiki/Visitor_pattern) that, given a node,
@@ -110,7 +150,7 @@ function visit(node) {
 
 UglifyJS uses a tree walker to collect all the names of properties.
 ```
-topLevel = new AST_TopLevel({...})
+topLevel = new AST_Toplevel({...})
 ...
 topLevel.walk(new TreeWalker(function(node) {
     if (node instanceof AST_ObjectKeyVal) {
@@ -282,7 +322,7 @@ It uses all the other components, the parser, the compressor, the mangler, and t
 map generator.
 
 `minify` takes the input and a set of options.
-The input can be either an instance of `AST_TopLevel`, a file path, or a list of paths
+The input can be either an instance of `AST_Toplevel`, a file path, or a list of paths
 of different files.
 Options define which operations to execute and which to ignore.
 
