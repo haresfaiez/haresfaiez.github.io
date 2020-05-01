@@ -10,35 +10,45 @@ tags:     featured
 It compresses Javascript files so that code travels faster across the network.
 
 ## AST
-Given a Javascript file, UglifyJS parses its content and builds an
+Given a Javascript file, UglifyJS first parses the content and builds an
 [Abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST).
-Each node in the tree holds a definition and a context of a token.
+Each node in the tree holds a definition of a token and its context.
+The definition is an interpretation of the token as a standalone entity. If includes the type (function,
+variable, constant, object, ...) and the required attributes (the name of a variable or a function, the arguments
+of a function definition, ...).
+The context contains a description of the node children and information about its usage in the program.
 
-A node that represents a variable definition has a list of accesses to that variable so that UglifyJS
-removes it when the list is empty.
-Similarly, if the children of a statement node are pure variable declarations and its parent is a
-function definition node, then it can be safely deleted.
+A variable definition node has a list of expressions that read and modify it. UglifyJS may remove the definition
+while compressing the AST if the list is empty.
+Similarly, a statement node that has a set of pure variable declarations as a child and a function
+definition parent node can be safely deleted.
 These operations are hard to perform when the code is represented as a string.
 
-UglifyJS defines a class named `AST_${typeName}` for each AST node type.
-For example, the definition of a function is represented by an instance of `AST_SymbolDefun`,
-and a node representing a string literal is an instance of `AST_String`.
-You can find the definition of AST node types and their documentation under
-[`lib/ast.js`](https://github.com/mishoo/UglifyJS2/blob/master/lib/ast.js).
+Type definitions are declared under [`lib/ast.js`](https://github.com/mishoo/UglifyJS2/blob/master/lib/ast.js).
+UglifyJS defines a class for each type and uses a hierarchy to organize them.
 
-AST node types have properties and methods.
-Some properties and methods are shared between all AST node types, like `start`, `end`,
-`walk()`, and `clone()`.
-Others, like `getProperty()` on `AST_PropAccess`, are type-specific.
+`AST_SymbolDefun` represents a function definition. `AST_String` is a string literal.
+`AST_Number` and `AST_String` inherit from `AST_Constant`, `AST_False` and `AST_True` are `AST_Boolean`.
+`AST_Null` is an `AST_Atom`, and `AST_Atom` is an `AST_Constant`, and so on.
+All nodes inherit from `AST_Node`.
 
-AST node types are organized into a hierarchy to eliminate code duplication and
-to simplify the code checking for the type of node instances.
-The root of this hierarchy is `AST_Node`.
-It has two properties, `start` and `end`, which represent the boundaries
-of the node in the source code.
-But, it should not be instantiated. Only the leaves should be.
-For example, a string literal `AST_String` and a number literal `AST_Number`
-have the same parent `AST_Constant`.
+Types are extensible.
+They are defined with properties and methods, then other modules decorate them with new ones.
+`AST_Node` defines `start`, `end`, `walk()`, and `clone()`.
+`start` and `end`, which represent the boundaries of the node in the source code.
+
+To distinguish between types. UglifyJS uses `instanceof`.
+You will find the following pattern all over the code:
+```
+function transformNode(node) {
+  if (node instanceof AST_Defun)
+     ...
+  if (node instanceof AST_String)
+     ...
+  if (node instanceof AST_Number)
+     ...
+}
+```
 
 To create an AST node, you instantiate a specific AST node type with the required properties.
 The string literal has two properties on its own.
@@ -81,18 +91,18 @@ new AST_Object({
 ## Scope
 
 Parallel to the AST, there is a tree of lexical scopes.
-It is built inside the AST. When an AST node introduces a new lexical scope, it inherits `AST_Scope`.
-So, to find the scopes tree, you only need to ignore the nodes that do not inherit `AST_Scope`.
+When an AST node introduces a new lexical scope, it inherits `AST_Scope`.
+You filter out the nodes that do not inherit `AST_Scope`, and you get the scopes tree.
 
-The root node of the AST is always an instance of `AST_Toplevel`, which inherits `AST_Scope`.
+The root of all AST is an `AST_Toplevel` instance, which inherits `AST_Scope`.
 
-The other type that inherits `AST_Scope` is `AST_Lambda`.
-`AST_Lambda` is a function definition. It is inherited by `AST_Accessor` (a getter/setter function),
+The other type that inherits `AST_Scope` is the function definition `AST_Lambda`.
+The latter is inherited by `AST_Accessor` (a getter/setter function),
 `AST_Function` (a function expression), and `AST_Defun` (a function definition).
 
 A Function definition is a statement and a function expression is an expression.
-There is a distinction between the two because the function statement needs a name while a function expression
-does not and because the compressor optimizes them differently.
+The compressor optimizes them differently and the parser requires a name for the function statement
+but not for the expression. It is more convenient to separate them.
 
 The documentation defines the properties `AST_Scope` as:
 ```
@@ -105,19 +115,18 @@ enclosed: "[SymbolDef*/S] a list of all symbol definitions that are accessed fro
 cname: "[integer/S] current index for mangling variables (used internally by the mangler)",
 ```
 
-In addition to those, `AST_Toplevel` defines `globals` (a list for undeclared names).
-`AST_Lambda` defines the name of the function, its arguments, and `uses_arguments` (a boolean that
+`AST_Toplevel` also defines `globals` (a list for undeclared names).
+`AST_Lambda` defines the name of the function, a list of its arguments, and `uses_arguments` (a boolean that
 is true when the function accesses the arguments array).
 
-Outside the context of these nodes, only `AST_Symbol` knows about `AST_Scope` as it holds a reference to
-its scope.
-`AST_Symbol` is inherited by symbols (accessors, declaration in var/function name or argument/catch block,
-a reference to a symbol/label, `this`, or a label).
+Other than those nodes, only `AST_Symbol` knows about `AST_Scope`. It holds a reference to its scope.
+An `AST_Symbol` is either an accessors, a declaration in var/function name or argument/catch block,
+a reference to a symbol/label, the keyword `this`, or a loop label.
 
-UglifyJS has a module `scope` where it defines methods that operate on the scope for `AST_Toplevel`,
-`AST_Lambda`, `AST_Scope`, `AST_Symbol`, and `AST_Sequence`.
-Operation includes enriching an existing scope, like defining a global variable for `AST_Toplevel`
-or adding more information to the context of `AST_Scope` nodes.
+UglifyJS defines `AST_Scope` operations in
+[`lib/scope.js`](https://github.com/mishoo/UglifyJS2/blob/master/lib/scope.js).
+These operations enrich the description of existing scopes
+by defining new variables or by exploring the surrounding and adding information to the context.
 
 ## TreeWalker
 A `TreeWalker` is a [visitor](https://en.wikipedia.org/wiki/Visitor_pattern) that, given a node,
