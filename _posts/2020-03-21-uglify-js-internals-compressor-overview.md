@@ -25,19 +25,19 @@ It gives you back an optimized one.
 
 To compress a `node` you write:
 
-```
+{% highlight javascript %}
 compressor = new Compressor(options)
 compressedNode = compressor.compress(node)
-```
+{% endhighlight %}
 
 UglifyJS compresses the code after it parses the input into an `AST_TopLevel` node and before it mangles the names.
 In the minification module, the minifier checks for the `compress` option then optimizes the parse result.
 
-````
+{% highlight javascript %}
 if (options.compress)
    toplevel = new Compressor(options.compress).compress(toplevel);
 
-```
+{% endhighlight %}
 
 That is the only use of `Compressor` in UglifyJS.
 Even in the test harness, `Compressor` is considered a part of the minification. It has no tests of its own.
@@ -64,13 +64,13 @@ The constructor accepts the options object and creates its proper options object
 for undefined options. Inside the compression logic, it queries the options using its method `Compressor.option(name)`.
 
 For example:
-```
+{% highlight javascript %}
 // Treat parameters as collapsible in IIFE, i.e.
 //   function(a, b){ ... }(x());
 // would be translated into equivalent assignments:
 //   var a = x(), b = undefined;
 if (stat_index == 0 && compressor.option("unused")) extract_args();
-```
+{% endhighlight %}
 
 
 The constructor of `Compressor` accepts two arguments. The `options` object and `falseByDefault`.
@@ -127,13 +127,13 @@ It includes many patterns and it manipulates the code in interesting ways.
 All of `AST_Block`, `AST_BlockStatement`, and `AST_Lambda`, and `AST_Try` `optimize` use `tighten_body` to optimize their body.
 
 Each contains:
-```
+{% highlight javascript %}
 self.body = tighten_body(self.body, compressor);
-```
+{% endhighlight %}
 
 
 `tighten_body` contains the following loop:
-```
+{% highlight javascript %}
 do {
     CHANGED = false;
     eliminate_spurious_blocks(statements);
@@ -154,7 +154,7 @@ do {
         collapse(statements, compressor);
     }
 } while (CHANGED && max_iter-- > 0);
-```
+{% endhighlight %}
 
 ### `eliminate_spurious_blocks`
 It removes all `AST_EmptyStatement`, flattens the body of `AST_BlockStatement`, and removes duplicated directives.
@@ -197,12 +197,12 @@ It:
    the branch free from a jump (body in 1- and alternative in 3-). 
 
  * compresses if statements where the body contains only a return statement and the alternative is empty as follow:
-   ```
+   {% highlight javascript %}
    // if (foo()) return; return; ==> foo(); return;
    // if (foo()) return x; return y; ==> return foo() ? x : y;
    // if (foo()) return x; [ return ; ] ==> return foo() ? x : undefined;
    // if (a) return b; if (c) return d; e; ==> return a ? b : c ? d : void e;
-   ```
+   {% endhighlight %}
 
 ## `sequencesize`
 It joins consecutive `AST_SimpleStatement`, or a list of `AST_SimpleStatement` interrupted only by declarations
@@ -223,12 +223,13 @@ It tries to put each `AST_SimpleStatement` (a statement consisting of one expres
      It puts `prev` in the loop init code if init is not an instance of `AST_Definitions` or the loop has no init code,
      creating an `AST_Sequnce`.
      When the init is an `AST_Definitions`, there may be problems with the result sequence.
-     ```
-     `for(console.log('hi'), var i = 0;;;) {}` // `SyntaxError: Unexpected token var`
-     `for(console.log('hi'), i = 0;;;) {}` // works
-     ```
      It avoids adding `prev` to the init code if `prev` contains a function definition (it won't be accessible) or
      an expression with an `in` operator (it causes issues with the following expression in a sequence)
+
+     {% highlight javascript %}
+     `for(console.log('hi'), var i = 0;;;) {}` // `SyntaxError: Unexpected token var`
+     `for(console.log('hi'), i = 0;;;) {}` // works
+     {% endhighlight %}
 
 ### `join_consecutive_vars` 
 This is not far from the previous function.

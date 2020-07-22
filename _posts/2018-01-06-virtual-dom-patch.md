@@ -69,20 +69,20 @@ This is another reason why keeping the source virtual DOM element is important.
 It is impossible to generate virtual DOM tree from a primitive DOM tree.
 
 Normally, properties are added using
-```javascript
+{% highlight javascript %}
 node[propertykey] = properyValue;
-```
+{% endhighlight %}
 They are removed by choosing a null object, an empty string, or a javascript "null" as value.
 
 When the property key is "attributes" or "style", "virtual-dom" treats them differently.
 "attributes" are added using 
-```javascript
+{% highlight javascript %}
 node.setAttribute
-```
+{% endhighlight %}
 and removed using
-```javascript
+{% highlight javascript %}
 node.removeAttribute
-```
+{% endhighlight %}
 "style" are treated one-by-one instead of one whole property.
 
 When the diff module compares a property object on the source to an object property associated
@@ -94,15 +94,15 @@ chooses "undefined" as a value when the attribute is removed from the destinatio
 Object properties are added as a nested objects to the primitive DOM node.
 If we have the property "key" and the value 
 
-```javascript
+{% highlight javascript %}
 {foo: 'bar'}
-```
+{% endhighlight %}
 
 "virtual-dom" adds it as
 
-```javascript
+{% highlight javascript %}
 destinationNode['key']['foo'] = 'bar';
-```
+{% endhighlight %}
 
 ### Create the children using the same process
 
