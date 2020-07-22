@@ -73,8 +73,6 @@ code {
 }
 
 .highlight {
-  background: $light-grey-bg;
-
   code {
     border: none;
     background: none;
@@ -87,3 +85,28 @@ blockquote {
   }
 }
 
+#covid19-banner {
+  background: #f9f9f9;
+
+  .principal{
+    .button {
+      background: #cef2ce;
+      color: #418a41;
+    }
+  }
+}
+
+#book-banner {
+  h2 {
+    border-bottom: 4px solid #3cf5b2;
+  }
+
+  .principal{
+    border: 1px solid #b7d0c7;
+
+    .button {
+      background: #3cf5b2;
+      color: #384950;
+    }
+  }
+}

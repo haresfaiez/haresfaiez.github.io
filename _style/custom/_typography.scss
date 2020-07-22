@@ -44,7 +44,7 @@ h3 {
 }
 
 #post {
-  span, ul, ol {
+  ul, ol, aside {
     font-family: $serif;
   }
 
@@ -64,6 +64,13 @@ h3 {
       weight: 600;
     }
   }
+
+  code {
+    font: {
+      family: 'Fira Mono', monospace;
+      size: 1rem;
+    }
+  }
 }
 
 ul {
@@ -76,11 +83,4 @@ aside {
 
 #subscription.addon {
   font-size: 1rem;
-}
-
-code {
-  font: {
-    family: 'Fira Mono', monospace;
-    size: 1rem;
-  }
 }

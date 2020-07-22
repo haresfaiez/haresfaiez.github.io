@@ -14,11 +14,13 @@ $huge-margin   : 4rem;
 
 .page {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   margin: $medium-margin 0;
 
-  main {
+  div.principal {
     width: 45%;
+    align-self: center;
   }
 }
 
@@ -127,7 +129,7 @@ footer {
 }
 
 @media print, screen and (max-width: 80em) {
-  .page main {
+  .page div.principal {
     width: 85%;
   }
 
@@ -164,5 +166,35 @@ footer {
         margin: $default-margin 0 0 0 !important;
       }
     }
+  }
+}
+
+#covid19-banner {
+  display: flex;
+  flex-direction: column;
+  padding: $medium-margin 0;
+
+  .principal{
+    width: 50%;
+    align-self: center;
+  }
+
+  @media print, screen and (max-width: 80em) {
+    .principal {
+      width: 90%;
+    }
+  }
+}
+
+#book-banner {
+  display: flex;
+  flex-direction: column;
+
+  .principal{
+    padding: $default-margin;
+    align-self: center;
+  }
+
+  @media print, screen and (max-width: 80em) {
   }
 }
