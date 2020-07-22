@@ -1,0 +1,5 @@
+- add tcr to package.json scripts
+- enable auto-revert-mode in Emacs
+- you can't cheat and commit a refactoring without running the tests
+- git add?
+- trc: delay refactoring/documentation and treat them as distincs steps (we may need tests for those two though)

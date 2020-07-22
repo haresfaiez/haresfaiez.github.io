@@ -1,0 +1,3 @@
+* Finding usages of variables/properties one by one gives you a better idea about the code than trying to read it line by line.
+* open the same file in different windows and allow interaction
+* feat: inline calls in selected area
