@@ -14,34 +14,36 @@ and to enrich its subject language. I'll get into most of them here.
 
 ## Parser
 To parse a program, you might use `Acorn.parse` and give it the input code string:
-```
+
+{% highlight javascript %}
 import Acorn from 'acorn'
 const parsed = Acorn.parse('var i = 1');
-```
+{% endhighlight %}
 
 The result for this example is:
-```
+
+{% highlight javascript %}
 Node {
   type: 'Program',
   start: 0,
   end: 9,
   body:[{
-    type: "VariableDeclaration",
+    type: 'VariableDeclaration',
     start: 0,
     end: 9,
     declarations: [{
-      type: "VariableDeclarator",
+      type: 'VariableDeclarator',
       start: 4,
       end: 9,
-      id: {type: "Identifier", start: 4, end: 5, name: "i"},
-      init: {type: "Literal", start: 8, end: 9, value: 1, raw: "1"}
+      id: {type: 'Identifier', start: 4, end: 5, name: 'i'},
+      init: {type: 'Literal', start: 8, end: 9, value: 1, raw: '1'}
     }],
-    kind: "var"
+    kind: 'var'
   }],
   sourceType: 'script'
 }
 
-```
+{% endhighlight %}
 
 Acorn puts all operations in one class, `Parser`. It is a parser and a tokenizer.
 It is defined in `state.js` then enriched by other modules.
@@ -60,7 +62,7 @@ This allows you to define a function that is called after reading a token, or af
 
 ## Parsing the top level
 That top-level node is either created by `parseTopLevel` itself or taken from the AST given by the options.
-In both situations, the result of the parsing is an AST whose root is a node with the type `"Program"`.
+In both situations, the result of the parsing is an AST whose root is a node with the type `'Program'`.
 `Parser` has a method `parse` that uses `parseTopLevel` to loop over and parse top-level statements in the input,
 then to collect their nodes under the top-level node.
 
@@ -106,10 +108,11 @@ Acorn creates a `RegExp` that checks a token against version-specific ECMAScript
 If the current character cannot be the beginning of a word, `getTokenFromCode` handles it.
 If the token is a punctuation mark, it creates a token with `finishToken`.
 Otherwise, it delegates to other helpers that read long tokens.
-It delegates to `readString` when it encounters `"` or a `'`, `readNumber` when it finds a digit, and so on.
+It delegates to `readString` when it encounters `'` or a `'`, `readNumber` when it finds a digit, and so on.
 
 Ther characters and the functions used for each are:
-```
+
+{% highlight javascript %}
 // The interpretation of a dot depends on whether it is followed
 // by a digit or another two dots.
 '.'->  readToken_dot
@@ -123,47 +126,51 @@ Ther characters and the functions used for each are:
 '=!' -> readToken_eq_excl
 '?' -> readToken_question
 '~' -> finishOp.
-```
+{% endhighlight %}
 
 In addition to a type, a token also has a context.
 Acorn keeps track of the current context and its parents in a stack.
 
 Token contexts are defined by their first token. `TokenContext` constructor is defined as follows:
-```
+
+{% highlight javascript %}
 class TokContext {
   constructor(token, isExpr, preserveSpace, override, generator)
-```
+{% endhighlight %}
 
 Contexts are defined in `tokencontext.js` as follows:
-```
-b_stat    : new TokContext("{", false)
-b_expr    : new TokContext("{", true)
-b_tmpl    : new TokContext("${", false)
-p_stat    : new TokContext("(", false)
-p_expr    : new TokContext("(", true)
-q_tmpl    : new TokContext("`", true, true, p => p.tryReadTemplateToken())
-f_stat    : new TokContext("function", false)
-f_expr    : new TokContext("function", true)
-f_expr_gen: new TokContext("function", true, false, null, true)
-f_gen     : new TokContext("function", false, false, null, true)
-```
+
+{% highlight javascript %}
+b_stat    : new TokContext('{', false)
+b_expr    : new TokContext('{', true)
+b_tmpl    : new TokContext('${', false)
+p_stat    : new TokContext('(', false)
+p_expr    : new TokContext('(', true)
+q_tmpl    : new TokContext('`', true, true, p => p.tryReadTemplateToken())
+f_stat    : new TokContext('function', false)
+f_expr    : new TokContext('function', true)
+f_expr_gen: new TokContext('function', true, false, null, true)
+f_gen     : new TokContext('function', false, false, null, true)
+{% endhighlight %}
 
 When parsing `function compute(a) { return (a - 1) * 2; }`, the context at different times stack will be:
-```
+
+{% highlight javascript %}
 // when the tokenizer is reading the function argument
 [
-{"token":"{","isExpr":false,"preserveSpace":false,"generator":false},
-{"token":"function","isExpr":false,"preserveSpace":false,"generator":false},
-{"token":"(","isExpr":true,"preserveSpace":false,"generator":false}
+{ token: '{', isExpr: false, preserveSpace: false, generator: false },
+{ token: 'function', isExpr: false, preserveSpace: false, generator: false },
+{ token: '(', isExpr: true, preserveSpace: false, generator: false }
 ]
 
-// when the tokenizer is reading the "a - 1" part of the return expression
+// when the tokenizer is reading the 'a - 1' part of the return expression
 [
-{"token":"{","isExpr":false,"preserveSpace":false,"generator":false},
-{"token":"function","isExpr":false,"preserveSpace":false,"generator":false},
-{"token":"{","isExpr":false,"preserveSpace":false,"generator":false},
-{"token":"(","isExpr":true,"preserveSpace":false,"generator":false}]
-```
+{ token: '{', isExpr: false, preserveSpace: false, generator: false },
+{ token: 'function', isExpr: false, preserveSpace: false, generator: false },
+{ token: '{', isExpr: false, preserveSpace: false, generator: false },
+{ token: '(', isExpr: true, preserveSpace: false, generator: false }
+]
+{% endhighlight %}
 
 The top-level context (and the first added item to the stack) is always a block context.
 It is defined in `Parser` constructor using `initalContext`.
@@ -183,36 +190,40 @@ The only pattern shared by most of them is reading a semicolon.
 Acorn uses `this.eat(tt.semi)` (), `this.insertSemicolon()` (), and `this.semicolon` ().
 
 `eat` is a:
-```
+
+{% highlight javascript %}
 // Predicate that tests whether the next token is of the given
 // type, and if yes, consumes it as a side effect. (by calling this.next())
-```
+{% endhighlight %}
 
 Here is an example from `parseForStatement`:
-```
+
+{% highlight javascript %}
   node.init = init
   this.expect(tt.semi)
   node.test = this.type === tt.semi ? null : this.parseExpression()
   this.expect(tt.semi)
   node.update = this.type === tt.parenR ? null : this.parseExpression()
   this.expect(tt.parenR)
-  node.body = this.parseStatement("for")
-```
+  node.body = this.parseStatement('for')
+{% endhighlight %}
 
 
 `insertSemicolon`:
-```
+
+{% highlight javascript %}
 // Consume a semicolon, or, failing that, see if we are allowed to
 // pretend that there is a semicolon at this position.
-```
+{% endhighlight %}
 
 It is defined as follows
 
-```
+
+{% highlight javascript %}
 pp.semicolon = function() {
   if (!this.eat(tt.semi) && !this.insertSemicolon()) this.unexpected()
 }
-```
+{% endhighlight %}
 
 `semicolon` meanwhile checks whether we are allowed to insert a semicolon after the current token.
 It is true if we are at the end of the file, in a `}`, or if
@@ -228,7 +239,8 @@ Then `scope.js` module defines getters that check the scope of the current token
 
 Acorn models scopes using bitsets and uses logical-end to compare them.
 Scopes are defined in `src/scopeflags`. Each scpe is a binary with a shifted 1:
-```
+
+{% highlight javascript %}
     SCOPE_TOP = 1,
     SCOPE_FUNCTION = 2,
     SCOPE_VAR = SCOPE_TOP | SCOPE_FUNCTION,
@@ -242,7 +254,7 @@ Scopes are defined in `src/scopeflags`. Each scpe is a binary with a shifted 1:
 export function functionFlags(async, generator) {
   return SCOPE_FUNCTION | (async ? SCOPE_ASYNC : 0) | (generator ? SCOPE_GENERATOR : 0)
 }
-```
+{% endhighlight %}
 
 A scope with value `0` is neither of those. `0` is used when the current statement introduces a new lexical scope.
 It is used in `parseForStatement`, `parseSwitchStatement`, to parse a non-simple catch block in `parseTryStatement`,
@@ -252,14 +264,16 @@ These helpers use `enterScope` to create a new scope.
 Acorn usually calls `this.enterScope` before parsing the body of the statement, and `this.exitScope` after parsing the body.
 
 The following pattern is used in multiple parsing helpers:
-```
+
+{% highlight javascript %}
 this.enterScope(/* flags */);
 node.body = this.parseBlock()
 this.exitScope()
-```
+{% endhighlight %}
 
 `enterScope` and `exitScope` are defined as follows:
-```
+
+{% highlight javascript %}
 pp.enterScope = function(flags) {
   this.scopeStack.push(new Scope(flags))
 }
@@ -267,7 +281,7 @@ pp.enterScope = function(flags) {
 pp.exitScope = function() {
   this.scopeStack.pop()
 }
-```
+{% endhighlight %}
 
 A `ScopeStack` frame, an instance of `Scope`, contains a list of variables,
 a list of lexically-declared names, and a list of `FunctionDeclaration` names.
