@@ -1,13 +1,19 @@
 ---
 layout: default
 ---
-<section class="cell grid-x">
-  <div class="large-9 cell">
-    <h1 class="headline">
-      {{ page.title }}
-    </h1>
-    <article>
-      {{ content }}
-    </article>
+<main class="page">
+  <div class="principal">
+    {% include header.html %}
+    <section class="cell grid-x">
+      <div class="large-11 cell">
+        <h1 class="headline">
+          {{ page.title }}
+        </h1>
+        <article>
+          {{ content }}
+        </article>
+      </div>
+    </section>
+    {% include footer.html %}
   </div>
-</section>
+</main>
