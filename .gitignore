@@ -7,3 +7,4 @@ _style/node_modules
 *~
 #*
 .#*
+.jekyll-cache/
