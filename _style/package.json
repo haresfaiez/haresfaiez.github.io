@@ -21,6 +21,6 @@
   "homepage": "https://github.com/haresfaiez/haresfaiez.github.io#readme",
   "devDependencies": {
     "foundation-sites": "^6.4.4-rc1",
-    "node-sass": "^4.7.1"
+    "node-sass": "^4.13.1"
   }
 }
