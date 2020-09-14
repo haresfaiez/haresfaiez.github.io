@@ -57,11 +57,11 @@ whether to accept `await` and `return` statements at the top-level, whether to u
 and a couple of other similar settings.
 
 Options also define callbacks that are called by Acorn during different stages of parsing.
-This allows you to define a function that is called after reading a token, or after parsing a node or a comment.
+This allows you to define a function that is called after reading a token or after parsing a node or a comment.
 
 
 ## Parsing the top level
-That top-level node is either created by `parseTopLevel` itself or taken from the AST given by the options.
+That top-level node is either created by `parseTopLevel` itself or it is taken from the AST given by the options.
 In both situations, the result of the parsing is an AST whose root is a node with the type `'Program'`.
 `Parser` has a method `parse` that uses `parseTopLevel` to loop over and parse top-level statements in the input,
 then to collect their nodes under the top-level node.

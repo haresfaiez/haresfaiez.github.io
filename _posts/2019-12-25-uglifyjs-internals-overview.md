@@ -30,7 +30,7 @@ UglifyJS defines a class for each type.
 All class names start with `AST_`.
 
 Types are organized into a hierarchy.
-`AST_Number` and `AST_String` are `AST_Constbant`, `AST_False` and `AST_True` are `AST_Boolean`.
+`AST_Number` and `AST_String` are `AST_Constant`, `AST_False` and `AST_True` are `AST_Boolean`.
 `AST_Null` is an `AST_Atom`. `AST_Atom` itself is an `AST_Constant`, and so on.
 `AST_Node` is the root of this hierarchy. All nodes inherit it directly or indirectly.
 

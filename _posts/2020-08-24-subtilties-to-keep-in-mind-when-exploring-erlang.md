@@ -20,7 +20,7 @@ In a source file however, only the period is required at the end of an expressio
 ### No boolean type
 Instead of booleans, there are `true` and `false` atoms.
 Conditionals and predicates handle clauses with these atoms in a special way.
-Programmers are encouraged to use them too when a function has only two possible results.
+Programmers are encouraged to use them when a function has only two possible results.
 
 ### No else block
 The syntax of an if block in Erlang is:
@@ -52,7 +52,7 @@ Use `andalso` and `orelse` for lazy evaluation.
 Although Erlang provides type analysis with Dialyzer, it is a dynamic language.
 Compiling a file with `true + 9` succeeds.
 Compiling the following code meanwhile fails because the compiler cannot find
-a function named `a` that has no arguments.
+a function named `a` with no arguments.
 ```erlang
 a(b) -> 0;
 start() -> a(). 
@@ -77,32 +77,32 @@ Atoms meanwhile have no value.
 You cannot assign (or bind) a value to an atom.
 Two atoms with the same name are similar.
 
-Variables should start with an uppercase letter.
+Variables start with an uppercase letter.
 Atoms start with a lowercase letter.
 
-The interplay between variables and atoms shine in pattern matching operations such as:
+The interplay between variables and atoms shines in pattern matching operations such as:
 ```
 { author, Name } = { author, "Faiez" }
 ```
 
-`author` here is an atom. We use to match the first element of the tuple.
+`author` here is an atom. We use it to match the first element of the tuple.
 `Name` is a variable. We bind it to the second element of the tuple.
 
 This will fail when the first element of the tuple is not the atom `author`.
 
 ### Single quotes for atoms, double quotes for string literals
 String literals must be written with double-quotes.
-Single quotes are reserved as an optional notation of atoms.
+Single quotes are reserved as an optional notation for atoms.
 
 The previous example can be written as:
 ```
 { author, Name } = { 'author', "Faiez" }
 ```
 
-Keep in mind that, with single quotes, atoms may start with uppercase letters,
+Keep in mind that, with single quotes, atoms might start with uppercase letters,
 numbers, or special characters.
 
-The following code works well although the atom `Author` starts with an uppercase letter:
+The following code works well although `Author` is an atom and it starts with an uppercase letter:
 ```
 { 'Author', Name } = { 'Author', "Faiez" }
 ```
@@ -111,8 +111,8 @@ The following code works well although the atom `Author` starts with an uppercas
 Usually, we use associative arrays to create configuration objects.
 Think of a JSON object like `{ port: 3000, host: "localhost" }` in Javascript.
 
-Although Erlang has a map type, libraries use arrays of key-value tuples instead.
-The key is an atom that models a configuration entry.
+Although Erlang has a map type, libraries use arrays of key-value tuples
+where the key is an atom that models a configuration entry instead.
 
 The previous JSON object can be written in Erlang as:
 `[{ port, 3000 }, { host, "localhost" }]`.
@@ -128,15 +128,15 @@ We have two options to perform a map or a filter operation on an array:
     call the function recursively on the tail,
     then return an array containing the transformed head followed by the result
     of the recursive call.
-    This returns a reversed array.
+    In the end, this returns a reversed array.
   * Use list comprehension notation `[f(A) || A <- ...]`.
 
-The second is highly inefficient for more than small arrays.
+The second is highly inefficient for medium and large arrays.
 Using the first approach and reversing the result is idiomatic in Erlang.
-Array reversal is implemented natively. It is very efficient.
+Array reversal is implemented natively and it is very efficient.
 
 ### No `return` keyword
 In Erlang, there are no statements. Everything is an expression and everything
 returns a value.
-In a function that contains a list of expressions, the result of the evaluation of
-the last expression is the return value.
+In a function that contains a list of expressions, the evaluation result of
+the last expression is the return value of the function.
