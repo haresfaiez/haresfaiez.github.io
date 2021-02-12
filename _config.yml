@@ -21,4 +21,5 @@ linkedin_handle : faiez-hares-4b2262158
 markdown: kramdown
 
 sass:
+  sass_dir: sass
   style: compressed
