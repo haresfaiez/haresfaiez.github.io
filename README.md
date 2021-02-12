@@ -2,7 +2,7 @@
 
 ## Starting the application
 ```
-./prepare && jekyll serve
+jekyll serve
 ```
 
 ## Roadmap

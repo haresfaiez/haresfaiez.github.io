@@ -1,4 +1,0 @@
-#!/bin/bash
-
-#!/bin/bash
-cat $1 && printf '0a\n---\n---\n.\nw\n' | ed $1

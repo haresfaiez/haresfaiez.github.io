@@ -1,0 +1,114 @@
+.button.secondary {
+  border: 1px solid $light-grey;
+  background: white;
+  color: $pink;
+
+  &:hover, &:active {
+    border: 1px solid $light-grey;
+    background: white;
+    color: $grey;
+  }
+}
+
+.button.transparent {
+  background: $light-pink;
+  color: $pink;
+
+  &:hover {
+    background: adjust-color($light-pink, $alpha: -0.5);
+  }
+}
+
+#title {
+  a {
+    color: inherit;
+  }
+}
+
+h1, h2, h3 {
+  color: $blue-grey;
+}
+
+#subscription.addon {
+  .hint {
+    color: $pink;
+  }
+}
+
+footer {
+  &, a {
+    color: $grey;
+  }
+
+  border-top: 1px solid $light-grey;
+}
+
+aside {
+  color: $blue;
+}
+
+header a {
+  color: $dark;
+
+  &:hover {
+    color: $grey;
+  }
+}
+
+.text-bloc a:hover {
+  color: $grey;
+}
+
+.banner {
+  background: $light-grey-bg2;
+  .fa-bookmark {
+    color: $blue;
+  }
+}
+
+code {
+  background: $light-grey-bg;
+  border: none;
+}
+
+.highlight {
+  code {
+    background: none;
+  }
+}
+
+blockquote {
+  p {
+    color: $grey;
+  }
+}
+
+pre.highlight {
+  border-left: 2px solid $light-grey-border;
+}
+
+#covid19-banner {
+  background: #f9f9f9;
+
+  .principal{
+    .button {
+      background: #cef2ce;
+      color: #418a41;
+    }
+  }
+}
+
+#book-banner {
+  h2 {
+    border-bottom: 4px solid #3cf5b2;
+  }
+
+  .principal{
+    border: 1px solid #b7d0c7;
+
+    .button {
+      background: #3cf5b2;
+      color: #384950;
+    }
+  }
+}

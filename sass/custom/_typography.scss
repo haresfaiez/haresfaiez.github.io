@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Fira+Mono|Martel:400,700');
+
+$serif     : 'Martel', Times, serif !default;
+$sans-serif: 'Open Sans', sans-serif !default;
+
+$tiny  : 0.889em;
+$medium: 1.2em;
+$big   : 1.6em;
+$fat   : 2.6em;
+
+$paragraph: 1.1em;
+
+body {
+  font: {
+    family: $sans-serif;
+    weidght: 400;
+  }
+}
+
+@mixin header($font-size: 1em, $weight: 700) {
+  font: {
+    family: $sans-serif;
+    size  : $font-size;
+    weight: $weight;
+  }
+}
+
+h1 {
+  @include header($fat)
+}
+
+h2 {
+  @include header($big)
+}
+
+h3 {
+  @include header($medium, 400)
+}
+
+#about {
+  font: {
+    size: $medium;
+  }
+}
+
+#post {
+  ul, ol, aside {
+    font-family: $serif;
+  }
+
+  h3 {
+    @include header($medium, 600)
+  }
+
+  p, ul, a {
+    font: {
+      family: $serif;
+      size: $paragraph;
+    }
+  }
+
+  a {
+    font: {
+      weight: 600;
+    }
+  }
+}
+
+code {
+  font: {
+    family: 'Fira Mono', monospace;
+    size: 1rem;
+  }
+}
+
+ul {
+  list-style-type: circle;
+}
+
+aside {
+  font-size: $tiny;
+}
+
+#subscription.addon {
+  font-size: 1rem;
+}
