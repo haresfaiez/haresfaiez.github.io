@@ -45,27 +45,27 @@ A string literal has also two properties;
 a value; the string itself, and a quote (`"` or `'`); the quotation used in the input.
 
 So to represent the string
-{% highlight javascript %}
+```javascript
 "Hello Uglify!"
-{% endhighlight %}
+```
 
 you need
-{% highlight javascript %}
+```javascript
 new AST_String({
   value : 'Hello Uglify!',
   quote : '"',
   start: new AST_Token({...}),
   end: new AST_Token({...})
 })
-{% endhighlight %}
+```
 
 An object requires a list of properties. To represent the object
-{% highlight javascript %}
+```javascript
 {a: 2}
-{% endhighlight %}
+```
 
 you need
-{% highlight javascript %}
+```javascript
 new AST_Object({
   properties: [
     new AST_ObjectKeyVal({ 
@@ -77,11 +77,11 @@ new AST_Object({
   start: new AST_Token({...}),
   end: new AST_Token({...})
 })
-{% endhighlight %}
+```
 
 To distinguish between types. UglifyJS uses `instanceof`.
 The  the following pattern exists everywhere:
-{% highlight javascript %}
+```javascript
 function transformNode(node) {
   if (node instanceof AST_Defun)
      ...
@@ -90,7 +90,7 @@ function transformNode(node) {
   if (node instanceof AST_Number)
      ...
 }
-{% endhighlight %}
+```
 
 ## Scope
 
@@ -107,7 +107,7 @@ The compressor optimizes them differently and the parser requires a name for the
 but not for the expression. It is more convenient to separate them.
 
 The documentation defines the properties `AST_Scope` as:
-{% highlight javascript %}
+```javascript
 variables: "[Object/S] a map of name -> SymbolDef for all variables/functions defined in this scope",
 functions: "[Object/S] like `variables`, but only lists function declarations",
 uses_with: "[boolean/S] tells whether this scope uses the `with` statement",
@@ -115,7 +115,7 @@ uses_eval: "[boolean/S] tells whether this scope contains a direct call to the g
 parent_scope: "[AST_Scope?/S] link to the parent scope",
 enclosed: "[SymbolDef*/S] a list of all symbol definitions that are accessed from this scope or any subscopes",
 cname: "[integer/S] current index for mangling variables (used internally by the mangler)",
-{% endhighlight %}
+```
 
 `AST_Toplevel` also defines `globals` (a list for undeclared names).
 `AST_Lambda` defines the name of the function, a list of its arguments, and `uses_arguments` (a boolean that
@@ -135,32 +135,32 @@ A `TreeWalker` is a [visitor](https://en.wikipedia.org/wiki/Visitor_pattern) tha
 visits its children recursively and calls a callback function (called `visit`) passing the visited child.
 
 To visit a node and its sub-tree you call `_visit`:
-{% highlight javascript %}
+```javascript
 treeWalker = new TreeWalker(visit)
 treeWalker._visit(targetNode)
-{% endhighlight %}
+```
 
 This is equivalent to calling `walk` or `_walk` on `targetNode`
-{% highlight javascript %}
+```javascript
 treeWalker = new TreeWalker(visit)
 targetNode._walk(treeWalker)
-{% endhighlight %}
+```
 
 
 A tree walker is usually passed into `AST_Node.walk` to extract information from the node sub-tree.
 
 Here, a `visit` function collects all string literals into an array called `allStrings`.
-{% highlight javascript %}
+```javascript
 function visit(node) {
   if (node instanceof AST_String) {
      allStrings.push(node.value);
   }
 }
-{% endhighlight %}
+```
 
 
 UglifyJS uses a tree walker to collect all the names of properties.
-{% highlight javascript %}
+```javascript
 topLevel = new AST_Toplevel({...})
 ...
 topLevel.walk(new TreeWalker(function(node) {
@@ -177,31 +177,31 @@ topLevel.walk(new TreeWalker(function(node) {
         addStrings(node.args[1], add)
     }
 }))
-{% endhighlight %}
+```
 
 Under the hood, `AST_Node.walk` calls `TreeWalker._visit(this, descend)`,
 or `TreeWalker._visit(this)` if the node cannot have children.
 `descend` calls `_walk` on each child.
 
 For node types that cannot have children, `walk` is defined as
-{% highlight javascript %}
+```javascript
 _walk: function(visitor) {
         return visitor._visit(this)
     }
-{% endhighlight %}
+```
 
 For node types who may have children, the node passes in a `descend` function.
 For `AST_Binary`, a binary expression like `a + b`,
 which have two children `left` and `right`.
 It is defined as
-{% highlight javascript %}
+```javascript
 _walk: function(visitor) {
         return visitor._visit(this, function() {
             this.left._walk(visitor)
             this.right._walk(visitor)
         })
     }
-{% endhighlight %}
+```
 
 There are two strategies to navigate a node sub-tree.
 Either the visitor takes control of descending or it is `visit` function.
@@ -227,7 +227,7 @@ It receives a `descend` function and returns a truthy value we don't want the tr
 transformer to descend (and thus to transform) to children and `undefined` when we do.
 
 So for `AST_Binary`, `transform` changes `left` and `right` to the result of `transform`.
-{% highlight javascript %}
+```javascript
 AST_Binary.DEFMETHOD("transform", function(tw, in_list) {
   var x, y
   // ...
@@ -246,7 +246,7 @@ AST_Binary.DEFMETHOD("transform", function(tw, in_list) {
   // ...
   return x
 })
-{% endhighlight %}
+```
 
 As in the example above, transform returns the value of the transformed node.
 The returned value is either the result of `before`, the node itself, or the result of `after`.
@@ -260,12 +260,12 @@ It creates a function `next_token` which reads the input character per character
 the next token each time you call it. A token is an instance of `AST_Token`.
 
 For example, if we apply `Tokenizer` like this
-{% highlight javascript %}
+```javascript
 const next_token = tokenizer('var a = 2;')
-{% endhighlight %}
+```
 
 We get the tokens one by one as we call `next_token`
-{% highlight javascript %}
+```javascript
 // Call 1
 AST_Token { type: 'keyword',  value: 'var',  line: 1,  col: 0,  pos: 0 }
 
@@ -280,12 +280,12 @@ AST_Token { type: 'num',  value: 2,  line: 1,  col: 8,  pos: 8 }
 
 // Call 5
 AST_Token { type: 'punc',  value: ';',  line: 1,  col: 9,  pos: 9 }
-{% endhighlight %}
+```
 
 Then, we get an end-of-file token each time call `next_token` 
-{% highlight javascript %}
+```javascript
 AST_Token { type: 'eof',  value: undefined,  line: 1,  col: 10,  pos: 10 }
-{% endhighlight %}
+```
 
 I removed non-relevant properties of `AST_Token` for brievity.
 
@@ -313,7 +313,7 @@ It uses `Tokenizer` to read the input token by token.
 And for each token, it creates a node as an instance of the specific AST type.
 
 For example, when the token is string literal, `Parser` creates an `AST_String`:
-{% highlight javascript %}
+```javascript
 const token = next_token()
 
 if (token.type === "string") {
@@ -324,7 +324,7 @@ if (token.type === "string") {
       quote : token.quote
   })
 }
-{% endhighlight %}
+```
 
 
 ## Minifier

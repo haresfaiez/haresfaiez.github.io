@@ -69,18 +69,18 @@ allows for inappropriate interpretation of values.
 
 An even number, for example, can be specified as an integer. We could have:
 
-{% highlight javascript %}
+```javascript
 Integer two  = new Integer(2);
 Integer four = new Integer(4);
-{% endhighlight %}
+```
 
 When we use those variables, we will not have a guarentee
 that either of them is an even number.
 The signature of the client will be like this:
 
-{% highlight javascript %}
+```javascript
 accept(Integer anEvenNumber)
-{% endhighlight %}
+```
 
 There is a waste of knowledge.
 That turns out to be a source of bugs as the signature of the client
@@ -96,16 +96,16 @@ I see it as a subtle form of the hungarian notation.
 
 Let's think now about modeling even numbers this way:
 
-{% highlight javascript %}
+```javascript
 EvenNumber two  = new EvenNumber(1);
 EvenNumber four = new EvenNumber(2);
-{% endhighlight %}
+```
 
 The "accept" procedure will be, then:
 
-{% highlight javascript %}
+```javascript
 accept(EvenNumber itsRole)
-{% endhighlight %}
+```
 
 And now, the context of the initial computation of the numbers may not be required
 for the maintainer of the latter procedure.
@@ -114,10 +114,10 @@ The required aspect of it, that of the nature of the numbers is well communicate
 
 And, yes, we could just use EvenNumber as a wrapper, like this:
 
-{% highlight javascript %}
+```javascript
 EvenNumber two  = new EvenNumber(2);
 EvenNumber four = new EvenNumber(4);
-{% endhighlight %}
+```
 
 As always, it is a trade-off where the use of the structure influences its
 implementation, wich itself changes as the software grows.

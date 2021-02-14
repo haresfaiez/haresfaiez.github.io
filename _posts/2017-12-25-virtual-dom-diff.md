@@ -55,12 +55,12 @@ that, when applied in order, transforms the source into the destination.
 The output is a Json object containing the source virtual DOM element
 and an array of transformations.
 
-{% highlight javascript %}
+```javascript
 difference =
   { source
   , transformations
   }
-{% endhighlight %}
+```
 
 There are 7+1 types for **Transformation**:
 
@@ -100,13 +100,13 @@ The destination can be of any type.
 **Insert** differs from other transformations such as **Node**, **Text**, and **Widget**
 in the effect during the patch phase.
 **Insert** triggers a
-{% highlight javascript %}
+```javascript
 parent.appendChild
-{% endhighlight %}
+```
 operation, while the others result in a
-{% highlight javascript %}
+```javascript
 parent.replaceElement
-{% endhighlight %}
+```
 taking the primitive source element as an argument.
 
 ### Order
@@ -135,7 +135,7 @@ When the source and the destination are similar, "virtual-dom" compares their pr
 
 So for an image element, we might have the following virtual DOM element:
 
-{% highlight javascript %}
+```javascript
 Logo =
 { type      : "VNode"
 , properties:
@@ -143,7 +143,7 @@ Logo =
     alt: "Company name"
   }
 }
-{% endhighlight %}
+```
 
 There are three types of properties:
 
