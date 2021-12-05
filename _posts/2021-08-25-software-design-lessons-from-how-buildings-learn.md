@@ -23,15 +23,7 @@ are common interests.
 ## Feedback
 > Inhabit early, build forever.
 
-Stewart tells the story of the Bundestag (the German Congress) 1992 relocation.
-The new building had a sound system installed to eliminate problems of feedback and volume
-adjustments.
-But, during the first meeting, this system turned itself down to an inaudible whisper as
-the sound was reflecting off the surrounding glass that the only feedback-free level
-the sound systems' computer could find was a faint murmur.
-
-This is a story among many.
-People often repaint a wall with a different color after painting half of it
+People often repaint a wall with a different color after painting half of it,
 and move home offices to basements to enjoy some tranquility.
 
 Some of these situations happened because designers delayed feedback until the building is done,
