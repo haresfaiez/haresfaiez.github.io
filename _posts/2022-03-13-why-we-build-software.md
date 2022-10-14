@@ -9,27 +9,28 @@ tags:     featured
 It all started when the quinqueremes took over the Mediterranean.
 The Greeks tried to model human reasoning.
 They laid the foundation of logic.
-Leibniz, Bool, Hilbert, and many others later used that basis to make the progress
-toward higher-order logic.
-Yet, none of these advancements has been able to mirror human reasoning.
+Leibniz, Bool, Hilbert, and many others later,
+starting from those foundations, made the progress toward higher-order logic.
+But, None of these advancements did mirror human reasoning.
 
-Charles Babbage and Ada Lovelace, on the other side of Europe, looked
-forward to outsourcing repetitive tasks to machines.
-They wanted to automate the resolution of sophisticated equations.
-The means at the time allowed them to build machines based on mechanical engines.
+Charles Babbage and Ada Lovelace, on the other side of Europe, wanted
+also to imitate human reasoning.
+They tried to outsource repetitive tasks to machines.
+They focused on automating the resolution of sophisticated equations using
+simple logical instructions.
+Using the means at the time, they built machines based on mechanical engines.
 Those early computers worked through manual labor.
 
-Since then, people have been looking forward to machines that not only
-follow mechanically-encoded processes
-but also interpret descriptions of which processes to follow.
-Alan Turing described an automaton to answer that.
+Since then, people started looking for machines that not only
+follow mechanically-encoded processes,
+but that also interpret descriptions of which processes to follow.
+Alan Turing described an automaton that answers this.
 He specified a set of rules. If a machine follows them, it will be able to execute
 any list of logical instructions.
 
 When the transistors appeared and the gap between logic and electronics collapsed,
 Von Neumann and his contemporaries built approximates of what Turing imagined.
 Computers today are the evolution of those attempts.
-Yet, none of those machines has been able to match human reasoning.
 
 A series of inventions then led to bitmapped screens.
 Visual output pushed people into thinking differently.
