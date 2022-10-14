@@ -9,9 +9,8 @@ tags:     featured
 It all started when the quinqueremes took over the Mediterranean.
 The Greeks tried to model human reasoning.
 They laid the foundation of logic.
-Leibniz, Bool, Hilbert, and many others later,
-starting from those foundations, made the progress toward higher-order logic.
-But, None of these advancements mirror human reasoning.
+Leibniz, Bool, Hilbert, and many others later made the progress toward higher-order logic.
+But, none of these advancements mirror human reasoning.
 
 Charles Babbage and Ada Lovelace, on the other side of Europe, wanted
 also to imitate human reasoning.
