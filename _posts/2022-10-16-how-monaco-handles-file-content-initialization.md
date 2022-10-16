@@ -2,7 +2,7 @@
 layout:   post
 comments: true
 title:    "How Monaco handles file content: Initialization"
-date:     2022-10-16 00:00:00 +0100
+date:     2022-10-16 12:02:00 +0100
 tags:     featured
 ---
 
