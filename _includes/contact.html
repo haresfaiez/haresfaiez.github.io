@@ -35,6 +35,15 @@
   </li>
   {% endif %}
 
+  {% if site.letterboxd_handle %}
+  <li>
+    <a class="item" href="https://letterboxd.com/{{ site.letterboxd_handle }}/films/">
+      <i class="fa-solid fa-film top"></i>
+      <span>Letterboxd</span>
+    </a>
+  </li>
+  {% endif %}
+
   {% if site.instagram_handle %}
   <li>
     <a class="item" href="https://instagram.com/{{ site.instagram_handle }}">
