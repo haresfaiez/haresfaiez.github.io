@@ -1,55 +1,213 @@
+# How Monaco core handle file content
+- // copy from below where _buffer is stored
+- TextModel.buffer is an instance of ITextBuffer
+export interface ITextBuffer extends IReadonlyTextBuffer {
+	setEOL(newEOL: '\r\n' | '\n'): void;
+	applyEdits(rawOperations: ValidAnnotatedEditOperation[], recordTrimAutoWhitespace: boolean, computeUndoEdits: boolean): ApplyEditsResult;
+}
+- _bufferDisposable has the type IDispose, which contain only one method, dispose
+- _options contais source rules:
+export class TextModelResolvedOptions {
+	_textModelResolvedOptionsBrand: void = undefined;
+
+	readonly tabSize: number;
+	readonly indentSize: number;
+	readonly insertSpaces: boolean;
+	readonly defaultEOL: DefaultEndOfLine;
+	readonly trimAutoWhitespace: boolean;
+	readonly bracketPairColorizationOptions: BracketPairColorizationOptions;
+
+- in the costructor also, we use the buffer to create helper objects
+
+this._bracketPairs = this._register(new BracketPairsTextModelPart(this, this._languageConfigurationService));
+this._guidesTextModelPart = this._register(new GuidesTextModelPart(this, this._languageConfigurationService));
+this._tokenizationTextModelPart = new TokenizationTextModelPart(
+			this._languageService,
+			this._languageConfigurationService,
+			this,
+			this._bracketPairs,
+			languageId
+		);
+
+
+which are defined as
+	private readonly _tokenizationTextModelPart: TokenizationTextModelPart;
+	private readonly _bracketPairs: BracketPairsTextModelPart;
+	private readonly _guidesTextModelPart: GuidesTextModelPart;
+
+
+- BracketPairTree creates an ast for brackets if possible (there's a limit for the number of lines)
+						new BracketPairsTree(this.textModel, (languageId) => {
+							return this.languageConfigurationService.getLanguageConfiguration(languageId);
+						})
+						
+export class BracketPairsTree extends Disposable {
+	/*
+		There are two trees:
+		* The initial tree that has no token information and is used for performant initial bracket colorization.
+		* The tree that used token information to detect bracket pairs.
+
+		To prevent flickering, we only switch from the initial tree to tree with token information
+		when tokenization completes.
+		Since the text can be edited while background tokenization is in progress, we need to update both trees.
+	*/
+		private initialAstWithoutTokens: AstNode | undefined;
+	private astWithTokens: AstNode | undefined;
+
+BracketPairsTree is a helper? class/object. It's instantiated when needed, each time the barckets are updated
+	private updateBracketPairsTree() {
+		if (this.bracketsRequested && this.canBuildAST) {
+			if (!this.bracketPairsTree.value) {
+				this.bracketPairsTree.value = createDisposableRef(
+					store.add(
+						new BracketPairsTree(this.textModel, (languageId) => {
+							return this.languageConfigurationService.getLanguageConfiguration(languageId);
+						})
+					),
+					store
+				);
+- updateBracketPairsTree is called from many locations
+constructor/handleDidChangeOptions/handleDidChangeLanguage/
+	/**
+	 * Returns all bracket pairs that intersect the given range.
+	 * The result is sorted by the start position.
+	*/
+	public getBracketPairsInRange(range: Range): BracketPairInfo[] {
+/getBracketPairsInRangeWithMinIndentation/getBracketsInRange/findPrevBracket/findNextBracket
+
+- TextModel.TokenizationTextModelPart contains a property backgroundTokenizationState that directs the ast
+building? operation for a fast initial feedback and colorization, then a thougouht analysis
+of the source.
+defined as:
+export const enum BackgroundTokenizationState {
+	Uninitialized = 0,
+	InProgress = 1,
+	Completed = 2,
+}
+this state is declared and managed like this:
+	private _backgroundTokenizationState = BackgroundTokenizationState.Uninitialized;
+	public get backgroundTokenizationState(): BackgroundTokenizationState {
+		return this._backgroundTokenizationState;
+	}
+	private handleTokenizationProgress(completed: boolean) {
+		if (this._backgroundTokenizationState === BackgroundTokenizationState.Completed) {
+			// We already did a full tokenization and don't go back to progressing.
+			return;
+		}
+		const newState = completed ? BackgroundTokenizationState.Completed : BackgroundTokenizationState.InProgress;
+		if (this._backgroundTokenizationState !== newState) {
+			this._backgroundTokenizationState = newState;
+			this.bracketPairsTextModelPart.handleDidChangeBackgroundTokenizationState();
+			this._onBackgroundTokenizationStateChanged.fire();
+		}
+	}
+
+- ?
+ViewModelImpl: tokenizeViewPort(visiblerange)
+-> TokenizationTextModelPart: tokenizeViewPort
+	public tokenizeViewport(
+		startLineNumber: number,
+		endLineNumber: number
+	): void {
+		startLineNumber = Math.max(1, startLineNumber);
+		endLineNumber = Math.min(this._textModel.getLineCount(), endLineNumber);
+		this._tokenization.tokenizeViewport(startLineNumber, endLineNumber);
+	}
+-> TextModelTokens: tokenizeViewport (..., this._isTokenizationComplete())
+ // _isTokenizationComplete here??
+-> TokenizationTextModelPart: setTokens -> handleTokenizationProgress(completed?)
+
+- ??			       difference between initialAstWithoutTokens and astWithTokens??
+- usually used as
+getDecorationsInRange
+// ...
+		const bracketsInRange = this.textModel.bracketPairs.getBracketsInRange(range);
+		for (const bracket of bracketsInRange) {
+			result.push({
+				id: `bracket${bracket.range.toString()}-${bracket.nestingLevel}`,
+				options: {
+					description: 'BracketPairColorization',
+					inlineClassName: this.colorProvider.getInlineClassName(
+						bracket,
+						this.colorizationOptions.independentColorPoolPerBracketType
+					),
+				},
+--->
+	public getBracketsInRange(range: Range): BracketInfo[] {
+// ...
+		const node = this.initialAstWithoutTokens || this.astWithTokens!;
+		collectBrackets(node, lengthZero, node.length, startOffset, endOffset, result, 0, new Map());
+--->
+else if (node.kind === AstNodeKind.Bracket) {
+		const range = lengthsToRange(nodeOffsetStart, nodeOffsetEnd);
+		result.push(new BracketInfo(range, level - 1, 0, false));
+	}
+
+- tokenizationTextModelPart
+- in the constructor we initialize
+		this._tokens = new ContiguousTokensStore(
+			this._languageService.languageIdCodec
+		);
+		this._semanticTokens = new SparseTokensStore(
+			this._languageService.languageIdCodec
+		);
+		this._tokenization = new TextModelTokenization(
+			_textModel,
+			this,
+			this._languageService.languageIdCodec
+		);
+- ContiguousTokensStore: Represents contiguous tokens in a text model?
+- SparseTokensStore: Represents sparse tokens in a text model?
+- TextModelTokenization:
+
+
+
+
+
+
+- Tokenization?
+- guidesTextModelPart?
+- class CodeEditorWidget?
+- 		this._decorationProvider = this._register(new ColorizedBracketPairsDecorationProvider(this));?
+
+
+
+
 - Monaco uses a core and a set of plugins
 - All code is in typescript.
-- `monace-core` is defined in `vscode` repository
-- `var model = monaco.editor.createModel('', 'plaintext') `
-creates an editor model.
+- `monace-core` is defined in `vscode` repository, https://github.com/opensumi/monaco-editor-core
+- the core is used by this editor, https://github.com/microsoft/monaco-editor
+- which you can try here: https://microsoft.github.io/monaco-editor/index.htmlOB
 
-# Editor instance
+# Model
+- this model is to be passed later to a Monaco Editor instance that adds it to a webpage
+```
+monaco.editor.create(document.getElementById(containerId), { model: model });
 
-## Mode
-- language?
-- `ModeService`, `common/modes` `common/modes/*ProviderRegistery`
-
-## Model
+```
+- a model is usually managed by an Editor instance, for example an instance of StandaloneEditor
+- When attaching a model to an editor, codeEditorWidget.ts/StandaloneEditor/_attachModel:
+- an editor instance is an editor model: ITextModel
+- createModel(language, url) -> ITextModel, which is ModelData.model == TextModel
+- a model/instance has a unique id, usually the uri of the opened file
 - tab? session? window? ...
 - TextModel? has a mode?
 - TextModelTokenization?
-- To attach a created model to an editor instance
-```
-		model = monaco.editor.createModel(value, mode);
-		editor.setModel(model);
-```
-
-- Creation
-```
-/**
- * Create a new editor model.
- * You can specify the language that should be set for this model or let the language be inferred from the `uri`.
- */
-export function createModel(value: string, language?: string, uri?: URI): ITextModel {
-```
-
-This usually returns
-```
-return StaticServices.modelService.get().createModel(value, StaticServices.modeService.get().create(language), uri)
-```
 - Creating a new model is creating a new `ModelData`:
-```
-createModel() {
-//...
-const model: TextModel = new TextModel(value, options, languageIdentifier, resource);
-const modelId = MODEL_ID(model.uri);
-const modelData = new ModelData(
-	model,
-	(model) => this._onWillDispose(model),
-	(model, e) => this._onDidChangeLanguage(model, e)
-);
-//...
-modelData.setLanguage(languageSelection); // languageSelection = StaticServices.modeService.get().create(language)
-```
 - `TextModel` has a buffer for the code string
+- in the contstructuor it gets:
+source: string | model.ITextBufferFactory
+//...
+const { textBuffer, disposable } = createTextBuffer(source, creationOptions.defaultEOL);
+	this._buffer = textBuffer;
+	this._bufferDisposable = disposable;
+		this._options = TextModel.resolveOptions(this._buffer, creationOptions);
+
+
+- ?? all the file content or just the visible part?
 ```
-this._buffer
+private _buffer: model.ITextBuffer;
+
 ```
 -- checks whether first char is UTF8_BOM_CHARACTER
 -- collect line starts (offsets of all CR, LF, CRLF)
@@ -60,50 +218,11 @@ new PieceTreeTextBuffer(chunks, this._bom, eol, this._containsRTL, this._isBasic
 ```
 -- begin tokenization (background tokenization?)
 
+## Mode
+- language?
+- `ModeService`, `common/modes` `common/modes/*ProviderRegistery`
 
 ## Editor instance
-- `StandaloneEditor` vs. `StandaloneCodeEditor`?
-- model is used to create editor instance
-- standalone
-- In `StandaloneCodeEditor`, we update the editor model
-```
-let _model: ITextModel | null | undefined = options.model;
-// ...
-let model: ITextModel | null;
-if (typeof _model === 'undefined') {
-	model = (<any>self).monaco.editor.createModel(options.value || '', options.language || 'text/plain');
-	this._ownsModel = true;
-} else {
-	model = _model;
-	this._ownsModel = false;
-}
-
-this._attachModel(model);
-if (model) {
-	let e: IModelChangedEvent = {
-		oldModelUrl: null,
-		newModelUrl: model.uri
-	};
-	this._onDidChangeModel.fire(e);
-}
-```
-
-
-- `this._onDidChangeModel.fire(e)` fires model update listeners
--- modes.CompletionProviderRegistry.has(model
-
-
--  `StandaloneCodeEditor` > `CodeEditorWidget`
--> attachModel
-```
-const viewModel = new ViewModel(
-	this._id,
-	this._configuration,
-	model,
-	DOMLineBreaksComputerFactory.create(),
-	MonospaceLineBreaksComputerFactory.create(this._configuration.options),
-	(callback) => dom.scheduleAtNextAnimationFrame(callback)
-);
 // ...
 const cursor = new Cursor(this._configuration, model, viewModel);
 // ...

@@ -12,3 +12,14 @@
      */
 ```
 - Theia uses PhosphorJS to manage widgets
+
+
+# source code
+- key files:
+/workspaces/theia/packages/core/src/browser/browser.ts
+/workspaces/theia/examples/playwright/src/theia-text-editor.ts
+
+
+
+# Editor structure
+- container div with children div as lines (div per line, with span children, token as span, space/white space as span)
