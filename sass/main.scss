@@ -15,9 +15,10 @@
 @include foundation-button;
 @include foundation-forms;
 
-$fa-font-path: "/sass/fonts/fontawesome" !default;
+$fa-font-path: "/sass/fontawesome/webfonts" !default;
 @import "fontawesome/scss/fontawesome";
 @import "fontawesome/scss/brands";
+@import "fontawesome/scss/solid";
 
 @import "custom/color";
 @import "custom/typography";
