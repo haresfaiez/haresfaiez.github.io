@@ -218,16 +218,3 @@ As in both situations, we don't know the length delta difference.
 and a difference in the line count.
 It adds the deltas to `lf_left` and `size_left` of the parents recursively as long as
 the parents are left-side children of their parents.
-
-
-## Cache
-
-At the end of both delete and insert operations, we call this._searchCache.validate??
-
-- When we update search cache?
-- why do we nede/use this._lastChangeBufferPos?
-the cache is an array of cache entries. Each entry contains mainly a node, its first
-character offset in the whole buffer.
-This cache can be used to fasten the operation of getting the node responsible
-for a given offset in the buffer whitout iterating over the whole tree.
-when the cache is updated?
