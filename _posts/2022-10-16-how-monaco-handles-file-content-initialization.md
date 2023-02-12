@@ -7,7 +7,7 @@ tags:     featured
 ---
 
 [Monaco](https://github.com/microsoft/monaco-editor) is an open-source online editor.
-You can try it [here](https://microsoft.github.io/monaco-editor/index.html).
+You can try it [here](https://microsoft.github.io/monaco-editor/).
 Its core is quite extensible.
 Keeping that in mind, contributors made interesting decisions to provide fluid experiences.
 The core creates a minimal editor,
