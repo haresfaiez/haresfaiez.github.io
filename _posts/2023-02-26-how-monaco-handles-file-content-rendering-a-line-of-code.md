@@ -23,7 +23,7 @@ When scrolling, the scrollbar component detects the mouse wheel event and emits 
 The lines component handles this event and shows the new lines.
 
 
-# The big picture
+## The big picture
 `ViewModel` is a thin layer around the text model.
 It references currently visible lines, scroll level (first visible line), cursor location (line and column),
 and selections.
@@ -57,7 +57,7 @@ then using the top offset and the height of the editor
 to find the first and the last line numbers.
 
 
-# Rendering lines
+## Rendering lines
 The `ViewLines` component manages DOM elements for source code lines.
 
 Rendering this line of code:
@@ -66,7 +66,7 @@ private lineColor: string;
 ```
 
 gives this HTML output:
-```HTML
+```html
 <div style="top: 396px; height: 18px;" class="view-line">
     <span>
         <span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -148,7 +148,7 @@ by setting [`style.top`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLEl
 and [`style.height`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style).
 
 
-# Creating the viewport
+## Creating the viewport
 There is one global `View` and one global `ViewModel`.
 Then, there are component-specific `View` and `ViewModel` classes.
 The creation of `viewport` is a sample of how `View` and `ViewModel` collaborate.
@@ -228,7 +228,7 @@ They might contain components like
 [code lens descriptors](https://code.visualstudio.com/blogs/2017/02/12/code-lens-roundup).
 
 
-# Code for writing code
+## Code for writing code
 When we click and start typing,
 many components contribute to the movement of the cursor
 and to the creation of HTML elements for the tokens we write.
@@ -241,7 +241,7 @@ This `div` is positioned behind the lines.
 Styles, such as border and background, are added there for highlight.
 
 A focused line can be:
-```HTML
+```html
 <div style="position: absolute; top: 18px; width: 100%; height: 18px; ">
     <div style="
         position: absolute;
@@ -270,7 +270,7 @@ A non-focused line `div` is usually empty.
 
 `ViewCursors` manages cursor position.
 Its HTML element looks like this:
-```HTML
+```html
 <div
     style="position: absolute;"
     >
@@ -295,7 +295,7 @@ Its HTML element looks like this:
 `TextAreaHandler` manages a `textarea` to receive what we type.
 This element changes position as the cursor moves.
 When we click at the beginning of the second line, the element will look like this:
-```HTML
+```html
 <textarea
     data-mprt="6"
     autocorrect="off"
