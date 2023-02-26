@@ -1,0 +1,243 @@
+
+
+Here's highlights from `View` constructor:
+```typescript
+this._overflowGuardContainer = createFastDomNode(document.createElement('div'));
+this.domNode = createFastDomNode(document.createElement('div'));
+this._linesContent = createFastDomNode(document.createElement('div'));
+this._scrollbar = new EditorScrollbar(this._context, this._linesContent, this.domNode, this._overflowGuardContainer);
+this._viewParts.push(this._scrollbar);
+this._viewLines = new ViewLines(this._context, this._linesContent);
+this._linesContent.appendChild(this._viewLines.getDomNode());
+this._overflowGuardContainer.appendChild(this._scrollbar.getDomNode());
+this.domNode.appendChild(this._overflowGuardContainer);
+```
+
+And here's the main logic of `View#render`:
+```typescript
+public render(): void {
+    // Force everything to render...
+    this._viewLines.forceShouldRender();
+    for (const viewPart of this._viewParts) {
+        viewPart.forceShouldRender();
+    }
+
+    this._flushAccumulatedAndRenderNow();
+}
+```
+
+There, the first first renders a range of lines by calling `ViewLines.renderText(viewport)`.
+Then, it renders other view parts by calling `ViewPart.render(viewport)` for each one.
+
+
+```typescript
+const partialViewport = viewLayout.getLinesViewportData();
+viewModel.setViewport(
+    partialViewport.startLineNumber,
+    partialViewport.endLineNumber,
+    partialViewport.centeredLineNumber
+);
+const viewport = new ViewportData(
+    this._selections,
+    partialViewport,
+    viewLayout.getWhitespaceViewportData(),
+    viewModel
+);
+```
+
+
+The main `div` is rendered behind the lines `div` as:
+```HTML
+<div
+    class="view-overlays"
+    style="position: absolute; top: 0px; height: 0px; width: 605px;"
+    role="presentation"
+    aria-hidden="true"
+    >
+```
+
+
+
+
+`View` adds the component inside its constructor:
+```typescript
+const contentViewOverlays = new ContentViewOverlays(/*...*/);
+this._viewParts.push(contentViewOverlays);
+contentViewOverlays.addDynamicOverlay(new SelectionsOverlay(/*...*/));
+contentViewOverlays.addDynamicOverlay(new IndentGuidesOverlay(/*...*/));
+//...
+this._linesContent.appendChild(contentViewOverlays.getDomNode());
+```
+
+`ViewCursors` is added inside `View` constructor like this:
+```typescript
+this._viewCursors = new ViewCursors(/*...*/);
+this._viewParts.push(this._viewCursors);
+// ...
+this._linesContent.appendChild(this._viewCursors.getDomNode());
+```
+
+
+It's added in `View` constructor like this:
+```typescript
+this._textAreaHandler = new TextAreaHandler(/*...*/);
+this._viewParts.push(this._textAreaHandler);
+// ...
+this._overflowGuardContainer.appendChild(this._textAreaHandler.textArea);
+```
+
+
+
+
+
+
+## TextArea after typing
+TextAreaHandler/constructor: onst textAreaWrapper = this._register(new TextAreaWrapper(thi
+-> TextAreaWrapper/attribute:  onInput = <Event<InputEvent>>this._register(new DomEmitter(this._actual, 'input')).ev
+-> TextAreaInput/this._register(this._textArea.onInput: TextAreaState.readFromTextArea, TextAreaState.deduceInput, this._onType.fire
+-> TextAreaHandler/this._register(this._textAreaInput.onType: this._viewController.type(e.text);
+-> CodeEditorWidget/_createView/type
+-> CodeEditorWidget/_type
+-> ViewModelImpl/type***
+-> ViewModelImpl/_executeCursorEdit
+-> Cursor/type: while (offset < len) { ... strings.nextCharLength(text, offset);text.substr(offset, charLength);this._executeEditOperation,offset += charLength
+
+-> CursorTypeOperation/typeWithInterceptors: for (let i = 0, len = se/new ReplaceCommand(selections[i], ch);/ new EditOperationResult(opType, commands
+
+-> CommandExecutor.executeCommands
+
+
+
+
+# Unused
+-> ViewModelImpl/type***
+-> Cursor/executeCommand,type
+-> executeEdit
+-> changeIfNecessary
+-> emit cursor event
+
+## TextArea changes position
+
+change of this.textArea.domNode.scrollTop/scrollLeft = f(this._visibleTextArea)
+<- TextAreaHandler/_render, TextAreaHandler/_doRender
+<- TextAreaHandler/render, onCompositionStart, onCompositionUpdate, onCompositionEnd (composition is about composite characters)
+<- View/_actualRender
+<- ... View/flushAccumilated...
+
+`TextAreaHandler` constructor defines event handlers for focus and input.
+
+ViewAreaHandler/constructor (		
+    this._register(this._textAreaInput.onFocus(() => {
+			this._context.viewModel.setHasFocus(true);
+		}));
+)
+ViewModelImpl/setHasFocus (this._eventDispatcher.emitOutgoingEvent(new FocusChangedEvent(!hasFocus, hasFocus));)
+ViewModelEventDispatcher/_doConsumeQueue
+View/handleEvents (callse this._scheduleRender)??
+
+ -> ViewEventHandler/handleEvents(event[i].type === viewEvents.ViewEventType.ViewFocusChanged)
+ -> this.onFocusChanged(e) -> this._updateBlinking()
+
+## Click foces render() of TextAreaHandler
+firing viewEvents.ViewCursorStateChangedEvent
+-> ...
+-> EventHandler/handleEvent (sets shouldRender to true)
+
+View/handleEvents
+-> ViewEventHandler/handleEvents
+-> ViewEventHandler/_scheduleRender
+
+... View/flushAccumilated**... -> View/_actualRnder
+-> TextAreaHandler/prepareRender: this._primaryCursorPosition = new Position(this._selections[0].positionLineNumber...
+-> VisibleTextAreaData/prepareRender
+-> (View/_createTextAreaHandlerHelper === TextAreaHandler/_visibleRangeProvider)/visibleRangeForPosition
+
+
+View/_flushAccumulatedAndRenderNow**
+-> rendorNow -> actualRender
+
+## ViewCursorStateChangedEvent
+ViewCursors/_onCursorPositionChanged
+<- ViewCursors/onCursorStateChanged
+<- ViewEventHandler/handeEvent (viewEvents.ViewEventType.ViewCursorStateChanged, handled for ViewCursors,TextAreaHandler,View,ViewLines)
+<- Cursor/_emitStateChangedIfNecessary: eventsCollector.emitViewEvent(new ViewCursorStateChangedEvent(viewSelections, selections));
+<-1** Cursor/_executeEdit <- Cursor/type, endComposition, cut, paste, compositionType, executeCommand, executeCommands
+<-2** Cursor/onModelContentChanged (deprecated)
+<-3** Cursor/setStates <- Cursor/setSelections <- ViewModelImpl/setSelections <- CodeEditorWidget/setPosition,setSelections**,_setSelectionImpl**
+<- ViewModelImpl/setCursorStates
+
+
+MouseHandler/_onMouseDown
+-> MouseDownOperation/start
+-> MouseDownOperation/_dispatchMouse
+-> ViewController/dispatchMouse
+-> ViewController/moveTo: CoreNavigationCommands.MoveTo.runCoreEditorCommand
+-> ViewModel/setCursorStates: (...CursorMoveCommands.moveTo)
+-> CursorController/setStates
+-> CursorController/_emitStateChangedIfNecessary: eventsCollector.emitViewEvent(new ViewCursorStateChangedEvent(viewSelections, selections));
+
+??
+
+click
+....
+-> CursorController/eventsCollector.emitViewEvent(new ViewCursorStateChangedEvent(viewSelections, selections));
+....
+-> ViewModelEventDispatcher/public endEmitViewEvents(): void {
+-> ViewModelEventDispatcher/private _doConsumeQueue(): void {
+-> ViewEventHandler/public handleEvents(events: viewEvents.ViewEvent[]): void {
+-> ViewEventHandler/case viewEvents.ViewEventType.ViewCursorStateChanged: if (this.onCursorStateChanged(e)) {shouldRender = true;}
+-> ViewCursors/public override onCursorStateChanged(e: viewEvents.ViewCursorStateChangedEvent): boolean
+
+
+-----------------------------------------------------------
+## ViewConfigurationChangedEvent
+ViewModelEventDispatcher/public endEmitViewEvents(): void {
+-> ViewModelEventDispatcher/private _doConsumeQueue(): void {
+-> ViewEventHandler/public handleEvents(events: viewEvents.ViewEvent[]): void {
+-> case viewEvents.ViewEventType.ViewConfigurationChanged:if (this.onConfigurationChanged(e)) {shouldRender = true;
+-> ViewCursors/public override onConfigurationChanged(e: viewEvents.ViewConfigurationChangedEvent): boolean {
+## ViewFocusChanged
+<- 		this._eventDispatcher.emitSingleViewEvent(new viewEvents.ViewFocusChangedEvent(hasFocus));
+<- ViewModelImpl/setHasFocus
+<- this._register(this._textAreaInput.onFocus(() => { this._context.viewModel.setHasFocus(true);
+<- TextAreaHandler/constructor
+<- TextAreaInput/_setHasFocus
+<-1** this._register(this._textArea.onFocus(() => {
+<-2** TextAreaInput/refreshFocusState
+<-3*** TextAreaInput/focusTextArea <- TextAreaHandler/focus <- View/focus
+<-1** CodeEditorWidget/focus
+<-2** View/_createPointerHandlerHelper/focusTextArea // this._pointerHandler = this._register(new PointerHandler(..._createPointerHandlerHelper()));
+<- IPointerHandlerHelper/focusTextArea
+<- TouchHandler/onTap || PointerEventHandler/onTap || MouseHandler/_onMouseDown (no focus called, called only for right click)
+
+MouseHandler/_onMouseDown
+-> ViewController/emitMouseDown
+-> ViewUserInputEvents/emitMouseDown: this.onMouseDown?.(this._convertViewToModelMouseEvent(e));
+-> CodeEditorWidget/_onMouseDown: viewUserInputEvents.onMouseDown = (e) => this._onMouseDown.fire(e);
+
+MouseHandler/_onMouseDown
+<- MouseHandler/constructor: mouseEvents.onMouseDown(this.viewHelper.viewDomNode, (e) => this._onMouseDown(e, capturePointerId))
+   *** viewHelper.viewDomNode: View/constructor/this._pointerHandler = this._register(new PointerHandler(...
+<- EditorMouseEventFactory/onMouseDown/callback 
+(listener on mouse down on viewHelper.viewDomNode)
+
+MouseHandler/_onMouseUp
+-> ViewController/emitMouseUp
+-> ViewUserInputEvents/emitMouseUp
+-> ViewUserInputEvents/onMouseUp: CodeEditorWidget/_createView
+
+## ViewCompositionStart
+??
+ViewCursors/updateBlicking
+<- ViewCursors/onCompositionStart
+<- _eventDispatcher.emitSingleViewEvent(new viewEvents.ViewCompositionStartEvent
+<- ViewModelImpl/onCompositionStart
+<- TextAreaHandler/constructor: this._register(this._textAreaInput.onCompositionStart((e) => {
+
+
+??
+Starttyping: (moves only after starting typing?)
+TextAreaWrapper/this._register(new DomEmitter(this._actual, 'compositionstart')).event
+-> TextAreaInput/this._register(this._textArea.onCompositionUpdate((e) => {
+-> TextAreaHandler/this._register(this._textAreaInput.onCompositionStart
+-> TextAreaHandler/render
