@@ -11,33 +11,33 @@ tags:     featured
 
 Like in chess, we move the pawn taking the bishop out.
 But, they, moving the rook, finish the game.
-When we focus solely on a working implementation and on covering edge cases,
-consistency goes out of sight.
-Thinking of new behavior, we miss that analogous one already exists,
+When we focus on a working implementation and on covering edge cases,
+the coherence of our design goes out of sight.
+Thinking of new behavior, we miss that an analogous one already exists,
 and that we can leverage it.
 Bringing the latter into view leaves usage scenarios and user feedback out.
 
-Cultivating a reflex for stopping regularly and seeking constraints is important.
-It's hard to adopt because it's self-confirming not to.
-This idea of deliberate looking appears wasteful
-in the same way that rewriting code appears a rework.
-We think that if there are violated constraints,
-we would have considered them in the work done already.
-But, it's worth the try.
+As we name something, we have a mental image of what to communicate.
+Later, we go back and think about the same logic within another thought process,
+and the name appears out of place.
+If we stop early and think about the behavior in terms of a wider context,
+we might move the new code to an adequate module and use expressive names.
 
-The last step in TDD's red-green-refactor is another way of seeing this.
-When we stop and think about improving the design and the next test scope,
-we are reviewing which constraints we violated and which ones we respected.
+The trick is to be aware of the moment when we make a decision.
+Cultivating a habit of stopping regularly and looking for constraints,
+of seeing the big picture,
+and looking at what we're doing from different points of view,
+is important.
 
-Renaming is one of the trickiest refactoring because it's hard to foresee.
-When we name something, we have a mental image of what to communicate.
-Later, we go back and think about the same logic in another thought process,
-and the name appears strange.
+The last step in TDD's red-green-refactor is one way to internalize this.
+We stop and think about improving the design and about the next test scope.
+There, we see the constraints we violated.
 
-We work in multi-functional teams.
-People have different priorities and, from time to time, foreign points of view.
-We don't have physics. We create our vocabulary and our own rules.
-If we don't keep them in check. We'll keep inventing new ones.
-The interactions surface constraints.
-So, when you think the code is ready or when you think the design is done,
-stop and look for the constraints or invite someone to take a look.
+The idea of deliberately analyzing constraints appears wasteful
+in the same way that rewriting code appears as rework.
+But, we don't have physics. We create our vocabulary and our own rules.
+If we don't keep them in check, we'll keep inventing new ones.
+
+When you think the code is ready, stop and look for the constraints.
+Or better, invite someone to take a look.
+People see things from different angles.

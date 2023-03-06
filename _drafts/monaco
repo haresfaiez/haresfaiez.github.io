@@ -1,4 +1,45 @@
 
+## Normalizing line endings
+An important observation is that the code responsible for managing line endings
+is intertwined with the logic. It's not easy to reason about how line endings are normalized.
+Logic is everywhere.
+
+After updating a node,
+if the updated node ends with `CR` and its previous node starts with `LF`,
+we call `validateCRLFWithNextNode`. We pass it to the node preceding a deleted node
+or a node we just deleted the tail.
+
+If the node ends with `CR` and its next node starts with `LF`,
+we call `validateCRLFWithPrevNode`.
+This method is used frequently.
+We call it with the node we just deleted the head,
+with the next node of a just-deleted node,
+with the last inserted node when deleting code from the middle of a node,
+and with the last inserted node after inserting text to node beginning or end.
+
+Both functions remove the last character of the first node
+and the first character in the next one.
+Then, they insert a new node referencing a normalized line ending in between.
+
+
+## Keeping metadata up-to-date
+
+`updateTreeMetadata` and `recomputeTreeMetadata` update
+ancestors' metadata (`lf_left` and `left_size`).
+We call `updateTreeMetadata` if we know the amount with which to change
+the metadata. We call `recomputeTreeMetadata` when we don't.
+
+`recomputeTreeMetadata` looks for an ancestor that's a left-side child
+and updates `lf_left` and `size_left` of its parent.
+We call it with a just-inserted node
+or with a node taking the position of a just-deleted node.
+In both situations, we don't know the differences in text length and we need to calculate it.
+
+`updateTreeMetadata` is called with a node, a delta for the number of added characters,
+and a difference in the number of lines.
+It adds the deltas to ancestors' `lf_left` and `size_left` recursively as long as
+the parents are left-side children.
+
 
 Here's highlights from `View` constructor:
 ```typescript
