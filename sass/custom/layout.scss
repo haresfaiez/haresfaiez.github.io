@@ -32,12 +32,16 @@ h1, h2, h3 {
   margin-bottom: $default-margin;
 }
 
-header menu {
+.menu-container {
   display: flex;
   flex-direction: row-reverse;
   margin-top: 0;
   margin-bottom: 0;
   padding: 0;
+}
+
+.header-button {
+  padding: 0.85em 1em;
 }
 
 section, footer {
@@ -160,7 +164,7 @@ footer {
     margin-bottom: $huge-margin * 2;
   }
 
-  header menu {
+  .menu-container {
     flex-direction: column;
 
     ul {
