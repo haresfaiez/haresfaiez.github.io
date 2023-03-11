@@ -33,11 +33,10 @@ The last step in TDD's red-green-refactor is one way to internalize this.
 We stop and think about improving the design and about the next test scope.
 There, we see the constraints we violated.
 
-The idea of deliberately analyzing constraints appears wasteful
+The idea of deliberately and frequently checking constraints appears wasteful
 in the same way that rewriting code appears as rework.
-But, we don't have physics. We create our vocabulary and our own rules.
+We don't have physics. We create our vocabulary and our own rules.
 If we don't keep them in check, we'll keep inventing new ones.
-
 When you think the code is ready, stop and look for the constraints.
 Or better, invite someone to take a look.
 People see things from different angles.

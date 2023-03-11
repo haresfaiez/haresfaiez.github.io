@@ -6,43 +6,67 @@ date:     2022-03-13 12:00:00 +0100
 tags:     featured
 ---
 
-It all started when the quinqueremes took over the Mediterranean.
-The Greeks tried to model human reasoning.
-They laid the foundation of logic.
-Leibniz, Bool, Hilbert, and many others later made the progress toward higher-order logic.
-But, none of these advancements mirror human reasoning.
+A long time ago, people wanted to understand how the mind works.
+They laid the foundation of [logic](https://en.wikipedia.org/wiki/Logic).
+The idea was to define a system of rules.
+If we follow them, we'll get the truth.
 
-Charles Babbage and Ada Lovelace, on the other side of Europe, wanted
-also to imitate human reasoning.
-They tried to outsource repetitive tasks to machines.
-They focused on automating the resolution of sophisticated equations using
-simple logical instructions.
-Using the means at the time, they built machines based on mechanical engines.
-Those early computers worked through manual labor.
+One problem was, and still is, the starting condition.
+Consider [Dialetheism](https://en.wikipedia.org/wiki/Dialetheism).
+When does a predicate become usable enough to start with?
+And, is the predicate "I am false" true or false?
 
-Since then, people started looking for machines that not only
+Charles Babbage and Ada Lovelace aimed for a simpler target.
+If we consider logic itself as a tool,
+we might say that the two approached the usage of truth-finding tools differently,
+that is mind imitation.
+They wanted to create machines that take over basic computations.
+
+Humans follow specific algorithms, with simple logical instructions,
+simple predicates and simple rules,
+to compute values of polynomial functions.
+[The difference engine](https://en.wikipedia.org/wiki/Difference_engine) automates them.
+The machine is based on mechanical engines.
+It works through manual labor.
+
+People then started to think of machines that not only
 follow mechanically-encoded processes
 but also interpret descriptions of which processes to follow.
-Alan Turing described an automaton that answers this.
-He specified a set of rules. If a machine follows them, it will be able to execute
-any list of logical instructions.
+In the same way that Babbage and Ada's machine gets equations, rules, and predicates,
+and computes a solution, those machines get predicates and rules, follow them, and find a result.
+The question was, "What kind of rules and predicates can we provide?",
+"Can we build a machine to give us the outcome of any formal system we can think of?".
+
+The answer to the second question is "No". Alan Turing answered this.
+We can build machines to interpret a formal system.
+But, we'll never be sure whether it will give us something back.
+We, humans, should make sure the specification is deterministic.
+Turing specified a model, a way of encoding and interpreting a formal system.
+If a machine reifies this model, it will execute any list of logical instructions.
 
 When the transistors appeared and the gap between logic and electronics collapsed,
 Von Neumann and his contemporaries built approximates of what Turing imagined.
-Computers today are the evolution of those attempts.
+These machines stop at a certain moment if the rules we provide do not get a result.
+They have limited capacity and can't run to infinity.
 
-A series of inventions then led to bitmapped screens.
+Computers today are the evolution of those attempts.
+A series of inventions led to bitmapped screens, keyboards, mouses, and hard memories.
+The programmer now specifies a formal system.
+It stores a part of it inside the hard memories.
+It enters the other part using the keyboard and the mouse.
+The computer collects the parts, applies rules to predicates, and infers a bitmap.
+The screen prints it.
+Depending on the input, the rules lead to different bitmaps.
+
 Visual output pushed people into thinking differently.
 Douglas Engelbart and his contemporaries thought of the computer as an extension
 and a magnifier for the human mind.
-This philosophy led to early developments in graphical user interfaces, the
-invention of the mouse, and the first drafts of the internet.
-
-People at Parc a few years later doubled down on those efforts.
-They designed software with concepts as close to how the human mind
-models and understands the world as possible.
+People at Parc a few years later started giving meanings to the bitmaps,
+hints as to what's bigger than zeros and ones.
+They designed software that prints bitmaps with concepts close to how the human mind
+models and understands the world.
 Those concepts can be changed with the same operations the human mind employs
-to change its understandings and its models.
+to change its understanding and its models.
 
 They wanted computers to reflect what's in people's minds.
 Those simulations (as H. Simon calls them) allow them to visualize,
@@ -61,20 +85,21 @@ Steve Jobs said that computers are bicycles for the mind. Their effect
 on improving human decisions will be similar to the improvement wheels had
 on transportation.
 
-In the 60s, computers were effectively automating repetitive tasks.
-The motivation for replacing the human mind surfaced again
-and the early attempts toward artificial intelligence appeared.
-Today, they still get the most attention with evolution such as machine
-learning and neural networks.
+The era of the three models started: what the user gets from the screen,
+what the programmer communicates through the names and the design of the code,
+and what the machine gets as binary programs.
 
-These are tiny glimpses of twisted tales computers like to tell their grandsons.
+In the 60s, the motivation for replacing the human mind surfaced.
+Early attempts toward artificial intelligence appeared.
+Today, they still get the most attention with the evolution of machine
+learning and neural network tools.
+
+In most of these evolutions, software was thought of inside a context broader
+than accomplishing a task for the user.
 People with different motivations improved the state of the art.
 Some tried to formalize and automate reasoning.
 Others tried to outsource repetitive tasks.
 Others thought about computers as mind amplifiers and tried to invent
-new worlds to extend physical reality.
-
-That said, today when you think of building or growing software.
-You start with the aim of automating repetitive tasks,
-replacing the human mind, or creating extensions that augment the mind?
-
+new worlds that extend physical reality.
+That said, today when you think of building or maintaining software.
+What do you have in mind?
