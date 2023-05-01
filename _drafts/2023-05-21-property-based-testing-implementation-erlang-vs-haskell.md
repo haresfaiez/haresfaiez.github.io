@@ -35,6 +35,7 @@ Haskell is typed. Erlang is not.
 ## Quickcheck
 [Quickchek](https://github.com/nick8325/quickcheck) is a Haskell property-based testing library.
 https://begriffs.com/posts/2017-01-14-design-use-quickcheck.html
+https://chrisdone.com/posts/data-typeable/
 
 
 Properties are usually functions that returns boolean values.
@@ -369,387 +370,319 @@ evaluated to produce a `IO (Rose Result)` then`MkRose res ts :: MkRose Result [R
 https://github.com/proper-testing/proper
 PropEr is an Erlang property-based testing library.
 
+An example or usage is:
+```erlang
+prop_enc_dec() ->
+  ?FORALL(Msg, union([binary(), lists:seq(1, 255)]),
+    base64_decode(base64_encode(Msg)) =:= Msg
+  ).
+
+proper:quickcheck(prop_enc_dec(), [{numtests,10000}])
+```
+
+This property will fails as the check is false.
+For example, some binary data may not be valid UTF-8 encoded strings
+and could cause encoding errors.
+Similarly, some integers in the range 1 to 255 may not be valid
+characters in the Base64 encoding table and could cause decoding errors.
+
+The test, or the property if we prefere to hold on the name,
+isi created with `?FORALL` in the example.
+`FORALL` is a macro that creates a property taking a variable name,
+a generator, and a property body.
+The property uses the variable defined by the first argument.
+It's defined by
+```erlang
+-define(FORALL(X,RawType,Prop), proper:forall(RawType, fun(X) -> Prop end)).
+```
+
+Indeed, a property structure in Erlang is a tuple.
+`proper:forall`, for example, is defined as
+```erlang
+forall(RawType, DTest) -> {forall, RawType, DTest}.
+```
+
+*** other values than `forall` can be ...?
 
 
+*** targeted generation/testing `-define(FORALL_TARGETED ...  proper:targeted ...` is ...?
+
+`quickcheck` takes a property and a list of options as input.
+Inside, it calls `test` function, which clean up the global states,
+initialize state variables,
+calls `inner_test`, then clean up the state again.
+
+*** `setup_test`, `finalize_test` are ...?
+*** how does the global attributes change over time...?
+
+*** `cook_test` is ...?
+
+The options contains an attribute `numworkers`.
+```erlang
+%%% <dd> Specifies the number of workers to spawn when performing the tests (defaults to 0).
+%%% Each worker gets their own share of the total of number of tests to perform.</dd>
+```
+`inner_test` normalizes the porperty then depending on this property,
+it either calls `perform` directly when the number of workes is zero,
+or it calls `parallel_perfom`.
+The latter
+```erlang
+Runs PropEr in parallel mode, through the use of workers to perform the tests.
+%% Under this mode, PropEr needs information whether a property is pure or impure,
+%% and this information is passed via an option.
+%% When testing impure properties, PropEr will start a node for every worker that will be
+%% spawned in order to avoid test collisions between them.
+```
+
+`parallel_perform` handles pure properties differently than impure ones.
+The attributes that matters the most in parallel performance are `property_type`, `strategy_fun`, and `stop_nodes`.
+`property_type` is an attirbute that
+```erlang
+%%% <dd> Declares the type of the property, as in pure with no side-effects or state,
+%%% and impure with them. <b>Notice</b>: this option will only be taken into account if
+%%% the number of workers set is greater than 0. In addition, <i>impure</i> properties
+%%% have each worker spawned on its own node.</dd>
+```
+
+`strategy_fun` is an attribute that
+```erlang
+%%% <dd> Overrides the default function used to split the load of tests among the workers.
+%%% It should be of the type {@link strategy_fun()}.</dd>
+```
+and
+```erlang
+%% A function that given a number of tests and a number of workers, splits
+%% the load in the form of a list of tuples with the first element as the
+%% starting test and the second element as the number of tests to do from there on.
+```
+*** what it does...?
+*** how does it keep track of `Passed`, the number of passing tests...?
+
+`stop_nodes` is an attribute that
+```erlang
+%%% <dd> Specifies whether parallel PropEr should stop the nodes after running a property
+%%% or not. Defaults to true.</dd>
+```
+
+Internally, if the function is pure, `parallel_perform` calls `spawn_workers_and_get_result`,
+which in turn spawns a worker?? for each node?? then returns `aggregate_imm_result` result:
+```erlang
+spawn_workers_and_get_result(SpawnFun, WorkerArgs) ->
+    WorkerList = lists:map(SpawnFun, WorkerArgs),
+    InitialResult = #pass{samples = [], printers = [], actions = []},
+    aggregate_imm_result(WorkerList, InitialResult),
+```
+
+If it's impure, it also calls `start_nodes` and `ensure_code_loaded` in the beginning,
+and `stop_nodes` at the end.
+*** These three functions ...?
+
+This function takes two arguments, a spawning function and a list of workers.
+`WorkerArgs` is either `StrategyFun(NumTests, NumWorkers)` when the function is pure,
+or `lists:zip(start_nodes(NumWorkers), StrategyFun(NumTests, NumWorkers))` when it's not.
+Both, evaluations are based on the invokation of `StrategyFun` with the number of tests(it`s ...??)
+and the number of workers. Both values are taken from the options.
+*** `start_nodes` ...?
+*** The result of these evaluations are ...?
+
+`SpawnFun` is defined inside `parallel_perform` and it differs depending on the puriy/impurity
+of the property.
+It's called for each element in `WorkerArgs`.
+With a pure property, it's defined as:
+```erlang
+SpawnFun = fun({Start, ToPass}) ->
+              spawn_link_migrate(undefined, fun() -> perform(Start, ToPass, Test, Opts) end)
+           end,
+```
+
+With an impure property, it's defined as:
+```erlang
+SpawnFun = fun({Node, {Start, ToPass}}) ->
+              spawn_link_migrate(Node, fun() -> perform(Start, ToPass, Test, Opts) end)
+          end,
+```
+
+In both cases, it calls `spawn_link_migrate`. Either with a node when the property is impure,
+or without, putting `undefined` instead, when it's pure.
+*** `spawn_link_migrate` creates a new process ...?
+
+*** `aggregate_imm_result` is ...?
+
+*** `maybe_stop_cover_server` and `maybe_start_cover_server` are ...?
+
+We encountered `perform` invokation twice until now.
+One, when the number of workers is zero. `inner_test` calls it.
+Then, when inside `parallel_perform`.
+The first invokation passes in only the test, the total number of tests, and the options.
+The second passes also the number of passing tests.
+This number is returned by the strategy functions.
+In the first call it's passed further as `0`.
+
+`perform` is defined with varying number of arguments.
+The core definition takes 5 arguments.
+In addition to these we talked about above, it takes the number of tests left,
+samples, and printers.
+
+The number of tests left is passed as `NumTests * 5` in the first call,
+when the number of workers is 0.
+In the second, it's `NumTests * 15`.
+Indeed,
+```erlang
+%% When working on parallelizing PropEr initially we used to hit
+%% too easily the default maximum number of tries that PropEr had,
+%% so when running on parallel it has a higher than usual max
+%% number of tries. The number was picked after testing locally
+%% with different values.
+```
+
+Here there are three cases to handle.
+When the number of remaining tries is `0`, when `TriesLeft` is `0`,
+it either returns `{error, cant_satisfy}` or `#pass{...`.
+The result is returned as a sample function `return` expression if
+the number of workers in the options is `0`.
+If not, it sends the result as a message to `From` values,
+which is the value of `parent` attribute in the options.
+`parent` is set to the process that runs the testing. (*** sure ...?)
+
+The next case is when the number of passed tries is equal to the number
+of tries to-pass.
+Here, it usually means the testing succeeded.
+If the number of workers is `0`, it returns a `#pass{...`value.
+If not, it sends a message to the `parent` attribute with a `#pass{...` value.
+*** why calling `check_if_early_fail`...?
+
+The third case is when none of the previous conditions are met.
+Here, the property is checked.
+Both, when the number of workers is `0` or not, `run(Test, Opts)` is called first.
+We'll talk about `run` below.
+For now, let's assume it takes a test and a set of options, and returns
+a run-result, which is defined as
+```erlang
+-type run_result() :: #pass{performed :: 'undefined'}
+		    | #fail{performed :: 'undefined'}
+		    | error().
+```
+
+According to the result of running the test, the function either
+fails, it returns an error or it sends it to the parent process.
+Or, if the result is either `#pass{...` or `{error, rejected}`,
+reduces `TriesLeft` and calls `perform` recursively again.
+
+If the check pasess, it also increases `Passed` during the call,
+and `add_samples`.
+
+*** `add_samples` is ...?
+
+`run` takes a test, options, and optionally a context.
+There are 21 variant where each variant handles a different kind of test.
+Specifically, the first element in the test tuple.
+It's either `exists`, `forall`, `conjunction`, `implies`, `sample`, `whenfail`, ...
+Different definitions handle different values.
+
+*** `run` does ...?
 
 
+*** `Printers` are ...?
+*** what about `printers = MorePrinters` ...?
 
+*** `report_imm_result` and `get_result` are ...?
 
+*** `proper_target` module is ...?
+```erlang
+%%% @doc This module defines the top-level behaviour for Targeted
+%%% Property-Based Testing (TPBT). Using TPBT the input generation
+%%% is no longer random, but guided by a search strategy to increase
+%%% the probability of finding failing input. For this to work, the user
+%%% has to specify a search strategy and also needs to extract
+%%% utility values from the system under test that the search strategy
+%%% then tries to maximize (or minimize).
+```
 
-
+*** `proper_sa` module / simulated annealing is ...?
+```erlang
+%%% @doc This module provides simulated annealing (SA) as search strategy
+%%% for targeted property-based testing. SA is a local search meta-heuristic
+%%% that can be used to address discrete and continuous optimization problems.
+%%%
+%%% SA starts with a random initial input. It then produces a random input in
+%%% the neighborhood of the previous one and compares the fitness of both. If
+%%% the new input has a higher fitness than the previous one, it is accepted
+%%% as new best input. SA can also accepts worse inputs with a certain
+%%% probability.
+```
 
 ## Annex
-*** `unGen` from `gen`, `shriker` is ...?
-After doing some inlining, we get the definition of this `unGen` function:
-```haskell
--- gen :: Gen (b, a) / shrinker :: (b, a) -> [(b, a)] / f :: (b, a) -> prop, m :: QCGen -> Int -> (b, a) / initiallyGenerated :: (b, a)
-unGen r n =
-  let initiallyGenerated = m r1 n
-  in
-    case split r of
-      (r1, r2) ->
-        let MkGen m' = unProperty
-                            $ shrinking shrinker initiallyGenerated (\x -> foldr counterexample (property (f x)) (shw x))
-        in m' r2 n
-```
-First, we split the random number generator `r` into `r1` and `r2`.
-Then, we apply the function from the function input generator with `r1` and `n`.
-Then, we apply `shrinking` to create a `Property` instance.
-We unwrap it and get a `Gen Prop` instance.
-We use this last to compute the result.
-We apply this function with `r2` and `n` to get the final result.
-It takes a `shrinker` as a first argument.
-This is a function that takes a value and tries to build smaller values.
-For example, a shrinker for an array input tries to remove some elements for the array.
-The second argument is the actual value we will test.
-It's generated by `m r n` in the previously.
-The third argument is the property itself.
+```erlang
+parallel_perform(Test, #opts{property_type = pure, numtests = NumTests,
+                             numworkers = NumWorkers, strategy_fun = StrategyFun} = Opts) ->
+    SpawnFun = fun({Start, ToPass}) ->
+                  spawn_link_migrate(undefined, fun() -> perform(Start, ToPass, Test, Opts) end)
+               end,
+    TestsPerWorker = StrategyFun(NumTests, NumWorkers),
+    spawn_workers_and_get_result(SpawnFun, TestsPerWorker);
+parallel_perform(Test, #opts{property_type = impure, numtests = NumTests,
+                             numworkers = NumWorkers, strategy_fun = StrategyFun,
+                             stop_nodes = StopNodes} = Opts) ->
+    TestsPerWorker = StrategyFun(NumTests, NumWorkers),
+    Nodes = start_nodes(NumWorkers),
+    ensure_code_loaded(Nodes),
+    NodeList = lists:zip(Nodes, TestsPerWorker),
+    SpawnFun = fun({Node, {Start, ToPass}}) ->
+                  spawn_link_migrate(Node, fun() -> perform(Start, ToPass, Test, Opts) end)
+               end,
+    AggregatedImmResult = spawn_workers_and_get_result(SpawnFun, NodeList),
+    ok = case StopNodes of
+        true -> stop_nodes();
+        false -> ok
+    end,
+    AggregatedImmResult.
 
-*** `property` is ...?
-We'll study how this instance is created so that we understand what unfolding it means.
-After inlining calling functions, we get:
-```haskell
-property f =
-  -- gen :: Gen (b, a) / shrinker :: (b, a) -> [(b, a)] / f :: (b, a) -> prop
-  again
-    $ MkProperty
-      $ gen >>=
-           \x -> unProperty
-                   $ shrinking shrinker x (\x -> foldr counterexample (property (f x)) (shw x))
-```
-`again` sets `abort` to `False` in the result structure.
-`MkProperty` creates a `Property` instance from a `Gen Prop` intance.
-?? And we set `abort` to `False` so that we execute in the next iteration maybe.?
-`Gen`?{{{
-  `again` here converst a `Testable prop` to a `Property`, wihch is have `unProperty:: Gen Prop`.
-  the second and third definitions means that if we a `Prop` value,
-  then we'll have first a `Testable Prop`, and then a `Testable (Gen Prop)` value.
-  This value is created with `property` call, and have a `unProperty` function.
-  The trick to convert `prop`, not `Prop` with big `P`, value to a `Gen Prop` is in the most-first definiton,
-  exactly in the `fmap`:
-  ```haskell
-  fmap :: Functor f => (a -> b) -> f a -> f b
-  ```
-  here `f` is `Gen`, `a` is `Prop`, and `b` is `Prop` to.
-  `(a -> b)` is `f` above, a function that sets `abort` to `False`.
-  Implementing the `fmap` is the responisiblity of the `Gen` definer.
-  ```haskell
-  instance Functor Gen where
-    fmap f (MkGen h) =
-      MkGen (\r n -> f (h r n))
-  ```
-  In `mapProp`, `unProperty . property` coneverts a property of `prop :: Testable` to `Gen Prop`.
-  `property` converts `prop :: Testable` to `Property` (see the last definition)
-  `unProperty` converts this to `Gen Prop`.
+inner_test(RawTest, Opts) ->
+    #opts{numtests = NumTests, long_result = Long,
+            numworkers = NumWorkers} = Opts,
+    Test = cook_test(RawTest, Opts),
+    ImmResult = case NumWorkers > 0 of
+    true ->
+          Opts1 = case NumWorkers > NumTests of
+              true -> Opts#opts{numworkers = NumTests};
+              false -> Opts
+          end,
+          parallel_perform(Test, Opts1);
+    false ->
+        perform(NumTests, Test, Opts)
+    end,
+      report_imm_result(ImmResult, Opts),
+      {ShortResult,LongResult} = get_result(ImmResult, Test, Opts),
+      case Long of
+        true  -> LongResult;
+        false -> ShortResult
+  end.
 
-  Everything that hsould be tested should be converted first to a `Gen Prop`.
-  That said, the `Prop` we get and convert to `Gen Prop`.
-  This is done in the second definition above, mainly with `return . protectProp $ p`.
-  `p` is the `Prop`, `protectProp` is `protectProp :: Prop -> Prop`.
-  `return` indeed is `return :: Prop -> Gen Prop`,
-  or technically `return :: Monad m => a -> m a`.
-  The monad is `Gen`.
-}}}
+test(RawTest, Opts) ->
+    global_state_init(Opts),
+    Finalizers = setup_test(Opts),
+    Result = inner_test(RawTest, Opts),
+    ok = finalize_test(Finalizers),
+    global_state_erase(),
+    Result.
 
-**** Inline `prop_cyclic` definition further:
-```haskell
-prop_cyclic :: Property
-prop_cyclic =
-  again $
-    MkProperty $
-    (Blind <$> cyclicList) >>= \x ->
-      unProperty $
-      shrinking 
-        (\_ -> [])
-        x
-        (\y ->
-          counterexample
-          (show y) 
-          ((\(Blind xs) -> and $ take 100 $ zipWith (==) xs (drop 2 xs))
-            y)
-        )
-```
-which means
-```haskell
--- | Randomly generates a function of type @'Gen' a -> a@, which
--- you can then use to evaluate generators. Mostly useful in
--- implementing 'promote'.
-delay :: Gen (Gen a -> a)
-delay = MkGen (\r n g -> unGen g r n)
+quickcheck(OuterTest, UserOpts) ->
+  ImmOpts = parse_opts(UserOpts)
+  {Test,Opts} = peel_test(OuterTest, ImmOpts),
+  test({test,Test}, Opts)
+  end.
 
--- | Promotes a monadic generator to a generator of monadic values.
-promote :: Monad m => m (Gen a) -> Gen (m a)
-promote m = do -- m :: Rose (Gen (??Prop))
-  eval <- delay -- eval :: Rose (Gen (??Prop)) -> Rose (??Prop)
-  return (liftM eval m) -- eval :: (a1 -> r), m :: m a1, liftM :: (a1 -> r) -> m a1 -> m r
-  -- Rose (Gen (??Prop)) -> Gen (Rose (??Prop))
+global_state_init(#opts{start_size = StartSize, constraint_tries = CTries,
+			search_strategy = Strategy, search_steps = SearchSteps,
+			any_type = AnyType, seed = Seed, numworkers = NumWorkers} = Opts) ->
+    clean_garbage(),
+    grow_size(Opts),
+    proper_arith:rand_restart(Seed),
+    proper_typeserver:restart(),
+    ok.
 
--- ...
-
--- | Adds the given string to the counterexample if the property fails.
-counterexample :: Testable prop => String -> prop -> Property
-counterexample s = -- s : String
-  let a = MkProperty
-   . fmap (
-      \(MkProp t) -> 
-          MkProp (fmap (\res -> res{ testCase = s:testCase res }) t) -- functor = Rose, f :: Result -> Result
-      ) -- functor = Gen, f :: Prop -> Prop, t :: Rose Result
-   . unProperty
-   . property
-  in
-    a .
-    callback (PostFinalFailure Counterexample $ \st _res -> do
-      s <- showCounterexample s
-      putLine (terminal st) s)
-
--- ...
-
-(:) :: a -> [a] -> [a]
-
----- ME: generates an array with period=2
-cyclicList :: Gen [Int]
-cyclicList = do
-  rec xs <- fmap (:ys) arbitrary --- fmap (Int -> [Int]) (Gen Int) :: Gen [Int]
-      ys <- fmap (:xs) arbitrary --- fmap (Int -> [Int]) (Gen Int) :: Gen [Int]
-  return xs -- xs :: [Int]
-
-cyclicList = do
-  (xs, ys) <- mfix (
-    \ ~(xs, ys) -> -- :: ([Int], [Int])
-       do {
-         xs <- fmap (:ys) arbitrary ; --- :: Gen [Int]
-         ys <- fmap (:xs) arbitrary ; --- :: Gen [Int]
-         return (xs, ys)
-       }
-    ) --- :: Gen ([Int], [Int])
-  return xs
-//...
-mfix :: (a -> m a) -> m a
-mfix :: (([Int], [Int]) -> Gen ([Int], [Int])) -> Gen ([Int], [Int])
-
--- ...
-
-prop_cyclic :: Property
-prop_cyclic =
-  let a = (
-      MkProperty
-      . fmap (
-            mapProp (
-                \(MkProp t) -> MkProp (
-                    fmap (\res -> res{ abort = False }) t -- Rose Result / functor = Rose / f :: Result -> Result
-                  ) -- t :: Rose Result
-              ) -- Prop -> Prop
-          ) -- Gen Prop / functor = Gen / f :: Prop -> Prop / :: Sets abort to False in the Result inside. The Result is inside Rose, which is inside Prop, that is inside Gen. 
-      . unProperty -- Gen Prop
-      . property -- Property
-    ) -- :: Sets abort to False in the Result inside, and wrap again.
-
-
-    pf y = -- y :: Blind (Gen [Int])
-      counterexample
-        (show y) -- String
-        ( (\(Blind xs) -> and $ take 100 $ zipWith (==) xs (drop 2 xs)) y ) -- Bool / y :: Blind (Gen [Int]) -> Bool / True if
-      --- Property (or is it Gen Property ?)
-
-    props y = MkRose 
-      ((unProperty . property . pf) y) [ props x' | x' <- [] ] -- Gen Prop === Gen (MkProp (Rose Result)) // - \x -> [] is shrinker :: a -> [a]
-     -- Rose (Gen ??Prop) === MkRose a [Rose a] | IORose (IO (Rose a))
-     -- y :: Blind (Gen [Int]) -> Rose (Gen (??Prop))
-
-    shrk x = MkProperty (
-        fmap
-          (MkProp . joinRose . fmap unProp) -- Prop -> Prop
-          (promote
-              (props x) -- ??Rose (Gen (??Result)) <<< Rose (Gen (??Prop))
-            ) -- Gen Prop === (Gen (Rose (??Result))) <<< Gen (??(Rose Result)) <<< Gen (Rose (??(Rose Result))) <<< Gen (Rose (??Prop))
-          -- Gen Prop / functor = Gen / f = Prop -> Prop
-      ) -- Property
-       
-
-  in
-    a (
-      MkProperty (
-        (fmap Blind cyclicList) -- Gen (Blind (Gen [Int]))
-            >>= (\x -> unProperty (shrk x)) -- :: (Blind (Gen [Int])) -> Gen Prop
-        -- Gen Prop
-      ) -- Property
-    )
-```
-
-*** why do we need `Blind`
-For example here
-```haskell
-prop_failingTestCase :: Blind (Int -> Int -> Int -> Bool) -> Property
-prop_failingTestCase (Blind p) = ioProperty $ do
-  res <- quickCheckWithResult stdArgs{chatty = False} p
-  let [x, y, z] = failingTestCase res
-  return (not (p (read x) (read y) (read z)))
-```
-
-*** `Gen` definition
-```haskell
--- | A generator for values of type @a@.
---
--- The third-party packages
--- <http://hackage.haskell.org/package/QuickCheck-GenT QuickCheck-GenT>
--- and
--- <http://hackage.haskell.org/package/quickcheck-transformer quickcheck-transformer>
--- provide monad transformer versions of @Gen@.
-newtype Gen a = MkGen{
-  unGen :: QCGen -> Int -> a -- ^ Run the generator on a particular seed.
-                             -- If you just want to get a random value out, consider using 'generate'.
-  }
-//...
-instance Applicative Gen where
-  pure x =
-    MkGen (\_ _ -> x)
-  (<*>) = ap
-//...
-instance Monad Gen where
-  return = pure
-
-  MkGen m >>= k =
-    MkGen (\r n ->
-      case split r of
-        (r1, r2) ->
-          let MkGen m' = k (m r1 n)
-          in m' r2 n
-    )
-
-  (>>) = (*>)
-```
-
-*** `localMin` definition
-Here's a simplified version of the loop
-```haskell
-localMin :: State -> P.Result -> [Rose P.Result] -> IO (Int, Int, Int, P.Result)
-localMin st res ts = do
-  ts' <- tryEvaluate ts
-  localMin' st res (either (\_ -> []) id ts')
-
-localMin' :: State -> P.Result -> [Rose P.Result] -> IO (Int, Int, Int, P.Result)
-localMin' st res [] = localMinFound st res
-localMin' st res (t:ts) = do
-  MkRose res' ts' <- protectRose (reduceRose t)
-  res' <- callbackPostTest st res'
-  let st' = if ok res' == Just False
-              then st { numSuccessShrinks = numSuccessShrinks st + 1, numTryShrinks = 0 }
-              else st { numTryShrinks = numTryShrinks st + 1, numTotTryShrinks = numTotTryShrinks st + 1 }
-  localMin st' res' ts
-```
-
-*** `shrinking` definition
-```haskell
-shrinking shrinker x0 pf = MkProperty (
-    fmap :: (Rose Prop -> Prop) -> Gen (Rose Prop) -> Gen Prop
-                fmap :: (Prop -> Rose Result) -> Rose Prop -> Rose (Rose Result)
-                joinRose :: Rose Rose Result -> Rose Result
-    fmap (MkProp . joinRose . fmap unProp) (promote (props x0))
-  )
- where
-  props :: a -> Rose (Gen Prop)
-  props x =
-    MkRose (unProperty (property (pf x))) [ props x' | x' <- shrinker x ]
-```
-
-*** `forAll` definition helpers
-```haskell
-mapProp :: Testable prop => (Prop -> Prop) -> prop -> Property
-mapProp f = MkProperty . fmap f . unProperty . property
-//...
--- f here mustn't throw an exception (rose tree invariant).
-mapRoseResult :: Testable prop => (Rose Result -> Rose Result) -> prop -> Property
-mapRoseResult f = mapProp (\(MkProp t) -> MkProp (f t))
-//...
-mapTotalResult :: Testable prop => (Result -> Result) -> prop -> Property
-mapTotalResult f = mapRoseResult (fmap f)
-//...
--- | Modifies a property so that it will be tested repeatedly.
--- Opposite of 'once'.
-again :: Testable prop => prop -> Property
-again = mapTotalResult (\res -> res{ abort = False })
-//...
-instance Testable Result where
-  property = MkProperty . return . MkProp . protectResults . return
-
-instance Testable Prop where
-  property p = MkProperty . return . protectProp $ p
-
-instance Testable prop => Testable (Gen prop) where
-  property mp = MkProperty $ do p <- mp; unProperty (again p)
-
-instance Testable Property where
-  property (MkProperty mp) = MkProperty (fmap protectProp mp)
-```
-
-*** exception handling??
-```
--- The story for exception handling:
---
--- To avoid insanity, we have rules about which terms can throw
--- exceptions when we evaluate them:
---   * A rose tree must evaluate to WHNF without throwing an exception
---   * The 'ok' component of a Result must evaluate to Just True or
---     Just False or Nothing rather than raise an exception
---   * IORose _ must never throw an exception when executed
---
--- Both rose trees and Results may loop when we evaluate them, though,
--- so we have to be careful not to force them unnecessarily.
---
--- We also have to be careful when we use fmap or >>= in the Rose
--- monad that the function we supply is total, or else use
--- protectResults afterwards to install exception handlers. The
--- mapResult function on Properties installs an exception handler for
--- us, though.
---
--- Of course, the user is free to write "error "ha ha" :: Result" if
--- they feel like it. We have to make sure that any user-supplied Rose
--- Results or Results get wrapped in exception handlers, which we do by:
---   * Making the 'property' function install an exception handler
---     round its argument. This function always gets called in the
---     right places, because all our Property-accepting functions are
---     actually polymorphic over the Testable class so they have to
---     call 'property'.
---   * Installing an exception handler round a Result before we put it
---     in a rose tree (the only place Results can end up).
-```
-
-*** `Testable` for a `function` is ...?
-```haskell
-instance (Arbitrary a, Show a, Testable prop) => Testable (a -> prop) where
-  property f =
-    propertyForAllShrinkShow arbitrary shrink (return . show) f
-  propertyForAllShrinkShow gen shr shw f =
-    -- gen :: Gen b, shr :: b -> [b], f :: b -> a -> prop
-    -- Idea: Generate and shrink (b, a) as a pair
-    propertyForAllShrinkShow
-      (liftM2 (,) gen arbitrary)
-      (liftShrink2 shr shrink)
-      (\(x, y) -> shw x ++ [show y])
-      (uncurry f)
-      --- === Testable (b, a)/propertyForAllShrinkShow
-
-class Testable prop where
-  propertyForAllShrinkShow :: Gen a -> (a -> [a]) -> (a -> [String]) -> (a -> prop) -> Property
-  propertyForAllShrinkShow gen shr shw f =
-    forAllShrinkBlind gen shr $ \x -> foldr counterexample (property (f x)) (shw x)
-
-
-liftM2 :: (b -> a -> (b, a)) -> Gen b -> Gen a =--> Gen (b, a)
-liftShrink2 :: (b -> [b]) -> (a -> [a])        =--> (b, a) -> [(b, a)] 
-uncurry :: (b -> a -> prop)                    =--> (b, a) -> prop --- (b, a) === f b a
-
-
-
-property f =
-  -- gen :: Gen (b, a) / shrinker :: (b, a) -> [(b, a)] / f :: (b, a) -> prop
-  again
-    $ MkProperty
-      $ MkGen (\r n ->
-              case split r of
-                (r1, r2) ->
-                  let MkGen m' = unProperty
-                                      $ shrinking shrinker (m r1 n) (\x -> foldr counterexample (property (f x)) (shw x))
-                  in m' r2 n
-            ) --- m === ungen :: QCGen -> Int -> Prop === deconstruction of (gen = MkGen Prop)
+global_state_erase() ->
+    proper_typeserver:stop(),
+    proper_arith:rand_stop(),
+    ok.
 ```
