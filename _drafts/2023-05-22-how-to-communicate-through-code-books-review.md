@@ -54,3 +54,5 @@ While writing this, I tried to keep these questions in mind:
 
 # On the Expressive Power of Programming Languages
 
+# The Cathedral and the Bazaar
+

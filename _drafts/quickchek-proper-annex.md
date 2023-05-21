@@ -1,4 +1,15 @@
 ## Annex (Haskell/Quickcheck)
+
+
+Keep in mind that `Prop` and `Property` are different.
+`forAll` is defined as `forAll :: (Show a, Testable prop) => Gen a -> (a -> prop) -> Property`.
+To create a property, we pass a generator and a function whose return type is a `Testable` instance.
+Internally, `forAll` uses these input to create a property generator
+that generate an input using the first argument, passes it to the second argument,
+and generates a result.
+We'll talk more about how this is done later.
+
+
 *** `unGen` from `gen`, `shriker` is ...?
 After doing some inlining, we get the definition of this `unGen` function:
 ```haskell
@@ -372,4 +383,463 @@ property f =
                                       $ shrinking shrinker (m r1 n) (\x -> foldr counterexample (property (f x)) (shw x))
                   in m' r2 n
             ) --- m === ungen :: QCGen -> Int -> Prop === deconstruction of (gen = MkGen Prop)
+```
+
+
+## Annex (PropEr)
+
+`skip_to_next` behaves differently for different structures of the test.
+It's defined as
+```erlang
+-spec skip_to_next(test()) -> stripped_test().
+
+-type stripped_test() :: boolean()
+		       | {proper_types:type(), dependent_test()}
+		       | [{tag(),test()}].
+```
+If the head is `forall` atom, the result a tuple containing
+the proprtey and the type of the proprety function.
+Inside, `fix_shrink` gets the property and the input type from this argument.
+And, it changes it inside the loop when a minimally shrinked failed value is found
+```erlang
+Instance = proper_gen:clean_instance(ImmInstance),
+NewStrTest = force_skip(Instance, Prop),
+```
+`rerun` invokes `run` with `mode = try_shrunk` and `bound = MinImmTestCase`, the list of shrinked values.
+When the proprety head is `forall`, this means rechecking the proprtey with all the result
+of shrinking and returning the result.
+
+
+
+`fix_shrink` main logic is:
+```erlang
+fix_shrink(ImmTestCase, _StrTest, _Reason, Shrinks, 0, _Opts) ->
+    {Shrinks, ImmTestCase};
+fix_shrink(ImmTestCase, StrTest, Reason, Shrinks, ShrinksLeft, Opts) ->
+  case shrink([], ImmTestCase, StrTest, Reason, 0, ShrinksLeft, init, Opts) of
+    {0,_MinImmTestCase} ->
+        {Shrinks, ImmTestCase};
+    {MoreShrinks,MinImmTestCase} ->
+        fix_shrink(MinImmTestCase, StrTest, Reason, Shrinks + MoreShrinks, ShrinksLeft - MoreShrinks, Opts)
+  end.
+```
+
+It gets an array of generated inputs,
+a structure containing the property,
+the failure reason,
+the number of shrinks already done,
+the maximum number of shrinks named,
+and the options structure, the one we pass to `quickcheck` in the first place.
+
+
+This is how `shrink` is called
+```erlang
+shrink([], ImmTestCase, StrTest, Reason, 0, ShrinksLeft, init, Opts)
+```
+It takes the argument we pass to the shrinking function,
+and a state, here `init`, as a seventh argument.
+This state is defined as `proper_shrink:state()`:
+```erlang
+-type state() :: 'init' | 'done' | {'shrunk',position(),state()} | term().
+```
+*** Where do we use each value...?
+
+
+```erlang
+shrink(Shrunk, TestTail, StrTest, _Reason, Shrinks, ShrinksLeft, _State, _Opts) when is_boolean(StrTest)
+					  orelse ShrinksLeft =:= 0
+					  orelse TestTail =:= []->
+    {Shrinks, lists:reverse(Shrunk, TestTail)};
+
+shrink(Shrunk, [RawImmInstance | Rest] = TestTail, {Type,Prop} = StrTest, Reason, Shrinks, ShrinksLeft, State, Opts) ->
+    ImmInstance = case proper_types:find_prop(is_user_nf, Type) of
+                    {ok, true} ->
+                      case proper_types:safe_is_instance(RawImmInstance, Type) of
+                        false ->
+                          CleanInstance = proper_gen:clean_instance(RawImmInstance),
+                          case proper_types:safe_is_instance(CleanInstance, Type) of
+                            true -> CleanInstance;
+                            false -> RawImmInstance
+                          end;
+                        true -> RawImmInstance
+                      end;
+                    {ok, false} -> RawImmInstance;
+                    error -> RawImmInstance
+                  end,
+    {NewImmInstances,NewState} = proper_shrink:shrink(ImmInstance, Type, State),
+    IsValid = fun(I) -> I =/= ImmInstance andalso still_fails(I, Rest, Prop, Reason)  end,
+    case proper_arith:find_first(IsValid, NewImmInstances) of
+        none ->
+            shrink(Shrunk, TestTail, StrTest, Reason, Shrinks, ShrinksLeft, NewState, Opts);
+        {Pos, ShrunkImmInstance} ->
+            (Opts#opts.output_fun)(".", []),
+            shrink(Shrunk, [ShrunkImmInstance | Rest], StrTest, Reason, Shrinks+1, ShrinksLeft-1, {shrunk,Pos,NewState}, Opts)
+    end;
+still_fails(ImmInstance, TestTail, Prop, OldReason) ->
+    Instance = proper_gen:clean_instance(ImmInstance),
+    Ctx = #ctx{mode = try_shrunk, bound = TestTail},
+    case force(Instance, Prop, Ctx, #opts{}) of
+	#fail{reason = NewReason} ->
+	    same_fail_reason(OldReason, NewReason);
+	_ ->
+	    false
+    end.
+
+ %% We don't mind if the stacktraces are different.
+same_fail_reason({trapped,{ExcReason1,_StackTrace1}},
+		 {trapped,{ExcReason2,_StackTrace2}}) ->
+    same_exc_reason(ExcReason1, ExcReason2);
+same_fail_reason({exception,SameExcKind,ExcReason1,_StackTrace1},
+		 {exception,SameExcKind,ExcReason2,_StackTrace2}) ->
+    same_exc_reason(ExcReason1, ExcReason2);
+same_fail_reason({sub_props,SubReasons1}, {sub_props,SubReasons2}) ->
+    length(SubReasons1) =:= length(SubReasons2) andalso
+    lists:all(fun({A,B}) -> same_sub_reason(A,B) end,
+	      lists:zip(lists:sort(SubReasons1),lists:sort(SubReasons2)));
+same_fail_reason(SameReason, SameReason) ->
+    true;
+same_fail_reason(_, _) ->
+    false.
+```
+
+
+
+```erlang
+shrink(ImmInstance, Type, init) ->
+    Shrinkers = get_shrinkers(Type),
+    shrink(ImmInstance, Type, {shrinker,Shrinkers,dummy,init});
+shrink(_ImmInstance, _Type, {shrinker,[],_Lookup,init}) ->
+    {[], done};
+shrink(ImmInstance, Type, {shrinker,[_Shrinker | Rest],_Lookup,done}) ->
+    shrink(ImmInstance, Type, {shrinker,Rest,dummy,init});
+shrink(ImmInstance, Type, {shrinker,Shrinkers,_Lookup,State}) ->
+    [Shrinker | _Rest] = Shrinkers,
+    {DirtyImmInstances,NewState} = Shrinker(ImmInstance, Type, State),
+    SatisfiesAll =
+	fun(I) ->
+	    Instance = proper_gen:clean_instance(I),
+	    proper_types:weakly(proper_types:satisfies_all(Instance, Type))
+	end,
+    {NewImmInstances,NewLookup} =
+	proper_arith:filter(SatisfiesAll, DirtyImmInstances),
+    {NewImmInstances, {shrinker,Shrinkers,NewLookup,NewState}};
+shrink(ImmInstance, Type, {shrunk,N,{shrinker,Shrinkers,Lookup,State}}) ->
+    ActualN = lists:nth(N, Lookup),
+    shrink(ImmInstance, Type,
+	   {shrinker,Shrinkers,dummy,{shrunk,ActualN,State}}).
+```
+
+`parallel_perform` , like `perform`, returns an `imm_result` value.
+The function that calls `perform` or `parallel_perform` handles the result in the same way.
+The return value is the result of calling `spawn_workers_and_get_result`.
+This evaluates to
+```erlang
+spawn_workers_and_get_result(SpawnFun, WorkerArgs) ->
+    WorkerList = lists:map(SpawnFun, WorkerArgs),
+    InitialResult = #pass{samples = [], printers = [], actions = []},
+    AggregatedImmResult = aggregate_imm_result(WorkerList, InitialResult),
+```
+It calls `SpawnFun` with each `WorkerArgs` argument.
+This is diffrent for each of pure and impure functions (see next two sections).
+Then, it aggregates the result and returns it.
+
+Here, the function waits a message.
+The message comes from a worker, its format is `{worker_msg, Result}`.
+`Result` can be `#fail`, `#pass`, or an error tuple.
+It adds the result and calls itself recurively to wait for the next message.
+When, all the messages are received, it returns.
+
+
+### When the property is pure
+Internally, if the function is pure, `parallel_perform` calls `spawn_workers_and_get_result`,
+which in turn spawns a worker?? for each node?? then returns `aggregate_imm_result` result:
+```erlang
+spawn_workers_and_get_result(SpawnFun, WorkerArgs) ->
+    WorkerList = lists:map(SpawnFun, WorkerArgs),
+    InitialResult = #pass{samples = [], printers = [], actions = []},
+    aggregate_imm_result(WorkerList, InitialResult),
+```
+`SpawnFun`, with a pure property, is defined as:
+```erlang
+SpawnFun = fun({Start, ToPass}) ->
+              spawn_link_migrate(undefined, fun() -> perform(Start, ToPass, Test, Opts) end)
+           end,
+```
+`spawn_link_migrate` is defined as
+```erlang
+-spec spawn_link_migrate(node(), fun(() -> 'ok')) -> pid().
+```
+`aggregate_imm_result`is called as `aggregate_imm_result(lists:map(SpawnFun, WorkerArgs), InitialResult)`.
+`WorkerArgs` here is `TestsPerWorker`, the number of tests each worker will handle.
+It's the result of calling the strategy function.
+The first argument is a list of the pids of the spawned workers.
+
+The definition of a test structure is
+```erlang
+%% TODO: Should the tags be of the form '$...'?
+-opaque test() :: boolean()
+	        | {'forall', proper_types:raw_type(), dependent_test()}
+	        | {'exists', proper_types:raw_type(), dependent_test(), boolean()}
+	        | {'conjunction', [{tag(),test()}]}
+	        | {'implies', boolean(), delayed_test()}
+	        | {'sample', sample(), stats_printer(), test()}
+	        | {'whenfail', side_effects_fun(), delayed_test()}
+	        | {'trapexit', fun(() -> boolean())}
+	        | {'timeout', time_period(), fun(() -> boolean())}.
+```
+
+
+`SpawnFun`, with an impure property, is defined as:
+```erlang
+SpawnFun = fun({Node, {Start, ToPass}}) ->
+              spawn_link_migrate(Node, fun() -> perform(Start, ToPass, Test, Opts) end)
+          end,
+```
+
+```erlang
+-type imm_testcase() :: [imm_input()].
+-type imm_input() :: proper_gen:imm_instance() | {'$conjunction',sub_imm_testcases()}.
+
+-type sub_imm_testcases() :: [{tag(),imm_testcase()}].
+-type tag() :: atom().
+
+-type imm_instance() :: proper_types:raw_type()
+		      | instance()
+		      | {'$used', imm_instance(), imm_instance()}
+		      | {'$to_part', imm_instance()}.
+-type instance() :: term().
+-opaque type() :: {'$type', [type_prop()]}.
+-type raw_type() :: type() | [raw_type()] | loose_tuple(raw_type()) | term().
+-type type_prop() ::
+      {'kind', type_kind()}
+    | {'generator', proper_gen:generator()}
+    | {'reverse_gen', proper_gen:reverse_gen()}
+    | {'parts_type', type()}
+    | {'combine', proper_gen:combine_fun()}
+    | {'alt_gens', proper_gen:alt_gens()}
+    | {'shrink_to_parts', boolean()}
+    | {'size_transform', fun((proper_gen:size()) -> proper_gen:size())}
+    | {'is_instance', instance_test()}
+    | {'shrinkers', [proper_shrink:shrinker()]}
+    | ...
+```
+
+The number of tests left is passed as `NumTests * 5` when the number of workers is 0.
+Elsewhere, it's `NumTests * 15`.
+```erlang
+When working on parallelizing PropEr initially we used to hit
+too easily the default maximum number of tries that PropEr had,
+so when running on parallel it has a higher than usual max
+number of tries. The number was picked after testing locally
+with different values.
+```
+At the end, it returns either `#pass` structure, `#fail` structure, or an error.
+
+
+This function takes 6 arguments.
+These are the test, the total number of tests, the options, the number of passing tests,
+the number of tests left, samples, and printers.
+It returns the testing result.
+Testing result is either the `ok` atom, or
+```erlang
+-type imm_result() :: #pass{reason :: 'undefined'} | #fail{} | error().
+```
+Other than that, `perform` is called recursively, launching a new testing iteration each time.
+PropEr calls `run(Test, Opts)` to check the property.
+This function returns a `run_result`, which can be either `#pass`, `#fail`, or `error`.
+
+
+There are 21 overloaded definition of `run`.
+Each variant handles a different kind of test,
+a property tuple with a different first element.
+But, we can see some patterns.
+
+If the first element is `forall`, we have 4 definitions.
+One generates an input and checks the property.
+And, the other three variants are called during shrinking.
+
+`shrink` is called:
+```erlang
+shrink(Bound, Test, Reason, Opts) 
+```
+`shrink` is defined as
+```erlang
+-spec shrink(imm_testcase(), test(), fail_reason(), opts()) -> {'ok',imm_testcase()} | error().
+
+```
+*** `maybe_stop_cover_server` and `maybe_start_cover_server` are ...?
+### Global state
+*** `setup_test`, `finalize_test` are ...?
+It calls `test` function, which clean up the global states,initialize state variables,calls `inner_test`, then clean up the state again.
+*** how does the global attributes change over time...?
+
+*** `cook_test` is ...?
+
+### Printers and reporting
+*** `clean_testcase` does ...?
+*** `?PRINT` macro is ...?
+*** `Printers` are ...?
+*** what about `printers = MorePrinters` ...?
+*** `report_imm_result` is ...?
+
+### Error handling
+*** why calling `check_if_early_fail`...?
+
+*** run -> force -> apply_args -> try apply
+```erlang
+    catch
+	error:ErrReason:RawTrace ->
+	    case ErrReason =:= function_clause
+		 andalso threw_exception(Prop, RawTrace) of
+		true ->
+		    {error, type_mismatch};
+		false ->
+		    Trace = clean_stacktrace(RawTrace),
+		    create_fail_result(Ctx, {exception,error,ErrReason,Trace})
+	    end;
+	throw:'$arity_limit' -> error, arity_limit};
+	throw:{'$cant_generate',MFAs} -> {error, {cant_generate,MFAs}};
+	throw:{'$typeserver',SubReason} -> {error, {typeserver,SubReason}};
+	ExcKind:ExcReason:Trace -> create_fail_result(Ctx, {exception,ExcKind,ExcReason,Trace})
+```
+
+*** run -> proper_gen:safe_generate
+```erlang
+	{error,_Reason} = Error ->
+	    Error
+```
+
+*** perform ->check_if_early_fail()
+
+*** perform -> case run(Test, Opts)
+```erlang
+#fail{} = FailResult ->
+	    Print("!", []),
+        R = FailResult#fail{performed = (Passed + 1) div NumWorkers + 1},
+        From ! {worker_msg, R, self(), get('$property_id')},
+        ok;
+    {error, rejected} ->
+	    Print("x", []),
+	    grow_size(Opts),
+	    perform(Passed, ToPass, TriesLeft - 1, Test,
+		    Samples, Printers, Opts);
+    {error, Reason} = Error when Reason =:= arity_limit
+			      orelse Reason =:= non_boolean_result
+			      orelse Reason =:= type_mismatch ->
+	    From ! {worker_msg, Error, self(), get('$property_id')},
+        ok;
+	{error, {cant_generate,_MFAs}} = Error ->
+	    From ! {worker_msg, Error, self(), get('$property_id')},
+        ok;
+	{error, {typeserver,_SubReason}} = Error ->
+	    From ! {worker_msg, Error, self(), get('$property_id')},
+        ok;
+	Other ->
+        From ! {worker_msg, {error, {unexpected, Other}}, self(), get('$property_id')},
+        ok
+```
+
+*** get_result -> hrink(Bound, Test, Reason, Opts)
+```erlang
+	{error,ErrorReason} = Error ->
+	    report_error(ErrorReason, Opts#opts.output_fun),
+	    {Error, Error}
+```
+
+*** shrink -> fix_shrink
+```erlang
+	{Shrinks,MinImmTestCase} ->
+	    case rerun(Test, true, MinImmTestCase) of
+		#fail{actions = MinActions} ->
+                    report_shrinking(Shrinks, MinImmTestCase, MinActions, Opts),
+		    {ok, MinImmTestCase};
+		%% The cases below should never occur for deterministic tests.
+		%% When they do happen, we have no choice but to silently
+		%% skip the fail actions.
+		#pass{} ->
+                    report_shrinking(Shrinks, MinImmTestCase, [], Opts),
+		    {ok, MinImmTestCase};
+		{error,_Reason} ->
+                    report_shrinking(Shrinks, MinImmTestCase, [], Opts),
+		    {ok, MinImmTestCase}
+	    end
+    catch
+	throw:non_boolean_result ->
+	    Print("~n", []),
+	    {error, non_boolean_result}
+```
+
+```erlang
+parallel_perform(Test, #opts{property_type = pure, numtests = NumTests,
+                             numworkers = NumWorkers, strategy_fun = StrategyFun} = Opts) ->
+    SpawnFun = fun({Start, ToPass}) ->
+                  spawn_link_migrate(undefined, fun() -> perform(Start, ToPass, Test, Opts) end)
+               end,
+    TestsPerWorker = StrategyFun(NumTests, NumWorkers),
+    spawn_workers_and_get_result(SpawnFun, TestsPerWorker);
+parallel_perform(Test, #opts{property_type = impure, numtests = NumTests,
+                             numworkers = NumWorkers, strategy_fun = StrategyFun,
+                             stop_nodes = StopNodes} = Opts) ->
+    TestsPerWorker = StrategyFun(NumTests, NumWorkers),
+    Nodes = start_nodes(NumWorkers),
+    ensure_code_loaded(Nodes),
+    NodeList = lists:zip(Nodes, TestsPerWorker),
+    SpawnFun = fun({Node, {Start, ToPass}}) ->
+                  spawn_link_migrate(Node, fun() -> perform(Start, ToPass, Test, Opts) end)
+               end,
+    AggregatedImmResult = spawn_workers_and_get_result(SpawnFun, NodeList),
+    ok = case StopNodes of
+        true -> stop_nodes();
+        false -> ok
+    end,
+    AggregatedImmResult.
+
+inner_test(RawTest, Opts) ->
+    #opts{numtests = NumTests, long_result = Long,
+            numworkers = NumWorkers} = Opts,
+    Test = cook_test(RawTest, Opts),
+    ImmResult = case NumWorkers > 0 of
+    true ->
+          Opts1 = case NumWorkers > NumTests of
+              true -> Opts#opts{numworkers = NumTests};
+              false -> Opts
+          end,
+          parallel_perform(Test, Opts1);
+    false ->
+        perform(NumTests, Test, Opts)
+    end,
+      report_imm_result(ImmResult, Opts),
+      {ShortResult,LongResult} = get_result(ImmResult, Test, Opts),
+      case Long of
+        true  -> LongResult;
+        false -> ShortResult
+  end.
+
+test(RawTest, Opts) ->
+    global_state_init(Opts),
+    Finalizers = setup_test(Opts),
+    Result = inner_test(RawTest, Opts),
+    ok = finalize_test(Finalizers),
+    global_state_erase(),
+    Result.
+
+quickcheck(OuterTest, UserOpts) ->
+  ImmOpts = parse_opts(UserOpts)
+  {Test,Opts} = peel_test(OuterTest, ImmOpts),
+  test({test,Test}, Opts)
+  end.
+
+global_state_init(#opts{start_size = StartSize, constraint_tries = CTries,
+			search_strategy = Strategy, search_steps = SearchSteps,
+			any_type = AnyType, seed = Seed, numworkers = NumWorkers} = Opts) ->
+    clean_garbage(),
+    grow_size(Opts),
+    proper_arith:rand_restart(Seed),
+    proper_typeserver:restart(),
+    ok.
+
+global_state_erase() ->
+    proper_typeserver:stop(),
+    proper_arith:rand_stop(),
+    ok.
 ```
