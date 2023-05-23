@@ -8,13 +8,13 @@ tags:     featured
 
 [Property-based testing](https://en.wikipedia.org/wiki/Software_testing#Property_testing)
 is a test automation approach that checks invariants instead of concrete examples.
-When a test subject, a component or a function for example, has a huge input space
-(strings, real numbers, combinations of parameters, ...),
-then making sure our code returns a valid result for a variety of inputs requires
+When a test subject (a component or a function for example) has a huge input space
+(it takes strings, real numbers, combinations of parameters, ...),
+making sure the code returns a valid result no matter which composition of inputs it gets requires
 a lot of example-based tests.
 Testing every combination of parameters, or every conceivable string, will take forever.
-The drawback of writing and maintaining these tests outweigh
-the benefit of having tests in the first place.
+The drawback of writing and maintaining these tests outweighs
+the benefit of having them in the first place.
 
 Writing property-based tests increases our confidence in the code without that many inconveniences.
 Testing an array sorting function is a classic use case of this kind of testing.
@@ -25,35 +25,30 @@ If they're different, our sorting function needs some work.
 A property-based testing library builds different shapes of arrays:
 an empty array, arrays with one element, arrays with huge numbers of elements,
 with duplicated elements, with negative numbers, ...
-It checks the property for each generated value.
-When a generated array fails the property, the library tries to simplify it,
+It checks the property for each of generated values.
+If any of them fails the property, the library tries to squeeze it
 or shrink it if we want to use the right term.
-It returns the simplest counterexample.
+It returns the simplest possible counterexample.
 
 It's interesting to see how different languages implement such a library.
 Both [Haskell](https://en.wikipedia.org/wiki/Haskell)
 and [Erlang](https://en.wikipedia.org/wiki/Erlang_(programming_language))
 are functional programming languages.
 They embrace ideas like purity and immutability.
-But, they approach the model differently.
+But they approach the model differently.
 Haskell is typed.
 Erlang is not.
 Haskell has native support for group theory constructs.
 Erlang is message-based.
 Haskell embraces lazy evaluation.
-Erlang provides primitive constructs for concurrent execution and fault-tolerant platform.
+Erlang provides primitive constructs for concurrent execution
+and a fault-tolerant platform.
 Haskell has lazy evaluation by default.
-
-I'll try to describe how each language implements a property-based testing library.
-I'll talk about the global design. I won't put all the edge cases.
-I'm trying to make the post intelligible even for people not familiar with the languages.
-Write to me if something can be improved.
 
 
 ## QuickCheck
 [Quickchek](https://github.com/nick8325/quickcheck) is a Haskell property-based testing library.
 
-Properties are usually functions that return boolean values.
 Let's say we have a function `reverse` that reverses an array of integers.
 We can define a property `prop_reverse` that takes an array,
 reverses it twice, and compares it to the original array.
@@ -62,24 +57,37 @@ reverses it twice, and compares it to the original array.
 prop_reverse inputArray = (reverse (reverse inputArray)) == inputArray
 ```
 
-We run the test using `quickCheck`:
+We run the test by calling `quickCheck`:
 ```haskell
 >>> quickCheck (withMaxSuccess 10000 prop_reverse)
 +++ OK, passed 10000 tests.
 ```
 
+A property is a function that returns a boolean value or a result structure.
+Returning a structure provides more context on what to do after checking the test.
+Other than the boolean outcome of checking the property,
+such structure contains an attribute `expect` whose value is boolean.
+When it's true and the property succeeds, the testing fails.
+That is, when it's true, the property should return `False` for the iteration
+to be successful.
+
 `quickCheck` needs a property and a set of testing parameters to start its engine.
-What quickCheck calls an engine is a loop.
+This engine is a loop.
 In each iteration, it builds an input candidate, uses it to check the property,
 then decides whether:
   * to stop testing and fail
   * to stop testing and succeed
-  * to continue testing (run another iteration, generate another input, and check it)
+  * to continue testing (to run another iteration: to generate another input, and to check it)
 
-This engine is run by a function named `test`,
-defined as `test :: State -> Property -> IO Result`.
+This engine is managed by a function named `test`,
+defined as
+```haskell
+test :: State -> Property -> IO Result
+```
+
 It takes a state `State` and a property `Property`,
-tests the property, creates a next state,
+and decides whether to finish testing or to test the property again.
+It tests the property, creates a new state,
 and calls itself recursively.
 
 We'll go through the types.
@@ -116,17 +124,11 @@ our_prop n = expectFailure (n === n + 1)
 
 Here we're comparing an integer `n` to `n + 1`.
 
-`expectFailure` creates a testing result.
-This value provides more context on how to check the test than a simple boolean result.
-The resulting structure will contain an attribute `expect` whose value is `True`.
-
-We can return either a boolean value or such a result value.
-This result is also named `Result`, but it's a different structure than the one we just saw.
-Here's how the iteration result, the first we introduced,
-is created from the property result, the one returned by `our_prop`.
-
-The returned value is the iteration result.
-`res` is the value returned by the property.
+`expectFailure` creates a result structure.
+Here's how PropEr converts the structure returned by the property
+into a `Result` value.
+It checks the `ok` attribute, which contains the outcome of the test.
+Then, it checks `expect` attribute.
 
 ```haskell
 case res of
@@ -134,87 +136,86 @@ case res of
     return Success{ ... }
 
   MkResult{ok = Just False} -> -- failed test
-  ...
+    ...
     if not (expect res) then
       return Success{ ... }
     else do
       return Failure{ ... }
- where
 ```
 
 ### State
 Haskell functions are pure.
-A new state is built after each engine iteration
-and passed to the next iteration.
-This state is a data structure that reifies the progress.
+Each iteration builds a state and passes it to the next iteration.
+A state is a data structure that reifies the progress.
 
-It stores what persists between iterations:
+It contains
 the number of tests done, the number of successful tests,
 the number of required iterations, a reference to a terminal to notify the
 users about the testing progress, ...
 
-The state is initialized before testing starts.
-Then, after checking the property with a new instance,
-it's recomputed and passed to the next iteration.
-
 ### Property and Testable
-Properties are usually functions or propositions.
+Properties can be built from functions or propositions.
 `prop_reverse` above is a function.
-
-`property` here is a proposition:
+`cyclicList_prop` here is a proposition:
 ```haskell
 cyclicList_prop = forAll cyclicList $ \(xs) -> and $ zipWith (==) xs (drop 2 xs)
 ```
 
-This property makes sure that a given generator, `cyclicList`,
-produces arrays of integers with period 2.
-The produced array should be a repetition of two elements.
+`cyclicList_prop` checks whether a generator, `cyclicList`,
+produces arrays with period `2`.
+Each one repeats two integers `n` times.
 
-Functions and propositions are `Testable` instances.
-A `Property` can be seen as a bridge between a `Testable` instance and a property generator.
-A property generator is a variable that executes the engine iterations.
-
-In this property:
-```haskell
-prop_reverse inputArray = (reverse (reverse inputArray)) == inputArray
-```
-
-The property generator holds a reference to an array generator
-and a reference to the checking function.
-It generates a value, checks it on the property, and creates a result.
-
-`Testable` is a class of values that QuickCheck knows how to transform into
-a `Property` value or a `Result` value.
-
-`Property` type is defined by:
+`Property` type is defined as:
 ```haskell
 newtype Property = MkProperty { unProperty :: Gen Prop }
 ```
 
-There are two ways to create a property.
-We can create it if we have a property generator, `Gen Prop`.
-Or, if we have `Testable` instance.
+We can think of a `Property` as a bridge between a `Testable` instance
+and a property generator `Gen Prop`.
 
+A property generator is a moderator of an engine iteration.
+It references an array generator (an input generator in general)
+and the checking function.
+It generates a value, checks it on the property, and creates a `Result`.
+
+`Testable` is a class of values that QuickCheck knows how to transform into
+a `Property` or a `Result`.
+That's why functions and propositions are `Testable` instances.
 We'll see step by step why we need three concepts, `Property`, `Prop`, and `Testable`.
 
 ### The heartbeat of the engine
-This expression in the heart of the engine:
+The key to understanding how QuickCheck works is to understand how it
+builds a `Property` value from a given function or proposition.
+
+Once we have a property, we evaluate this expression and get a `Result` value:
 ```haskell
-(unProp (unGen (unProperty f_or_cov) rnd1 size))
+(unProp (unGen (unProperty our_property) rnd1 size))
 ```
 
-It's directed by the property generator.
-It evaluates to `Rose Result`.
+This expression returns to a `Rose Result` value, and thus a result.
+And, it's a mere unfolding of folded values.
+First, we call `unProperty` on a `Property` instance `our_property`.
+We unfold the result with `unGen`, get a `Prop` value,
+unfold this too with `unProp`, and get a `Rose Result`.
 
-It's a mere unfolding of folded values.
-We first call `unProperty` on `f_or_cov`, which is a `Property` instance.
-We unfold the result with `unGen` to get a `Prop` value.
-We unfold what we find with `unProp` to get a `Rose Result` value.
-
-As the wise guys up on the mountains would say, folding is unfolding.
-Let's see how such a folded value is created.
+Folding is unfolding.
+Let's see how `our_property` is created.
 
 ### Gen
+As shown in the definition of `Property`,
+we can create one if we have a `Gen Prop` value.
+```haskell
+our_property = MkProperty our_gen_prop_value
+```
+
+or take the source code from QuickCheck itself:
+```haskell
+MkProperty $
+  gen >>= \x ->
+    unProperty $
+    shrinking shrinker x pf
+``` 
+
 `Gen` is defined as:
 ```haskell
 newtype Gen a = MkGen{
@@ -228,25 +229,25 @@ If `a` is `Int`, we have an integer generator.
 If `a` is a custom type `User`, we have a user generator.
 
 We create a generator by providing an `unGen` function,
-that is `generator = MkGen ourUnGenFunction`.
-This function takes a random number generator, `QCGen`,
-and a size integer.
-It returns a generated instance.
-Both, the random seed and the size, are defined in the state passed between iterations.
-Size is taken from the options we pass to `quickCheck` in the first place.
-Its default value is `30`. It orients generators on how complicated the generator instances can be.
 
-The library defines generators for basic types, like `Int`.
-It can also create generators for types that can be constructed
-(arrays, sum, and product types for example).
-And if we want a custom generator, we can create one.
+```haskell
+our_generator = MkGen our_unGen_function
+```
 
-QuickCheck knows how to create a property generator, `Gen Prop`, if it can
-get a generator for the input type.
+This function takes a random number generator `QCGen` and a size integer.
+Both are defined in the state passed between iterations.
+The size value prescribes to generators how complicated the instances can be,
+how deep the tree goes, how long the arrays are, and the bounds of a randomly generated number.
+Its default value is `30`, and it's defined inside the options we pass to `quickCheck`.
+
+The library defines generators for basic types like `Int`.
+It can also build generators for the types that can be constructed
+(array, sum, and product types for example).
+If we want a custom generator, we can define one as well.
+
+QuickCheck creates a property generator `Gen Prop` if we give it an input generator.
 In `prop_reverse`, QuickCheck has already an `Int` generator and an array generator.
-It builds a property generator.
-For the `cyclicList_prop`, we define an input generator, `cyclicList`,
-and give it quickCheck.
+In `cyclicList_prop`, we define an input generator `cyclicList`.
 
 ### Arbitrary
 To generate a value of type `a`, we need a generator instance, `Gen a`.
@@ -281,77 +282,98 @@ The documentation says
 ```
 
 ### Property generators
-Let's say `gen` is our `Gen a` generator. `f` is a property,
-a function whose signature is `Testable prop => a -> prop`.
-It takes a value of type `a`. It returns a `Testable` value.
-Usually, a boolean or a `Result` structure.
+We create a property generator `Gen Prop` instance by defining an `unGen` function.
 
-We create a `Gen Prop` instance by defining an `unGen` function.
-It takes a random number generator, a size,
-and it has access to the input generator `Gen a`, or `gen` in the line of code here.
+Let's say `gen` is our `Gen [Int]` generator. `f` is a property,
+a function whose signature is
+```haskell
+[Int] -> Bool
+```
 
-So, it generates an input by calling `unGen` of `Gen a` with the given random number generator and size,
-gets an instance, tests it, and creates a result.
-
-The definition of this function in the code looks like this:
+We create a property generator from an input generator as:
 ```haskell
 gen >>= \x -> unProperty $ shrinking shrinker x f
 ```
 
-`x` is the input to the function. `f` is the property.
-As you see here, we're not calling `f x` directly.
+The defines a property generator whose `unGen` function uses `gen` to get `x`.
+Then, it calls `shrinking`, gets the result, and passes it to `unProperty`.
+As specified in the definition of `Property`, `unProperty` returns `Gen Prop`.
+
+`x` is the generated input that we use to check the property.
+But, we're not calling `f x` directly.
 We're starting a shrinking process instead.
 
 `shriking` calls `f x` internally.
-It checks the property `f` for the generated input `x`.
-Then if the result is `True`, it does nothing.
-It just returns the value returned by `f`.
+If the result is `True`, it returns the value returned by `f`.
 If the result is false, it starts a shrinking process to simplify `x`.
 
+To be more specific, `shriking` returns a `Property` value.
+That is a value that encapsulates a property generator `Gen Prop`.
+We extract it by calling `unProperty`.
+In other words, the property generator is created by calling `shrinking`.
+
+### Shrinking
+`shrikning` functions get `shrinker`.
+This shrinker is the one we talked about when introducing the `Arbitrary` class.
+It's the shrinker of the input type.
+
 `shrinking` builds a [rose tree](https://en.wikipedia.org/wiki/Rose_tree).
-The root node contains the result of applying the property to `x`, the originally generated value.
-The children contain the results of applying the property to shrunk values of the original value.
-The grandchildren are the results of applying the property to shrunk values of shrunk values.
+The root node contains the result of applying `f` to `x`, the originally generated value.
+The children contain the results of applying `f` to shrunk values of the original value.
+The grandchildren are the results of applying `f` to shrunk values of shrunk values.
 And, so it goes.
-The tree building stops when a shanked element passes the property, either returning `True` or a successful result.
+The tree building stops when a shanked element passes the property.
+That is when a shrunk element returns either `True` or a successful result.
 
-As the value returned by the property is a `Testable` instance, we get a tree of `Testable` instances.
-The library transforms it into a tree of `Gen Prop` instances.
+As the value returned by the property is a `Testable` instance.
+It's transformed to a `Result` variable, either `MkResult{ok = Just True}`
+or `MkResult{ok = Just False}`.
+And as `Result` is also a `Testable` instance,
+we get a tree of `Testable` instances.
 
-Node by node, it transforms each value into a `Property` instance (see first section).
-We can call this a shadow property, or a null property.
-Calling `unGen` returns the initial value, `f x`, no matter which input we pass in.
+The library transforms this into a tree of `Property` instances,
+whose type is `Rose Property`.
+Node by node, each value becomes a `Property`.
+But, these "properties" are different.
+They're shadow properties or null properties.
 
-And same, we call `unProp` on each `Gen Prop` element result,
-and we get `Rose Result` which always contain
-the result of applying the property.
-A boolean value is transformed into a result structure.
-We end up with a tree `Rose` of `Rose Result` nodes, or `Rose (Rose Result)`.
+Calling `unProperty` on each of them returns a null generator,
+a generator whose `unGen` is a constant function.
+It returns a `Prop` value. It's a property generator in the end,
+even when it's just pretending to be one.
+
+`Prop` is defined as:
+```haskell
+newtype Prop = MkProp{ unProp :: Rose Result }
+```
+It encapsulates a `Rose Result` value.
+In this case, this or null properties value will always
+be a single-node rose tree that contains the `Result`
+value of that node.
+It always returns the `Result` value of that node,
+no matter which inputs (random number generator and size) we pass in.
+
+That said,
+calling `unGen` or each element then gives a tree of `Gen Prop`.
+The type of tree will be `Rose (Gen Prop)`.
+QuickCheck transforms this into `Gen (Rose Prop)`.
+The transformation is simple because generators are constants that return a single-node rose tree.
+
+All that the library needs to do is to create a rose tree with the single-nodes containing the `Prop` values,
+then to encapsulates it inside a generator whose `unGen` always returns this same tree.
+
+And same, we call `unProp` on each `Prop` element inside the tree `Rose Prop`
+and we get a tree of `Rose Result`.
+The type of this tree is `Rose (Rose Result)`.
+This is a tree where each element is a single-node tree that contains
+the result of applying the property to that node in the first place.
 
 ### Rose Result
 `Rose` is defined as `Rose = MkRose a [Rose a]`.
-The tree, `Rose (Rose Result)`, we get, is a flat structure.
-It's an array built following a [depth-first traversal](https://en.wikipedia.org/wiki/Tree_traversal#Depth-first_search) of the tree.
-
-If `res` is a failure,
-shrinking loop kicks in to find the smallest value that fails the property.
-This value is called a local minimum.
-The function basically through the children from right to left and tests each element.
-If the property succeeds, it checks the adjacent nodes.
-If it fails, it goes on checking the element children nodes.
-It stops when a threshold of attempts is reached or after testing all the results available.
-
-This is a good example of lazy evaluation in Haskell.
-QuickCheck does not build the entire tree in the first place.
-Neither the tree of `Testable` elements, nor that of `Gen Prop` elements,
-and neither this of `Rose Result` elements.
-
-It pretends to build them.
-When we want to see what's inside a node,
-only then Haskell builds only that node.
-It creates a `Testable` instance, a `Gen Prop` instance, and a `Rose Result` instance.
-But, it does not create its children.
-It builds them when we try to read them.
+The tree `Rose (Rose Result)` we get, is a flat structure.
+It's an array built following a
+[depth-first traversal](https://en.wikipedia.org/wiki/Tree_traversal#Depth-first_search)
+of the tree.
 
 With a rose tree of `Rose Result`, or `Rose (Rose Result)`.
 QuickCheck uses a function `joinRose` to transform it into a `Rose Result` value.
@@ -360,8 +382,47 @@ That is:
 joinRose (MkRose (MkRose x ts) tts) =  MkRose x (map joinRose tts ++ ts)
 ```
 
+In the end, we get a structure that looks like this:
+```haskell
+our_result =
+  MkRose (MkResult{ ok = Just False }) [
+    MkRose (MkResult{ ok = Just False, P.reason = "whatever..." }) [
+      MkRose (MkResult{ ok = Just True }) []
+    ],
+    MkRose (MkResult{ ok = Just True }) [],
+  ]
+```
+
+Here, the result of the iteration will be:
+```haskell
+MkResult{ ok = Just False, P.reason = "whatever..." }
+```
+
+It's the job of `shrinking` function we introduced above to get us this value.
+Indeed, `shrinking` returns
+a `Property` whose `Gen Prop` is a constant.
+Calling `unGen` on this `Gen Prop` returns a `Prop`, which also is a constant.
+Calling `unProp` on it returns a `Rose Result`,
+which is a single-value tree that contains the result.
 With this returned result, the engine decides whether to start a new iteration
-or to end the testing.
+or end the testing.
+
+As the shrinking loop kicks in to find the simplest value that fails the property,
+it iterates over the children and tests each element.
+If the property succeeds, it checks the adjacent nodes/elements.
+If it fails, it goes on checking the children nodes/elements.
+It stops when a threshold of attempts is reached or after testing all the results available.
+
+This is a good example of lazy evaluation in Haskell.
+QuickCheck does not build the tree at all.
+Neither the tree of `Testable` elements nor that of `Gen Prop` elements,
+and neither that of `Rose Result` elements.
+
+It just pretends to build them.
+When we want to see what's inside a node, only then Haskell builds only that node.
+It creates a `Testable` instance, a `Gen Prop` instance, and a `Rose Result` instance when we access a node/element.
+But, it does not create the children.
+It does that when we try to get them.
 
 
 ## PropEr
@@ -425,7 +486,7 @@ And, it waits for this result.
 
 An example of such properties can be:
 ```erlang
- ?_failsWith([20], ?FORALL(X, pos_integer(), ?TRAPEXIT(creator(X) =:= ok))),
+?_failsWith([20], ?FORALL(X, pos_integer(), ?TRAPEXIT(creator(X) =:= ok))),
 ```
 
 When it's `timeout`, it spawns a new worker to execute the property
@@ -433,25 +494,25 @@ and expect the result before a given timeout.
 Here's how it's implemented:
 ```erlang
 run({timeout, Limit, Prop}, Ctx, Opts) ->
-    Self = self(),
-    Child = spawn_link_migrate(undefined, fun() -> child(Self, Prop, Ctx, Opts) end),
-    receive
-	{result, RecvResult} -> RecvResult
-    after Limit ->
-        unlink(Child),
-        exit(Child, kill),
-        clear_mailbox(),
-        create_fail_result(Ctx, time_out)
-    end;
+  Self = self(),
+  Child = spawn_link_migrate(undefined, fun() -> child(Self, Prop, Ctx, Opts) end),
+  receive
+    {result, RecvResult} -> RecvResult
+      after Limit ->
+          unlink(Child),
+          exit(Child, kill),
+          clear_mailbox(),
+          create_fail_result(Ctx, time_out)
+      end;
 ```
 
 `child(...)` runs the property check and sends the result back to the father,
 the worker that manages the testing:
 ```erlang
 child(Father, Prop, Ctx, Opts) ->
-    Result = force(Prop, Ctx, Opts),
-    Father ! {result,Result},
-    ok.
+  Result = force(Prop, Ctx, Opts),
+  Father ! {result,Result},
+  ok.
 ```
 
 The second element in the property tuple is the input type.
@@ -530,10 +591,10 @@ PropEr puts generation logic inside a module named `proper_gen`.
 To generate a new instance, PropEr runs:
 ```erlang
 case proper_gen:safe_generate(RawType) of
-    {ok, ImmInstance} ->
-      Instance = proper_gen:clean_instance(ImmInstance),
-    {error, Resaon} ->
-      ...
+  {ok, ImmInstance} ->
+    Instance = proper_gen:clean_instance(ImmInstance),
+  {error, Resaon} ->
+    ...
 ```
 
 `ImmInstance` is the generated value.
@@ -584,11 +645,11 @@ the type `union([binary(), lists:seq(1, 255)])` is a union of two types.
 Here's a simplified inlined version of its generator:
 ```erlang
 union_gen(Type) ->
-    Choices = get_prop(env,Type),
-    Pos = rand_int(1, length(Choices)),
-    Type = lists:nth(Pos, Choices),
-    {typed, Gen} = proper_types:get_prop(generator, Type),
-    Gen(Type, proper:get_size(Type)).
+  Choices = get_prop(env,Type),
+  Pos = rand_int(1, length(Choices)),
+  Type = lists:nth(Pos, Choices),
+  {typed, Gen} = proper_types:get_prop(generator, Type),
+  Gen(Type, proper:get_size(Type)).
 ```
 
 `get_prop(env,Type)` reads the value of a tuple named `env` of the type.
@@ -602,8 +663,8 @@ The `generator` attribute contains a function that creates a randomly generated 
 For example, an integer generator is defined as:
 ```erlang
 integer_gen(Type, Size) ->
-    {Low, High} = get_prop(env, Type),
-    pproper_arith:smart_rand_int(Size, Low, High).
+  {Low, High} = get_prop(env, Type),
+  pproper_arith:smart_rand_int(Size, Low, High).
 ```
 
 We can define custom generators by creating a new type, with a custom generator function.
@@ -668,17 +729,17 @@ Here's a simplified code of how standard shrinkers are fetched depending on the 
 ```erlang
 Kind = proper_types:get_prop(kind, Type),
 StandardShrinkers =
-		case Kind of
-		    basic -> [];
-		    wrapper -> [fun alternate_shrinker/3, fun unwrap_shrinker/3];
-		    constructed ->
-          case proper_types:get_prop(shrink_to_parts, Type) of
-              true -> [fun to_part_shrinker/3, fun parts_shrinker/3, fun in_shrinker/3];
-              false -> [fun parts_shrinker/3, fun in_shrinker/3]
-          end;
-		    container -> [fun split_shrinker/3, fun remove_shrinker/3, fun elements_shrinker/3];
-		    _Other -> []
-		end,
+  case Kind of
+    basic -> [];
+    wrapper -> [fun alternate_shrinker/3, fun unwrap_shrinker/3];
+    constructed ->
+      case proper_types:get_prop(shrink_to_parts, Type) of
+        true -> [fun to_part_shrinker/3, fun parts_shrinker/3, fun in_shrinker/3];
+        false -> [fun parts_shrinker/3, fun in_shrinker/3]
+      end;
+    container -> [fun split_shrinker/3, fun remove_shrinker/3, fun elements_shrinker/3];
+    _Other -> []
+  end,
 ```
 
 The main logic of `shrink` function is:
@@ -709,9 +770,9 @@ PropEr compares the failure reason for the shrunk value with the failure reason 
 value using pattern matching:
 ```erlang
 same_fail_reason(SameReason, SameReason) ->
-    true;
+  true;
 same_fail_reason(_, _) ->
-    false.
+  false.
 ```
 
 If both reasons are equal, `SameReason`, then it returns true.
@@ -732,13 +793,13 @@ PropEr uses the type to filter out shrinking results that do not satisfy the typ
 
 As you see here:
 ```erlang
-    SatisfiesAll =
-      fun(Instance) ->
-          case find_prop(constraints, Type) of
-            {ok, Constraints} -> satisfies_all_1(Constraints, Instance);
-            error -> true
-      end,
-    {NewImmInstances,NewLookup} = proper_arith:filter(SatisfiesAll, DirtyImmInstances),
+SatisfiesAll =
+  fun(Instance) ->
+    case find_prop(constraints, Type) of
+      {ok, Constraints} -> satisfies_all_1(Constraints, Instance);
+      error -> true
+  end,
+{NewImmInstances,NewLookup} = proper_arith:filter(SatisfiesAll, DirtyImmInstances),
 ```
 `DirtyImmInstances` is the result of shrinking.
 `SatisfiesAll` is a predicate that returns true when a value satisfies the type constraints.
@@ -810,11 +871,11 @@ Using atoms, then matching for functions definition is very common.
 Here for example we have:
 ```erlang
 receive
-    {worker_msg, #pass{performed = PassedRcvd, samples = SamplesRcvd}, From, Id} ->
-        -- ...
+  {worker_msg, #pass{performed = PassedRcvd, samples = SamplesRcvd}, From, Id} ->
+    -- ...
 
-    {worker_msg, #fail{performed = FailedOn} = Received, From, Id} ->
-        -- ...
+  {worker_msg, #fail{performed = FailedOn} = Received, From, Id} ->
+    -- ...
 ```
 `receive` starts listening for messages.
 The first handler handles messages from the workers that finished their tests successfully.
