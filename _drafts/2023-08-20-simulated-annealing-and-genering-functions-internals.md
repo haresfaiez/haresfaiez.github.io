@@ -1,3 +1,14 @@
+When the it's `exists`, Proper should follow a targeted search strategy.
+the options should contain two attributes, `search_steps` and `search_strategy`.
+This is a particular case of targeted search. I'll introduce it in the next post.
+
+Or, if the input we want to generate is itself a function, but with an unsupported arity
+(we'll get back to this kind of input in the next post).
+Or, if the type we provide cannot be parsed by PropEr type server.
+As we have said, Erlang has good meta-programming support.
+We can pass a string containing a type definition instead of a reference to an existing type.
+Parsing this string might fail.
+
 ### Samples
 If the testing succeeds, a structure is created:
 ```erlang
