@@ -490,7 +490,7 @@ The input can be:
 Erlang has a good meta-programming system.
 The library uses [macros](https://en.wikipedia.org/wiki/Macro_(computer_science)) heavily.
 
-A property is a structure, or a tuple in Erlang terms.
+A property is a structure or a tuple in Erlang terms.
 `FORALL` macro above translates into this structure:
 ```erlang
 {
@@ -504,22 +504,22 @@ The first element is an atom that guides the testing.
 It's an atom.
 An atom in Erlang is some kind of a symbol.
 It's like a global value but it evaluates to itself.
-It's its own value.
+It's its value.
 It can also be `exists`, `conjunction`, `timeout`, or `trapexit`.
 
 When it's `forall`, the library generates an instance and tests it.
 It should always pass.
 
 `implies`, 
-The first element can also be `exists`, `conjunction`,,or `timeout`.
+The first element can also be `exists`, `conjunction`, or `timeout`.
 
-When the it's `exists`, PropEr should follow a targeted search strategy.
+When it's `exists`, PropEr should follow a targeted search strategy.
 I'll introduce it in the next post.
 
 When it's `conjunction`, PropEr tests a generated instance on multiple properties.
-The propery is succeful when all the sub-properties are successful.
+The property is successful when all the sub-properties are successful.
 Such property is in the form `{conjunction, SubProperties}`.
-`Subproperties` is a list of properties.
+`Subproperties` are a list of properties.
 
 When it's `timeout`, it spawns a new worker to execute the property
 and it expects the result before a given timeout.
@@ -557,9 +557,9 @@ child(Father, Prop, Ctx, Opts) ->
 
 When the first element of the tuple is `trapexit`,
 ProEr expects the property to throw uncaught exceptions or to emit an exit signal.
-In both cases, Erlang worker terminates and sends an `EXIT` signal to its proviser.
+In both cases, Erlang worker terminates and sends an `EXIT` signal to its spawner.
 
-The library first configures the system to transform such signal into an `EXIT` message.
+The library first configures the system to transform such a signal into an `EXIT` message.
 It spawns a worker to execute the check and send the result back.
 And, it waits for this result.
 
@@ -619,7 +619,7 @@ It denotes the number of inputs ProEr will generate.
 If all of them pass the test, testing stops and the property is successful.
 
 Many other options are available.
-PropEr will set default values for the options we don't specify explicity.
+PropEr will set default values for the options we don't specify explicitly.
 
 Another option is `numworkers`, the number of workers.
 
@@ -635,8 +635,8 @@ Erlang core philosophy lies in the implementation of these workers.
 They have a well-defined interface, they communicate through messages,
 and they're managed by the [OTP](https://www.erlang.org/doc/design_principles/des_princ.html).
 This virtual machine stops crashes from propagating through the system.
-It restarts crashed workers and resend missed messages.
-It transform unhandled exception into messages to parent processes.
+It restarts crashed workers and resends missed messages.
+It transforms unhandled exceptions into messages to parent processes.
 But, it does not allow such errors to take down the application.
 
 When the number of workers is `0`, the execution of tests is sequential.
@@ -667,8 +667,8 @@ It's defined by:
 -opaque type() :: {'$type', [type_prop()]}.
 ```
 
-Each `type_prop` in the second element list is a two-elements tuple.
-An atom denoting name the attribute as a first element.
+Each `type_prop` in the second element list is a two-element tuple.
+An atom denotes the name of the attribute as a first element.
 A value of the attribute as a second element.
 
 Here's part of the definition of `type_prop`:
@@ -684,8 +684,7 @@ Here's part of the definition of `type_prop`:
     | ...
 ```
 
-The common attirbutes
-are the generator, the list of shrinkers, and the list of constraints:
+The common attributes are the generator, the list of shrinkers, and the list of constraints:
 `generators`, `shrinkers`, and `constraints`.
 
 PropEr puts generation logic inside a module named `proper_gen`.
@@ -701,7 +700,7 @@ case proper_gen:safe_generate(RawType) of
 
 `ImmInstance` is a generated value.
 `Instance` is the value that the library passes to the checking function.
-We call `clean_instance` because the generated values wraps the instance inside a context.
+We call `clean_instance` because the generated values wrap the instance inside a context.
 
 Usually, `Instance` is the same as `ImmInstance`.
 But if the value is constructed, the generated value will be a tuple
@@ -724,21 +723,21 @@ It returns this combined value and a context that contains the generated parts.
 The difference is that the `safe_generate` returns an `error` tuple
 instead of throwing an exception when the generation fails.
 
-The generation fails if the all the attempts to generate a value did not adhere
+The generation fails if all the attempts to generate a value did not adhere
 to the input type constraints.
-The constraints attribute for an greater-than-20 integer generator can be:
+The constraints attribute for a greater-than-20 integer generator can be:
 One value of the type definition list is:
 ```erlang
 {constraints, [{fun(X) -> X > 20 end, true}]}
 ```
 
-A constraint is defined by a two-elements tuple,
-a predicate, and boolean that specifies whether the constraint is strict.
+A constraint is defined by a two-element tuple,
+a predicate, and a boolean that specifies whether the constraint is strict.
 That is, it tells whether the generation should fail if the constraint is violated or not.
 
 Generation is a loop. The generator has a maximum number of tries.
 The number of tries is a globally defined value, named `constraint_tries`.
-It's initialized to `50`, but we can change through the options we pass to the test.
+It's initialized to `50`, but we can change it through the options we pass to the test.
 
 Here's how generation starts inside `safe_generate`:
 ```erlang
@@ -753,7 +752,7 @@ If not, it decreases the number of tries left and starts a new iteration.
 If no valid instance is generated, generation fails with `cant_generate` error.
 It returns `{error, {cant_generate, MFAs}}`.
 `error` and `cant_generate` are atoms.
-`MFAs` is the list of constraints and the booleans results of their checking.
+`MFAs` are the list of constraints and the boolean results of their checking
 
 The function that generates an instance is defined in the type list as well.
 In the example at the beginning,
@@ -770,14 +769,14 @@ union_gen(Type) ->
 
 `get_prop(env,Type)` reads the value of a tuple named `env` from the type list.
 `Choices` contains the list `[binary(), lists:seq(1, 255)]`.
-`Pos` is the index of either elements, it should be `1` or `2`.
+`Pos` is the index of one of the elements, it should be `1` or `2`.
 Indexes start from `1` in Erlang.
 If it's `1`, then `Type` is `binary`.
 
 `binary` is also a type, which means it's a list of attributes.
 `Gen` is the value of the key `generator` in `binary` type.
 
-The `generator` attribute af a type contains a function that creates a randomly generated value.
+The `generator` attribute of a type contains a function that creates a randomly generated value.
 For example, an integer generator can be defined as:
 ```erlang
 integer_gen(Type, Size) ->
@@ -785,7 +784,7 @@ integer_gen(Type, Size) ->
   pproper_arith:smart_rand_int(Size, Low, High).
 ```
 
-We can define custom generators by creating a new type and setting our own custom generator function
+We can define custom generators by creating a new type and setting our custom generator function
 inside its defining list.
 
 We can also create a complicated generator by returning a type instead of a value from this function.
@@ -869,8 +868,8 @@ PropEr puts it in the list of minimally-shrunk values, named `Shrinked`,
 and moves on to the next value that fails the property.
 
 If one shrunk value fails the property for the same reason as the original value,
-the library puts it on the list of candidates for shrinking in place of the original value,
-and rerun the iteration.
+the library puts it on the list of candidates for shrinking in place of the original value
+and reruns the iteration.
 The next iteration will take this shrunk value and tries to shrink it further.
 
 PropEr compares the failure reason for the shrunk value with the failure reason for the original
@@ -927,7 +926,7 @@ Putting a hacker hat on, we can say that having a structure to specify the type
 allows us to have specific constraints. Think of a type of all integers other than 5, 9, 8.
 Such a type is not easy to define.
 But, with a structure, we can add a function that directs shrinking and generation
-to ignore these numbers, and to generate another value when one of them appears.
+to ignore these numbers and to generate another value when one of them appears.
 After all, an abstraction level is subjective.
 For someone somewhere, the value, the type, and the state belong to the same level.
 
@@ -965,8 +964,8 @@ It also takes an instance, its type, and a state.
 It returns a list of shrunk values and a state.
 That way, it integrates with the shrinking loop.
 The state returned by the shrinker is the state returned by the iteration,
-which is also the state which orients the library on what to do nex
-(either starting a new iteration with same/new shrinker or finishing shrinking and
+which is also the state which orients the library on what to do next
+(either starting a new iteration with the same/new shrinker or finishing shrinking and
 moving to the next value).
 
 ### Multi-workers execution
@@ -991,11 +990,11 @@ fails the property), the main worker:
   * Returns `#fail` result
 
 The messages between the main worker and the workers that run the tests are tuples.
-The first element in each tuple is an atom that describe the type of the message.
+The first element in each tuple is an atom that describes the type of the message.
 It's `worker_msg` if the message is sent from a testing worker to the main worker.
 When the message is from a main worker to a testing worker, it's `failed_test`.
 
-Here how the main worker waits for the testing workers messages:
+Here is how the main worker waits for the testing workers' messages:
 ```erlang
 receive
   {worker_msg, #pass{performed = PassedRcvd, samples = SamplesRcvd}, From, Id} ->
