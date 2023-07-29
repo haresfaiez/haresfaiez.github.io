@@ -1,3 +1,4 @@
+// TODO: remove this
 $foundation-palette: (
   primary  : #E6003C,
   secondary: #767676,
@@ -6,19 +7,48 @@ $foundation-palette: (
   alert    : #cc4b37,
 );
 
-$shadow-grey   : #f0f0f0;
-$dark          : #000000;
-$light-grey-bg : #fafafa;
-$light-grey-bg2: #f0f0f0;
-$light-grey    : #E0E0E0;
-$light-grey-border: #EAEAEA;
-$grey          : #757575;
-$dark-grey     : #212121;
-$blue-grey     : #37474F;
-$blue          : #455A64;
-$yellow        : #EFEBE9;
-$pink          : #E6003C;
-$light-pink    : #F7EDF2;
-$purple        : #490A66;
-$yellow-code   : #ffe938;
-$gray-code      : #0a0a0a;
+:root{
+  --color-primary       : #0a0a0a;
+  --color-primary-hover : #212121;
+  --color-shadow-grey   : #f0f0f0;
+  --color-dark          : #000000;
+  --color-light-grey-bg : #fafafa;
+  --color-light-grey-bg2: #f0f0f0;
+  --color-light-grey    : #E0E0E0;
+  --color-light-grey-border: #EAEAEA;
+  --color-grey          : #757575;
+  --color-dark-grey     : #212121;
+  --color-blue-grey     : #37474F;
+  --color-blue          : #455A64;
+  --color-yellow        : #EFEBE9;
+  --color-pink          : #E6003C;
+  --color-light-pink    : #F7EDF2;
+  --color-purple        : #490A66;
+  --color-yellow-code   : #ffe938;
+  --color-gray-code     : #0a0a0a;
+}
+
+.dark-mode-switch:checked ~ .toggle-text,
+.dark-mode-switch:checked ~ .page {
+  --color-white         : #022935; //
+  --color-primary       : #b1c9ee; //
+  --color-primary-hover : #ffffff; //
+  --color-shadow-grey   : #f0f0f0;
+  --color-dark          : #b1c9ee; //
+  --color-light-grey-bg : #fafafa;
+  --color-light-grey-bg2: #f0f0f0;
+  --color-light-grey    : #081417; //
+  --color-light-grey-border: #ca0662; //
+  --color-grey          : #757575;
+  --color-dark-grey     : #212121;
+  --color-blue-grey     : #d1dae4; //
+  --color-blue          : #56818e; //
+  --color-yellow        : #EFEBE9;
+  --color-pink          : #7CBF64; //
+  --color-light-pink    : #264751; //
+  --color-purple        : #490A66;
+  --color-yellow-code   : #144d53; //
+  --color-gray-code     : #ebf9ff; //
+  
+  background-color: var(--color-white);
+}

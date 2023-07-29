@@ -15,12 +15,17 @@ $huge-margin   : 4rem;
 .page {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin: $medium-margin 0;
+  // justify-content: center;
+  padding: $medium-margin 0;
+  min-height: 100vh;
 
   div.principal {
     width: 45%;
     align-self: center;
+  }
+
+  svg.banner--dark {
+    display: none;
   }
 }
 
@@ -205,5 +210,57 @@ footer {
   }
 
   @media print, screen and (max-width: 80em) {
+  }
+}
+
+.dark-mode-switch {
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  & ~ .toggle-text {
+    cursor: pointer;
+    position: fixed;
+    top: 3em;
+    right: 100px;
+    margin: 0;
+  }
+  
+  & ~ .toggle-text--dark {
+    display: block;
+  }
+  
+  & ~ .toggle-text--light {
+    display: none;
+  }
+  
+  &:checked ~ .toggle-text--dark{
+    display: none;
+  }
+  
+  &:checked ~ .toggle-text--light{
+    display: block;
+  }
+
+  &:checked ~ .page svg.banner--light {
+    display: none;
+  }
+
+  &:checked ~ .page svg.banner--dark {
+    display: block;
+  }
+
+  &:checked ~ .page a.header-button img {
+    visibility: hidden;
+  }
+}
+
+@media print, screen and (max-width: 80em) {
+  .dark-mode-switch {
+    & ~ .toggle-text {
+      position: initial;
+      padding: 2em 0 0 8%;
+    }
   }
 }

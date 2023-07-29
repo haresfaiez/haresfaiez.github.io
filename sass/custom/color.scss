@@ -1,21 +1,29 @@
+.page, code {
+  color: var(--color-primary);
+}
+
+a {
+  color: var(--color-pink)
+}
+
 .button.secondary {
-  border: 1px solid $light-grey;
-  background: white;
-  color: $pink;
+  border: 1px solid var(--color-light-grey);
+  background: var(--color-white);
+  color: var(--color-pink);
 
   &:hover, &:active {
-    border: 1px solid $light-grey;
-    background: white;
-    color: $grey;
+    border: 1px solid var(--color-light-grey);
+    background: var(--color-white);
+    color: var(--color-grey);
   }
 }
 
 .button.transparent {
-  background: $light-pink;
-  color: $pink;
+  background: var(--color-light-pink);
+  color: var(--color-pink);
 
   &:hover {
-    background: adjust-color($light-pink, $alpha: -0.5);
+    // background: adjust-color(var(--color-light-pink), $alpha: -0.5);
   }
 }
 
@@ -26,52 +34,52 @@
 }
 
 h1, h2, h3 {
-  color: $blue-grey;
+  color: var(--color-blue-grey);
 }
 
 #subscription.addon {
   .hint {
-    color: $pink;
+    color: var(--color-pink);
   }
 }
 
 footer {
   &, a {
-    color: $grey;
+    color: var(--color-grey);
   }
 
-  border-top: 1px solid $light-grey;
+  border-top: 1px solid var(--color-light-grey);
 }
 
 aside {
-  color: $blue;
+  color: var(--color-blue);
 }
 
 .menu a {
-  color: $dark;
+  color: var(--color-dark);
 
   &:hover {
-    color: $grey;
+    color: var(--color-grey);
   }
 }
 
 .text-bloc a:hover {
-  color: $grey;
+  color: var(--color-grey);
 }
 
 .banner {
-  background: $light-grey-bg2;
+  background: var(--color-light-grey-bg2);
   .fa-bookmark {
-    color: $blue;
+    color: var(--color-blue);
   }
 }
 
 code {
-  background: $yellow-code;
+  background: var(--color-yellow-code);
   border: none;
 
   &.highlighter-rouge {
-      color: $gray-code;
+      color: var(--color-gray-code);
   }
 }
 
@@ -83,14 +91,26 @@ code {
 
 blockquote {
   p {
-    color: $grey;
+    color: var(--color-grey);
   }
 }
 
 pre.highlight {
-  border-left: 2px solid $light-grey-border;
+  border-left: 2px solid var(--color-light-grey-border);
 }
 
+.dark-mode-switch {
+  // TODO: make it gradient
+  & ~ .toggle-text {
+    color: var(--color-primary);
+
+    &:hover {
+      color: var(--color-primary-hover);
+    }
+  }
+}
+
+/** experimetns
 #covid19-banner {
   background: #f9f9f9;
 
@@ -116,3 +136,4 @@ pre.highlight {
     }
   }
 }
+*/
