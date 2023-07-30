@@ -24,6 +24,10 @@ $huge-margin   : 4rem;
     align-self: center;
   }
 
+  svg.banner--light, svg.banner--dark {
+    max-width: 100%;
+  }
+
   svg.banner--dark {
     display: none;
   }
