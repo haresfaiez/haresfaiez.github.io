@@ -1,0 +1,79 @@
+
+h3, .h3 {
+	font-size: 1.1875rem;
+	line-height: 1.4;
+	margin-top: 0;
+	margin-bottom: .5rem;
+}
+
+a {
+	line-height: inherit;
+	color: #E6003C;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background: #fefefe;
+	font-family: "Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
+	font-weight: normal;
+	line-height: 1.5;
+	color: #0a0a0a;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.cell {
+	flex: 0 0 auto;
+	min-height: 0px;
+	min-width: 0px;
+	width: 100%;
+}
+
+section, footer {
+	margin-top: 4rem;
+}
+
+.menu {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.menu a, .menu .button {
+	line-height: 1;
+	text-decoration: none;
+	display: block;
+	padding: 0.7rem 1rem;
+}
+
+.grid-x > .large-auto {
+	flex: 1 1 0px;
+	width: auto;
+}
+
+.grid-x {
+	display: flex;
+	flex-flow: row wrap;
+}
+
+.grid-x > .small-12 {
+	width: 100%;
+}
+
+@media print, screen and (min-width: 64em) {
+    .grid-x > .large-2 {
+        width: 16.6666666667%;
+    }
+}
+
+@media print, screen and (min-width: 40em){
+    .grid-x > .medium-2 {
+        width: 16.6666666667%;
+    }
+}

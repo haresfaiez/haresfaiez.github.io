@@ -3,17 +3,8 @@
 
 @charset "utf-8";
 
+@import "custom/reset";
 @import "settings";
-
-@import "foundation-sites/scss/util/util";
-@import "foundation-sites/scss/foundation";
-
-@include foundation-global-styles;
-@include foundation-xy-grid-classes;
-@include foundation-typography;
-@include foundation-menu;
-@include foundation-button;
-@include foundation-forms;
 
 $fa-font-path: "/sass/fontawesome/webfonts" !default;
 @import "fontawesome/scss/fontawesome";
