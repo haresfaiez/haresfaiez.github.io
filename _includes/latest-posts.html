@@ -1,15 +1,14 @@
 <section class="auto" id="latest">
-  <h2>Latest</h2>
   {% for post in site.posts %}
-  <article class="text-bloc">
-    <aside class='details'>
-      {{ post.date | date: "%b %-d, %Y" }}
-    </aside>
-    <h3 class="accent headline">
-      <a href="{{ post.url | prepend: site.baseurl }}">
-        {{ post.title }}
-      </a>
-    </h3>
-  </article>
+    <article class="text-bloc">
+      <aside class='details'>
+        {{ post.date | date: "%b %-d, %Y" }}
+      </aside>
+      <h3 class="accent headline">
+        <a href="{{ post.url | prepend: site.baseurl }}">
+          {{ post.title }}
+        </a>
+      </h3>
+    </article>
   {% endfor %}
 </section>

@@ -1,45 +1,35 @@
 :root{
-  --color-primary       : #0a0a0a;
-  --color-primary-hover : #212121;
-  --color-shadow-grey   : #f0f0f0;
-  --color-dark          : #000000;
-  --color-light-grey-bg : #fafafa;
-  --color-light-grey-bg2: #f0f0f0;
-  --color-light-grey    : #E0E0E0;
-  --color-light-grey-border: #EAEAEA;
-  --color-grey          : #757575;
-  --color-dark-grey     : #212121;
-  --color-blue-grey     : #37474F;
-  --color-blue          : #455A64;
-  --color-yellow        : #EFEBE9;
-  --color-pink          : #E6003C;
-  --color-light-pink    : #F7EDF2;
-  --color-purple        : #490A66;
-  --color-yellow-code   : #ffe938;
-  --color-gray-code     : #0a0a0a;
+  --color-light-bg   : #F2FF61;
+  --color-primary    : #0a0a0a;
+  --color-primary-title: #37474F;
+  --color-light-fg   : #ADBB0B;
+  --color-highlight  : #e42a1c;
+  --color-highlight2 : #BA0070;
+  --color-light-bg2  : #01FBDD;
+  --color-light-fg2  : #5FDABD;
+  --color-contrast-bg: #ffe600;
+  --color-contrast-fg: #9b6107;
+  --color-contrast-fg-hover: #a69c43;
+  --color-bg-thin-constast: #EAEAEA;
+  --color-inline-code-bg: #ffe938;
+  --color-inline-code-fg: #0a0a0a;
 }
 
 .dark-mode-switch:checked ~ .toggle-text,
 .dark-mode-switch:checked ~ .page {
-  --color-white         : #022935; //
-  --color-primary       : #b1c9ee; //
-  --color-primary-hover : #ffffff; //
-  --color-shadow-grey   : #f0f0f0;
-  --color-dark          : #b1c9ee; //
-  --color-light-grey-bg : #fafafa;
-  --color-light-grey-bg2: #f0f0f0;
-  --color-light-grey    : #081417; //
-  --color-light-grey-border: #ca0662; //
-  --color-grey          : #757575;
-  --color-dark-grey     : #212121;
-  --color-blue-grey     : #d1dae4; //
-  --color-blue          : #56818e; //
-  --color-yellow        : #EFEBE9;
-  --color-pink          : #7CBF64; //
-  --color-light-pink    : #264751; //
-  --color-purple        : #490A66;
-  --color-yellow-code   : #144d53; //
-  --color-gray-code     : #ebf9ff; //
-  
-  background-color: var(--color-white);
+  --color-bg         : #022935;
+  --color-primary    : #b1c9ee;
+  --color-primary-title: #d1dae4;
+  --color-light-bg   : #48238A;
+  --color-light-fg   : #9564E8;
+  --color-highlight  : #19c673;
+  --color-highlight2 : #02EDF5;
+  --color-light-bg2  : #264751;
+  --color-light-fg2  : #476f7b;
+  --color-contrast-bg: #16414f;
+  --color-contrast-fg: #5c8aa4;
+  --color-contrast-fg-hover: #7697aa;
+  --color-bg-thin-constast: #ca0662;
+  --color-inline-code-bg: #144d53;
+  --color-inline-code-fg: #ebf9ff;
 }

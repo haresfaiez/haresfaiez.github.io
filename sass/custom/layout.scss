@@ -12,6 +12,22 @@ $huge-margin   : 4rem;
   }
 }
 
+@media print, screen and (min-width: 40em){
+	.grid-x {
+		display: flex;
+		justify-content: space-between;
+	}
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+h3 {
+  margin-top: 0;
+}
+
 .page {
   display: flex;
   flex-direction: column;
@@ -38,15 +54,31 @@ $huge-margin   : 4rem;
 }
 
 h1, h2, h3 {
-  margin-bottom: $default-margin;
+  margin-bottom: $huge-margin;
 }
 
-.menu-container {
-  display: flex;
-  flex-direction: row-reverse;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding: 0;
+
+.menu .button {
+	padding: 0.7rem 1rem;
+}
+
+.menu a {
+	padding: 0.7rem 1rem 0.7em 0;
+}
+
+
+.menu {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.menu a, .menu .button {
+	line-height: 1;
+	display: block;
 }
 
 .menu.simple a.header-button {
@@ -54,14 +86,24 @@ h1, h2, h3 {
 }
 
 section, footer {
-  margin-top: $huge-margin;
+  margin-top: $default-margin;
 }
 
 .button {
   border-radius: $border-radius;
+
+  img {
+    width: .9em;
+  }
+}
+
+.post-container {
+  width: 100%;
 }
 
 #about {
+  margin: $half-margin 0 $huge-margin 0;
+
   #reach-me {
     align-items: center;
 
@@ -187,36 +229,6 @@ footer {
   }
 }
 
-#covid19-banner {
-  display: flex;
-  flex-direction: column;
-  padding: $medium-margin 0;
-
-  .principal{
-    width: 50%;
-    align-self: center;
-  }
-
-  @media print, screen and (max-width: 80em) {
-    .principal {
-      width: 90%;
-    }
-  }
-}
-
-#book-banner {
-  display: flex;
-  flex-direction: column;
-
-  .principal{
-    padding: $default-margin;
-    align-self: center;
-  }
-
-  @media print, screen and (max-width: 80em) {
-  }
-}
-
 .dark-mode-switch {
   visibility: hidden;
   position: fixed;
@@ -226,9 +238,7 @@ footer {
   & ~ .toggle-text {
     cursor: pointer;
     position: fixed;
-    top: 2.5em;
-    right: 100px;
-    margin: 0;
+    padding: 10px;
   }
   
   & ~ .toggle-text--dark {
@@ -264,7 +274,40 @@ footer {
   .dark-mode-switch {
     & ~ .toggle-text {
       position: initial;
-      padding: 2em 0 0 8%;
+      padding: 1em 0 1em 8%;
     }
   }
 }
+
+/** experiments
+
+#covid19-banner {
+  display: flex;
+  flex-direction: column;
+  padding: $medium-margin 0;
+
+  .principal{
+    width: 50%;
+    align-self: center;
+  }
+
+  @media print, screen and (max-width: 80em) {
+    .principal {
+      width: 90%;
+    }
+  }
+}
+
+#book-banner {
+  display: flex;
+  flex-direction: column;
+
+  .principal{
+    padding: $default-margin;
+    align-self: center;
+  }
+
+  @media print, screen and (max-width: 80em) {
+  }
+}
+**/

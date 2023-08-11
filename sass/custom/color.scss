@@ -3,27 +3,23 @@
 }
 
 a {
-  color: var(--color-pink)
+  color: var(--color-highlight)
 }
 
-.button.secondary {
-  border: 1px solid var(--color-light-grey);
-  background: var(--color-white);
-  color: var(--color-pink);
-
-  &:hover, &:active {
-    border: 1px solid var(--color-light-grey);
-    background: var(--color-white);
-    color: var(--color-grey);
-  }
+.dark-mode-switch:checked ~ .page  {
+  background-color: var(--color-bg);
 }
 
 .button.transparent {
-  background: var(--color-light-pink);
-  color: var(--color-pink);
+  background: var(--color-light-bg2);
+  color: var(--color-light-fg2);
+
+  img {
+    opacity: .1;
+  }
 
   &:hover {
-    // background: adjust-color(var(--color-light-pink), $alpha: -0.5);
+    color: var(--color-highlight);
   }
 }
 
@@ -34,52 +30,46 @@ a {
 }
 
 h1, h2, h3 {
-  color: var(--color-blue-grey);
+  color: var(--color-primary-title);
 }
 
-#subscription.addon {
+#subscription {
   .hint {
-    color: var(--color-pink);
+    color: var(--color-highlight);
   }
 }
 
 footer {
   &, a {
-    color: var(--color-grey);
+    color: var(--color-highlight2);
   }
 
-  border-top: 1px solid var(--color-light-grey);
+  border-top: 1px solid var(--color-bg-thin-constast);
 }
 
 aside {
-  color: var(--color-blue);
+  background: var(--color-light-bg);
+  color: var(--color-light-fg);
 }
 
 .menu a {
-  color: var(--color-dark);
+  color: var(--color-light-fg2);
 
   &:hover {
-    color: var(--color-grey);
+    color: var(--color-highlight2);
   }
 }
 
 .text-bloc a:hover {
-  color: var(--color-grey);
-}
-
-.banner {
-  background: var(--color-light-grey-bg2);
-  .fa-bookmark {
-    color: var(--color-blue);
-  }
+  color: var(--color-highlight2);
 }
 
 code {
-  background: var(--color-yellow-code);
+  background: var(--color-inline-code-bg);
   border: none;
 
   &.highlighter-rouge {
-      color: var(--color-gray-code);
+      color: var(--color-inline-code-fg);
   }
 }
 
@@ -91,21 +81,21 @@ code {
 
 blockquote {
   p {
-    color: var(--color-grey);
+    color: var(--color-highlight2);
   }
 }
 
 pre.highlight {
-  border-left: 2px solid var(--color-light-grey-border);
+  border-left: 2px solid var(--color-bg-thin-constast);
 }
 
 .dark-mode-switch {
-  // TODO: make it gradient
   & ~ .toggle-text {
-    color: var(--color-primary);
+    background: var(--color-contrast-bg);
+    color: var(--color-contrast-fg);
 
     &:hover {
-      color: var(--color-primary-hover);
+      color: var(--color-contrast-fg-hover);
     }
   }
 }
@@ -134,6 +124,14 @@ pre.highlight {
       background: #3cf5b2;
       color: #384950;
     }
+  }
+}
+
+.banner {
+  background: var(--color-light-grey-bg2);
+  .fa-bookmark {
+    background: var(--color-light-bg);
+    color: var(--color-light-fg);
   }
 }
 */
