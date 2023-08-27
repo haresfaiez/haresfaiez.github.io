@@ -199,6 +199,16 @@ footer {
 @media print, screen and (max-width: 80em) {
   .page div.principal {
     width: 85%;
+
+    &.principal--home {
+      width: 85%;
+    }
+  }
+
+  .menu {
+    &.top-left-menu {
+      margin-bottom: 15px;
+    }
   }
 
   aside.float-right {
