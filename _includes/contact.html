@@ -1,4 +1,12 @@
 <menu class="menu">
+  {% if site.mastodon_handle %}
+  <li>
+    <a class="item" href="https://mastodon.social/@{{ site.mastodon_handle }}">
+      <i class="fab fa-mastodon"></i>
+      <span>Mastodon</span>
+    </a>
+  </li>
+  {% endif %}
   {% if site.twitter_handle %}
   <li>
     <a class="item" href="https://twitter.com/{{ site.twitter_handle }}">
