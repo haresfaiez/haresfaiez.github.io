@@ -1,6 +1,363 @@
+## How is the output generated
+When a property fails, we'll get:
+
+```console
+{"elephant"->1, "snake"->1, _->0}
+```
+
+This describes a function represented by a structure `Fun String Integer.
+
+We can split this out into two parts.
+One with the examples and one with the underscore.
+
+The value of the underscore is the second element of the first argument of `Fun`.
+It's the shrinked value of the output type.
+It's the return value of the reified version of a `Nil` function structure.
+
+The first part is created with a function named `table`.
+In our example, `table` will return:
+```haskell
+[("elephant", 1), ("snake", 1)]
+```
+
+The library uses `table` to get the list of input/output pairs
+from a value of a function structure `a :-> b`:
+```haskell
+table :: (a :-> c) -> [(a,c)]
+table (Pair p)    = [ ((x,y),c) | (x,q) <- table p, (y,c) <- table q ]
+table (p :+: q)   = [ (Left x, c) | (x,c) <- table p ]
+                 ++ [ (Right y,c) | (y,c) <- table q ]
+table (Unit c)    = [ ((), c) ]
+table Nil         = []
+table (Table xys) = xys
+table (Map _ h p) = [ (h x, c) | (x,c) <- table p ]
+```
+
+Same as `abstract`, `table` reifies the function structure.
+But, it produces a list of argument/result pairs
+instead of a function.
+You can go back to study the structure of the function `String :-> Integer`
+we end up with and see how both strings `"elephant"` and `"snake"`
+and their return value are created.
+
+Keep in mind that the return value for an each is the return
+of the leaf, which is a function that accepts the characters
+of the string one by one, joins them to build a string, and calls the
+generated function with this string.
+
+If we call `table` and do this with the generated `String :-> Integer`,
+we'll have an infinity of values in the result of `table`.
+Indeed, `table` will continue unfolding the structure which is itself
+infinite (it's composed from tables that contains tables that contains tables ....).
+
+`f` is the generated function `String -> Integer.
+** It shows/prints only the pathes that have been already evaluated
+*** how is only the evaluated exists in the concrete function ...?
+*** it it the `delay` ...?
+
+
+
+
+
+
+### How to structure a function
+
+`function` is defined as:
+```haskell
+instance Function a => Function [a] where
+  function f = Map g h (function (\b -> f (h b)))
+   where
+    g []     = Left ()
+    g (x:xs) = Right (x,xs)
+
+    h (Left _)       = []
+    h (Right (x,xs)) = x:xs
+```
+
+As the definition states, to define `Function [a]`, we should define `Function a`.
+In `prop`, `a` is `Char`, and `[a]` is `String`.
+*** definition of `function` for `Char` is ...?
+*** The intermediary type is `Integer` for `Function Char`.
+
+`function` for `Char` is implemented as
+```haskell
+instance Function Char where
+  function f = Map ord chr (function (\b -> f (chr b)))
+```
+*** explain this...?
+We call `function` with a function that takes an `Int` (its Int or Integer) value:
+```haskell
+instance Function Int where
+  function f = Map fromIntegral fromIntegral (function (\b -> f (fromIntegral b)))
+```
+
+`Map` constructor takes two function and an instance of `:->` data type.
+It returns an instance of `[a] :-> b` in this case.
+The two functions are created inside `function`.
+The third argument is passing a manullay-created function to `function` itself.
+This argument type is `Either () (a, [a]) :-> b` in this case.
+
+`function` picks an intermediary type, for example `Either () (a, [a])` here.
+It creates two functions `g` and `h`, one from the input type to this intermediary type,
+One from the intermediary type to the return type.
+It returns an instance of `:->` created using `Map` type constructor.
+
+The third argument to `Map` is the outcome of calling
+`function` for the type `Function (Either () (a, [a]))`:
+
+`function` is defined as:
+```haskell
+instance (Function a, Function b) => Function (Either a b) where
+  function f = function (f . Left) :+: function (f . Right)
+```
+
+`function` uses `:+:` type constructor to create an instance of `Either a b :-> c`.
+This type constructor needs two instances of `:->` that have the same second type argument.
+`a` is `()`, `b` is `(a, [a])`, and `c` is the return type of the original function.
+
+In our example `prop`:
+The type of `f . Left` is `() -> Integer`.
+The type of `f . Right` is `(Char, String) -> Integer`.
+The type of `function (f . Left)` is `() :-> Integer`.
+The type of `function (f . Right)` is `(Char, String) :-> Integer`.
+
+The definition expects `Function` to be instanciated for `()` and for `(a, [a])`.
+
+`Function ()` is implemented as:
+```haskell
+instance Function () where
+  function f = Unit (f ())
+```
+
+`Function (a, [a])` is implemented as:
+```haskell
+instance (Function a, Function b) => Function (a,b) where
+  function f = Pair (fmap function (function (curry f)))
+```
+
+`Pair` takes one function of type `a :-> (b :-> c)`.
+In `prop`, `a` is `Char`, `b` is `String`, and `c` is `Integer`.
+`f` is `(Char, [String]) -> Integer`.
+`f` is `(f . Right)`, the second argument we pass to `:+:` to create implement `Function`
+for the `Either` type.
+
+First, we call `curry` on `f` and get:
+```haskell
+curry f :: Char -> String -> Integer
+```
+
+```chatgpt
+The curry function takes a function that accepts a tuple as
+an argument and transforms it into a function that takes multiple
+arguments curried style. It splits the tuple into individual arguments.
+```
+
+Then, we call `function` and get:
+```haskell
+function (curry f) :: Char :-> (String -> Integer)
+```
+`function` definition we call here is the implementation of `Function` for the type `Char`.
+
+Then, we call `fmap` wiht `function` and the previous result.
+
+So the type of `fmap` is:
+```haskell
+(String -> Int) -> (String :-> Int)
+-> (Char :-> (String -> Int))
+-> (Char :-> (String :-> Int))
+```
+
+It's implemented as:
+```haskell
+instance Functor ((:->) a) where
+  fmap f (Pair p)    = Pair (fmap (fmap f) p)
+  fmap f (p:+:q)     = fmap f p :+: fmap f q
+  fmap f (Unit c)    = Unit (f c)
+  fmap f Nil         = Nil
+  fmap f (Table xys) = Table [ (x,f y) | (x,y) <- xys ]
+  fmap f (Map g h p) = Map g h (fmap f p)
+```
+*** explain this?
+
+Again, this supposes we can call `function` for `String` and for `Char`.
+
+Calling `function` here for `Function String` looks like an intfinite loop.
+We call `function` inside its defition.
+But, as we have only defition in Haskell, we can never be sure due native
+support of lazy-evaluation.
+*** what happens ...?
+
+`fmap` for `->` is implemented as:
+```haskell
+instance Functor ((->) r) where
+    fmap f g = \x -> f (g x)
+```
+
+
+The documentation says that `abstract`:
+```haskell
+-- turns a concrete function into an abstract function (with a default result)
+```
+`abstract` is:
+```haskell
+abstract :: (a :-> c) -> c -> (a -> c)
+abstract (Pair p)    d (x,y) = abstract (fmap (\q -> abstract q d y) p) d x
+abstract (p :+: q)   d exy   = either (abstract p d) (abstract q d) exy
+abstract (Unit c)    _ _     = c
+abstract Nil         d _     = d
+abstract (Table xys) d x     = head ([y | (x',y) <- xys, x == x'] ++ [d])
+abstract (Map g _ p) d x     = abstract p d (g x)
+```
+*** explain this...?
+*** do we really need the second argument, `d`, the randomly generated integer?
+In the definitions here `d` is the value generated by `d`.
+`x` is the value that the property `prop` passes to the generated function.
+That is, `x` is `"tiger"`, `"elephant"`, or `"snake"`.
+The value generated by `arbitrary :: Gen (Fun String Int)` is a huge
+recursive structure. It's created with `Pair`, `Unit`, `:+:`, and `Map`.
+
+
+As definitions, we have:
+```haskell
+instance (Function a, CoArbitrary a, Arbitrary b) => Arbitrary (a:->b) where
+  arbitrary = function `fmap` arbitrary
+  shrink    = shrinkFun shrink -- shrink (returnType -> [returnType])
+
+instance Arbitrary2 (,) where
+  liftArbitrary2 = liftM2 (,)
+  liftShrink2 shrA shrB (x, y) = [ (x', y) | x' <- shrA x ] ++ [ (x, y') | y' <- shrB y ]
+
+shrink2 :: (Arbitrary2 f, Arbitrary a, Arbitrary b) => f a b -> [f a b]
+shrink2 = liftShrink2 shrink shrink
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (a,b) where
+  arbitrary = arbitrary2
+  shrink = shrink2
+```
+
+
+
+
+### Creating a function generator, Gen (a -> b)
+```haskell
+instance (CoArbitrary a, Arbitrary b) => Arbitrary (a -> b) where
+  arbitrary = promote (\a -> coarbitrary a arbitrary)
+```
+`Arbitrary1`, the class, is defined as:
+```haskell
+arbitrary1 :: (Arbitrary1 f, Arbitrary a) => Gen (f a)
+arbitrary1 = liftArbitrary arbitrary
+
+class Arbitrary1 f where
+  liftArbitrary :: Gen a -> Gen (f a)
+```
+First we generate a `Gen b`, or `Gen Integer`, then we call `liftArbitrary`
+to make a `Gen (f b)`, or `Gen (f Integer)`.
+This means the type of `f b` is `(a -> b)` and the type of `f` is `b -> (a -> b)`.
+`liftArbitrary` for `f :: b -> (a -> b)` is defined as:
+```haskell
+instance (CoArbitrary a) => Arbitrary1 ((->) a) where
+  liftArbitrary arbB = promote (`coarbitrary` arbB)
+```
+`a -> b` can be written also as `((->) a) b`.
+`liftArbitrary` here takes a `Gen b` instance and returns a `Gen (a -> b)` instance.
+The type of `coarbitrary` here is `Gen b -> (((->) a) -> Gen b)`, that is `Gen b -> (a -> Gen b)`.
+The type of `promote` is `(a -> Gen b) -> Gen (a -> b)`.
+`promote` is defined as:
+```haskell
+-- | Promotes a monadic generator to a generator of monadic values.
+promote :: Monad m => m (Gen a) -> Gen (m a)
+promote m = do
+  eval <- delay
+  return (liftM eval m)
+```
+
+Let's take `prop` an example.
+To create a function generator, `Gen (String -> Int)`, we call:
+```haskell
+instance (CoArbitrary String, Arbitrary Int) => Arbitrary (String -> Int) where
+  arbitrary = promote (`coarbitrary` (arbitrary :: Gen Int))
+```
+This can be written otherwise if we want to simplify `coarbitrary` call:
+```haskell
+  liftArbitrary arbB = promote (\a -> coarbitrary a (arbitrary :: Gen Int))
+```
+`promote` type is `(((->) String) (Gen Int)) -> (Gen (((->) String) Int))`,
+that is `(String -> Gen Int) -> Gen (String -> Int)`.
+`(\a -> coarbitrary a (arbitrary :: Gen Int))` returns a function with the type `String -> Gen Int`.
+
+....
+
+
+`Function (a, [a])` is implemented as:
+```haskell
+data a :-> c where
+  Pair  :: (a :-> (b :-> c)) -> ((a,b) :-> c)
+
+instance (Function a, Function b) => Function (a,b) where
+  function = functionPairWith function function
+  -- function :: (b->c) -> (b:->c), function :: (a->b->c) -> (a:->(b->c))
+  -- function1 :: (String -> Int) -> (String :-> Int)
+  -- function2 :: (Char -> String -> Int) -> (Char :-> (String -> Int)), 
+  -- function f = Pair (fmap function function (curry f))
+  -- or : function f = Pair (fmap function (function (curry f)))
+```
+
+----
+
+
+In the end, `unGen` will give us a function:
+```haskell
+-- f :: Gen (String -> Int), the result of generating (String -> Int)
+
+instance :: String -> Int
+abstract q numberGenerated ==> abstract (fmap (\q -> abstract q numberGenerated xs) p) numberGenerated x
+abstract (fmap (\q -> abstract q numberGenerated xs) p) ==> abstract ...
+  ==>
+Pair (Map ord chr (Map fromIntegral fromIntegral (fmap function (function (\b -> (\s -> f [chr (fromIntegral b):s]))))))
+--> 
+Pair (Map ord chr (Map fromIntegral fromIntegral (fmap (function . (\q -> abstract q numberGenerated xs)) (function (\b -> (\s -> f [chr (fromIntegral b):s]))))))
+
+
+
+\q -> abstract q numberGenerated xs ==> Map ord chr (Map fromIntegral fromIntegral ())
+
+instance (x:xs) = either (f []) (abstract q numberGenerated) (g x)
+   where
+    g []     = Left ()
+    g (x:xs) = Right (x,xs)
+
+    h (Left _)       = []
+    h (Right (x,xs)) = x:xs
+```
+
+### Samples
+If the testing succeeds, a structure is created:
+```erlang
+#pass{reason = Reason, samples = lists:reverse(Samples),  printers = lists:reverse(Printers), actions = Actions}.
+```
+*** `samples` are ...?
+`NewSamples = add_samples(MoreSamples, Samples)` is called when the checking succeeds.
+It adds `MoreSample` to the existing `Samples`.
+
+*** `printers` are ...?
+*** `actions` are ...?
+
+If the input fails to pass the property, a structure is created
+```erlang
+#fail{reason = Reason, bound = lists:reverse(Bound), actions = lists:reverse(Actions)}.
+```
+*** `actions` are ...?
+
+*** `save_counterexample` is ...?
+```erlang
+MinTestCase = clean_testcase(MinImmTestCase),
+save_counterexample(MinTestCase),
+{false, MinTestCase};
+```
+
+
 ## Annex (Haskell/Quickcheck)
-
-
 Keep in mind that `Prop` and `Property` are different.
 `forAll` is defined as `forAll :: (Show a, Testable prop) => Gen a -> (a -> prop) -> Property`.
 To create a property, we pass a generator and a function whose return type is a `Testable` instance.
