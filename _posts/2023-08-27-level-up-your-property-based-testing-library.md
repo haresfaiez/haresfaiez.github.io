@@ -9,26 +9,20 @@ tags:     featured
 In the [previous post](/2023/05/21/how-to-write-a-property-based-testing-library-erlang-vs-haskell.html),
 I talked about implementing a minimal property-based testing library.
 You can check it if you want to know how QuickCheck and PropEr work.
-This post is a follow-up. I'll try to explain how some auxiliary features
-are implemented in Quickcheck and PropEr.
-
-Code snippets are simplifications of the original ones.
-If you want to see how the library handles every edge case, it's
-better to study the source code.
+This post is a follow-up where I'll try to explain how some auxiliary features
+are implemented. Keep in mind that the code snippets are simplifications of the original ones.
 
 ## Generating functions with Quickcheck
 
-[Higher-order functions](https://en.wikipedia.org/wiki/Higher-order_function)
-are functions that take other functions as arguments
+Quickchek can check [higher-order functions](https://en.wikipedia.org/wiki/Higher-order_function).
+These are functions that take other functions as arguments
 or that return new functions as results.
-
 Let's say we have a function `foldBelowThreshold`.
 It takes a function `Integer -> Integer`, an array of integers,
 and a threshold number.
 It applies the function to each element of the array then it sums the results.
 It returns the sum only if it's smaller than the threshold.
 
-Quickcheck can check such functions.
 A property for `foldBelowThreshold` can be:
 
 ```haskell
@@ -65,10 +59,8 @@ or `"snake"`, and `0` when it's `"tiger"`.
 A function is a set of input/output pairs, or range/domain pairs if we are
 to use the right terms.
 Creating a new function is all about generating a new such set.
-
 This set can be very big when the input space is huge.
 Think about a `String` or a list as an input type.
-
 What we can do is to partition the space. We say that one-character strings
 will return `1`. Two-character strings will return `4`,
 and so on...
@@ -76,7 +68,6 @@ and so on...
 Creating functions this way won't be practical enough for testing.
 It's too simple to expose bugs.
 We need variability.
-
 QuickCheck simplifies these types using a divide-and-conquer approach.
 A string is a list of characters.
 A character can be represented as a `Word8`, which is between `0` and `255`.
@@ -107,7 +98,6 @@ It looks for the occurrence of the one-character string in the table
 and it returns the value associated with it.
 But this time, the value will be itself a table.
 It's the table that we pass to the function that accepts one-character strings.
-
 Same for multiple-character strings, the function is always the same. It's the table that differs.
 
 To implement all this, QuickCheck structures functions using the required type.
@@ -116,7 +106,6 @@ of a function structure.
 And then to shrink a function, we shrink the structure.
 We pass a null table (a table that returns the same result for all the characters)
 instead of the multi-output normal table.
-
 A shrunk function structure will produce a function that ignores the last characters of the string.
 `f "Hello World!"` will be the same as `f "Hello"`.
 
@@ -129,7 +118,6 @@ It'll always return `f ""` for any string.
 
 The function operator in Haskell is `->`.
 We can write a function type as `a -> b` or as `((->) a) b`.
-
 For QuickCheck to be able to create instances for a type,
 the latter should implement the class `Arbitrary`.
 It should define two methods `arbitrary` and `shrink` that create and shrink instances.
@@ -219,7 +207,7 @@ our mental model and outside the implicit design decisions we make.
 
 Back to coding!
 
-To do this, `a` should implement `CoArbitrary`.
+To implement what we talked about previously, `a` implements `CoArbitrary`.
 The motivation behind `CoArbitrary a` is to create functions `a -> b`
 that return different output values for different input values.
 
@@ -654,10 +642,10 @@ shrinkFun shr (p :+: q) =
   p   .+. q   = p :+: q
 ```
 
-For a value that can be either `p` or `q, it generates many shrunk values.
+For a value that can be either `p` or `q`, it generates many shrunk values.
 One with `p` and `Nil`, one with `Nil` and `q`, some with the initial `p`
 and with different shrunk values of `q`, and some with shrunk values of `q`
-and with the initial vaule of `q`.
+and with the initial value of `q`.
 
 For `Unit`:
 
