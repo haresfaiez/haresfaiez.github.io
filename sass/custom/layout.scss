@@ -22,6 +22,7 @@ $huge-margin   : 4rem;
 body {
 	margin: 0;
 	padding: 0;
+  overflow-x: hidden;
 }
 
 h3 {
@@ -31,17 +32,22 @@ h3 {
 .page {
   display: flex;
   flex-direction: column;
-  // justify-content: center;
   padding: $medium-margin 0;
   min-height: 100vh;
 
   div.principal {
-    width: 45%;
+    width: 50%;
     align-self: center;
+    position: relative;
+    z-index: 1;
+
+    &.principal--home {
+      width: 45%;
+    }
   }
 
   svg.banner--light, svg.banner--dark {
-    max-width: 100%;
+    max-width: 1200px;
   }
 
   svg.banner--dark {
@@ -74,6 +80,11 @@ h1, h2, h3 {
 	position: relative;
 	display: flex;
 	flex-wrap: wrap;
+
+  &.top-left-menu {
+    padding: 0 0 0 15px;
+    border-radius: 3px;
+  }
 }
 
 .menu a, .menu .button {
@@ -103,13 +114,10 @@ section, footer {
 
 #about {
   margin: $half-margin 0 $huge-margin 0;
+  max-height: 200px;
 
-  #reach-me {
-    align-items: center;
-
-    > *:not(:last-child) {
-      margin: 0 $half-margin 0 0;
-    }
+  .title {
+    margin: 0;
   }
 }
 
@@ -273,7 +281,8 @@ footer {
 @media print, screen and (max-width: 80em) {
   .dark-mode-switch {
     & ~ .toggle-text {
-      position: initial;
+      position: relative;
+      z-index: 2;
       padding: 1em 0 1em 8%;
     }
   }

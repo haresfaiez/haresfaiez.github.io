@@ -1,12 +1,16 @@
 :root{
+  --color-bg         : #ffffff;
   --color-light-bg   : #F2FF61;
   --color-primary    : #0a0a0a;
   --color-primary-title: #37474F;
-  --color-light-fg   : #ADBB0B;
+  --color-light-fg   : #B8C437;
   --color-highlight  : #e42a1c;
   --color-highlight2 : #BA0070;
   --color-light-bg2  : #01FBDD;
   --color-light-fg2  : #5FDABD;
+  --color-light-fg3  : #30b0a1;
+  --color-light-shadow: rgb(35, 132, 121);
+  --color-light-shadow2: #f04a1e;
   --color-contrast-bg: #ffe600;
   --color-contrast-fg: #9b6107;
   --color-contrast-fg-hover: #a69c43;
@@ -19,13 +23,16 @@
 .dark-mode-switch:checked ~ .page {
   --color-bg         : #022935;
   --color-primary    : #b1c9ee;
-  --color-primary-title: #d1dae4;
+  --color-primary-title: #8DAFB9;
   --color-light-bg   : #48238A;
   --color-light-fg   : #9564E8;
   --color-highlight  : #19c673;
   --color-highlight2 : #02EDF5;
   --color-light-bg2  : #264751;
   --color-light-fg2  : #476f7b;
+  --color-light-fg3  : #476f7b;
+  --color-light-shadow: rgb(41, 107, 126);
+  --color-light-shadow2: #7e8036;
   --color-contrast-bg: #16414f;
   --color-contrast-fg: #5c8aa4;
   --color-contrast-fg-hover: #7697aa;

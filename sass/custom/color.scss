@@ -12,7 +12,8 @@ a {
 
 .button.transparent {
   background: var(--color-light-bg2);
-  color: var(--color-light-fg2);
+  color: var(--color-light-fg3);
+  box-shadow: 8px 9px 0px -4px var(--color-light-shadow);
 
   img {
     opacity: .1;
@@ -48,8 +49,15 @@ footer {
 }
 
 aside {
-  background: var(--color-light-bg);
   color: var(--color-light-fg);
+}
+
+.menu {
+  &.top-left-menu {
+    background: var(--color-bg);
+    border: 1px solid var(--color-primary-title);
+    box-shadow: 8px 9px 0px -4px var(--color-light-shadow2);
+  }
 }
 
 .menu a {

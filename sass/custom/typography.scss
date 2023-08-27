@@ -3,12 +3,12 @@
 $serif     : 'Martel', Times, serif !default;
 $sans-serif: 'Open Sans', sans-serif !default;
 
-$tiny  : 0.889em;
-$medium: 1.2em;
+$tiny  : 0.889rem;
+$medium: 1.2rem;
 $big   : 1.6em;
-$fat   : 2.6em;
+$fat   : 4rem;
 
-$paragraph: 1.1em;
+$paragraph: 1.4rem;
 
 body {
   line-height: 1.5;
@@ -48,6 +48,10 @@ a {
 #about {
   font: {
     size: $medium;
+  }
+
+  .title {
+    font-size: $fat;
   }
 }
 
