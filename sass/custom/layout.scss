@@ -61,6 +61,7 @@ footer {
     align-self: center;
     position: relative;
     z-index: 1;
+    overflow: hidden;
 
     &.principal--home {
       width: 45%;
