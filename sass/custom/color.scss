@@ -1,100 +1,25 @@
-.page, code {
-  color: var(--color-primary);
-}
-
 a {
-  color: var(--color-highlight)
-}
-
-.dark-mode-switch:checked ~ .page  {
-  background-color: var(--color-bg);
-}
-
-.button.transparent {
-  background: var(--color-light-bg2);
-  color: var(--color-light-fg3);
-  box-shadow: 8px 9px 0px -4px var(--color-light-shadow);
-
-  img {
-    opacity: .1;
-  }
+  color: var(--color-highlight);
 
   &:hover {
-    color: var(--color-highlight);
-  }
-}
-
-#title {
-  a {
-    color: inherit;
-  }
-}
-
-h1, h2, h3 {
-  color: var(--color-primary-title);
-}
-
-#subscription {
-  .hint {
-    color: var(--color-highlight);
-  }
-}
-
-footer {
-  &, a {
     color: var(--color-highlight2);
   }
-
-  border-top: 1px solid var(--color-bg-thin-constast);
 }
 
 aside {
   color: var(--color-light-fg);
 }
 
-.menu {
-  &.top-left-menu {
-    background: var(--color-bg);
-    border: 1px solid var(--color-primary-title);
-    box-shadow: 8px 9px 0px -4px var(--color-light-shadow2);
-  }
+h1, h2, h3 {
+  color: var(--color-primary-title);
 }
 
-.menu a {
-  color: var(--color-light-fg2);
-
-  &:hover {
-    color: var(--color-highlight2);
-  }
+footer {
+  border-top: 1px solid var(--color-bg-thin-constast);
 }
 
-.text-bloc a:hover {
-  color: var(--color-highlight2);
-}
-
-code {
-  background: var(--color-inline-code-bg);
-  border: none;
-
-  &.highlighter-rouge {
-      color: var(--color-inline-code-fg);
-  }
-}
-
-.highlight {
-  code {
-    background: none;
-  }
-}
-
-blockquote {
-  p {
-    color: var(--color-highlight2);
-  }
-}
-
-pre.highlight {
-  border-left: 2px solid var(--color-bg-thin-constast);
+.page {
+  color: var(--color-primary);
 }
 
 .dark-mode-switch {
@@ -106,40 +31,57 @@ pre.highlight {
       color: var(--color-contrast-fg-hover);
     }
   }
+
+  &:checked ~ .page  {
+    background-color: var(--color-bg);
+  }
 }
 
-/** experimetns
-#covid19-banner {
-  background: #f9f9f9;
+.header-button {
+  background: var(--color-light-bg2);
+  color: var(--color-light-fg3);
+  box-shadow: 8px 9px 0px -4px var(--color-light-shadow);
 
-  .principal{
-    .button {
-      background: #cef2ce;
-      color: #418a41;
+  &:hover {
+    color: var(--color-highlight);
+  }
+}
+
+.header-left-menu {
+  background: var(--color-bg);
+  border: 1px solid var(--color-primary-title);
+  box-shadow: 8px 9px 0px -4px var(--color-light-shadow2);
+
+  a {
+    color: var(--color-light-fg2);
+
+    &:hover {
+      color: var(--color-highlight2);
     }
   }
 }
 
-#book-banner {
-  h2 {
-    border-bottom: 4px solid #3cf5b2;
-  }
+code {
+  background: var(--color-inline-code-bg);
+  border: none;
 
-  .principal{
-    border: 1px solid #b7d0c7;
-
-    .button {
-      background: #3cf5b2;
-      color: #384950;
-    }
+  &.highlighter-rouge {
+      color: var(--color-inline-code-fg);
   }
 }
 
-.banner {
-  background: var(--color-light-grey-bg2);
-  .fa-bookmark {
-    background: var(--color-light-bg);
-    color: var(--color-light-fg);
+pre.highlight {
+  border-left: 2px solid var(--color-bg-thin-constast);
+
+  code {
+    background: none;
   }
 }
-*/
+
+blockquote {
+  border-left: 2px solid var(--color-bg-thin-constast);
+  
+  p {
+    color: var(--color-highlight2);
+  }
+}

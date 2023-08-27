@@ -15,9 +15,10 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
   font: {
     family: $sans-serif,Helvetica,Roboto,Arial,sans-serif;
-    weidght: 400;
+    weight: 400;
   }
 }
 
@@ -46,26 +47,38 @@ a {
   font-size: $big;
 }
 
-#about {
-  font: {
-    size: $medium;
-  }
+ul {
+  list-style-type: circle;
+}
 
-  .title {
-    font-size: $extra-fat;
+code {
+  font: {
+    family: 'Fira Mono', monospace;
   }
 }
 
-#post {
-  ul, ol, aside {
-    font-family: $serif;
+aside {
+  font: {
+    weight: 700;
   }
+}
 
+.header-button {
+  font-weight: 700;
+}
+
+.banner-title--home {
+  font: {
+    size: $extra-fat;
+  }
+}
+
+.post {
   h3 {
-    @include header($medium, 600)
+    @include header($medium)
   }
 
-  p, ul, a {
+  p, ul, ol, a {
     font: {
       family: $serif;
       size: $paragraph;
@@ -74,29 +87,7 @@ a {
 
   a {
     font: {
-      weight: 600;
+      weight: 700;
     }
   }
-}
-
-code {
-  font: {
-    family: 'Fira Mono', monospace;
-    size: 1rem;
-  }
-}
-
-ul {
-  list-style-type: circle;
-}
-
-aside {
-  font-size: $tiny;
-  font-weight: 700;
-  padding: 2px 6px;
-  display: inline-block;
-}
-
-.button.transparent {
-  font-weight: 700;
 }

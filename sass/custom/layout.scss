@@ -5,15 +5,8 @@ $default-margin: 1rem;
 $medium-margin : 2rem;
 $huge-margin   : 4rem;
 
-@mixin horizontal-block {
-  padding: {
-    top   : 1.5rem;
-    bottom: 1.5rem;
-  }
-}
-
 @media print, screen and (min-width: 40em){
-	.grid-x {
+	.row {
 		display: flex;
 		justify-content: space-between;
 	}
@@ -25,8 +18,36 @@ body {
   overflow-x: hidden;
 }
 
-h3 {
-  margin-top: 0;
+blockquote {
+  margin: 0;
+  padding-left: $default-margin;
+}
+
+h1, h2, h3 {
+  margin-bottom: $huge-margin;
+}
+
+section, footer {
+  margin-top: $default-margin;
+}
+
+figure {
+  margin-bottom: $medium-margin;
+
+  img {
+    display: block;
+    width: 100%;
+    margin-bottom: inherit;
+  }
+}
+
+code {
+  padding: 0;
+}
+
+footer {
+  margin-top: $huge-margin;
+  padding-top: $default-margin;
 }
 
 .page {
@@ -55,101 +76,44 @@ h3 {
   }
 }
 
-.grid-container {
-  max-width: 50rem;
-}
-
-h1, h2, h3 {
-  margin-bottom: $huge-margin;
-}
-
-
-.menu .button {
-	padding: 0.7rem 1rem;
-}
-
-.menu a {
-	padding: 0.7rem 1rem 0.7em 0;
-}
-
-
-.menu {
+.header-left-menu, .header-right-menu {
 	padding: 0;
 	margin: 0;
 	list-style: none;
 	position: relative;
 	display: flex;
 	flex-wrap: wrap;
-
-  &.top-left-menu {
-    padding: 0 0 0 15px;
-    border-radius: 3px;
+  
+  a {
+    line-height: 1;
+    display: block;
+    padding: 0.7rem 1rem;
   }
 }
 
-.menu a, .menu .button {
-	line-height: 1;
-	display: block;
-}
+.header-left-menu {
+  padding: 0 0 0 15px;
+  border-radius: 3px;
 
-.menu.simple a.header-button {
-  padding: 0.85em 1em;
-}
-
-section, footer {
-  margin-top: $default-margin;
+  a {
+    padding-left: 0;
+  }
 }
 
 .button {
   border-radius: $border-radius;
+}
 
-  img {
-    width: .9em;
-  }
+.banner--home {
+  margin: $half-margin 0 $huge-margin 0;
+  max-height: 200px;
 }
 
 .post-container {
   width: 100%;
 }
 
-#about {
-  margin: $half-margin 0 $huge-margin 0;
-  max-height: 200px;
-
-  .title {
-    margin: 0;
-  }
-}
-
-#subscription {
-  height: 40px;
-
-  form > div {
-    display: flex;
-    input {
-      border-radius: $border-radius;
-    }
-
-    .email {
-      max-width: 400px;
-      width: 250px;
-    }
-
-    .button {
-      margin-left: 0.3rem;
-    }
-  }
-
-  #mce-responses {
-    display: none;
-  }
-
-  .addon {
-    margin: $medium-margin 0;
-  }
-}
-
-#post {
+.post {
   header {
     margin: 0 0 $medium-margin 0;
   }
@@ -164,7 +128,8 @@ section, footer {
 }
 
 .highligthed-bloc {
-  @include horizontal-block;
+  top   : 1.5rem;
+  bottom: 1.5rem;
 }
 
 .highlighter-rouge {
@@ -172,28 +137,10 @@ section, footer {
   padding: 0 5px;
 }
 
-figure {
-  margin-bottom: $medium-margin;
-
-  img {
-    display: block;
-    width: 100%;
-    margin-bottom: inherit;
-  }
-}
-
 pre.highlight {
   padding: $default-margin;
   margin: $default-margin 0;
-}
-
-code {
-  padding: 0;
-}
-
-footer {
-  margin-top: $huge-margin;
-  padding-top: $default-margin;
+  overflow: scroll;
 }
 
 @media print, screen and (max-width: 80em) {
@@ -205,45 +152,8 @@ footer {
     }
   }
 
-  .menu {
-    &.top-left-menu {
-      margin-bottom: 15px;
-    }
-  }
-
-  aside.float-right {
-    display: none;
-  }
-
-  .grid-container {
-    margin   : $medium-margin auto;
-  }
-}
-
-@media print, screen and (max-width: 40em) {
-  #subscription form > div, #reach-me {
-      display: block;
-  }
-
-  #about #reach-me > *:not(:last-child) {
-    margin: $half-margin 0;
-  }
-
-  #about {
-    margin-bottom: $huge-margin * 2;
-  }
-
-  .menu-container {
-    flex-direction: column;
-
-    ul {
-      flex-direction: column !important;
-      align-items: baseline !important;
-
-      li {
-        margin: $default-margin 0 0 0 !important;
-      }
-    }
+  .header-left-menu {
+    margin-bottom: 15px;
   }
 }
 
@@ -297,36 +207,3 @@ footer {
     }
   }
 }
-
-/** experiments
-
-#covid19-banner {
-  display: flex;
-  flex-direction: column;
-  padding: $medium-margin 0;
-
-  .principal{
-    width: 50%;
-    align-self: center;
-  }
-
-  @media print, screen and (max-width: 80em) {
-    .principal {
-      width: 90%;
-    }
-  }
-}
-
-#book-banner {
-  display: flex;
-  flex-direction: column;
-
-  .principal{
-    padding: $default-margin;
-    align-self: center;
-  }
-
-  @media print, screen and (max-width: 80em) {
-  }
-}
-**/
