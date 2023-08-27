@@ -3,10 +3,11 @@
 $serif     : 'Martel', Times, serif !default;
 $sans-serif: 'Open Sans', sans-serif !default;
 
-$tiny  : 0.889rem;
-$medium: 1.2rem;
-$big   : 1.6em;
-$fat   : 4rem;
+$tiny     : 0.889rem;
+$medium   : 1.2rem;
+$big      : 1.6em;
+$fat      : 4rem;
+$extra-fat: 5rem;
 
 $paragraph: 1.4rem;
 
@@ -51,7 +52,7 @@ a {
   }
 
   .title {
-    font-size: $fat;
+    font-size: $extra-fat;
   }
 }
 
