@@ -73,7 +73,7 @@ aside {
   }
 }
 
-.post {
+.post, .post-header {
   h3 {
     @include header($medium)
   }
