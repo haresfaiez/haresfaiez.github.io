@@ -309,7 +309,7 @@ It's not the regular generator.
 
 `integerVariant` takes the variation number and the regular generator.
 
-```console
+```haskell
  -- The $! operator ensures that the second argument r is evaluated to weak head
  -- normal form (WHNF) before being passed to the function integerVariant.
  -- This means that the value of r is fully evaluated (to the outermost constructor)
