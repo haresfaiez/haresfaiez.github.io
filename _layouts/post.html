@@ -12,4 +12,24 @@ layout: default
     </section>
     {% include footer.html %}
   </div>
+  <script type="text/javascript">
+    document.querySelector("main")
+      .innerHTML += document.querySelector("h2,h3") ? `
+        <aside class="post-summary">
+          <ul>
+            ${
+              Array
+              .from(document.querySelectorAll("h2,h3"))
+              .map(each => `
+                <li class="header-${each.tagName}">
+                  <a href="#${each.id}">
+                    ${each.innerText}
+                  </a>
+                </li>
+              `)
+              .join('')}
+          </ul>
+        </aside>
+      ` : '';
+  </script>
 </main>

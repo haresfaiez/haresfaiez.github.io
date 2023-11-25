@@ -45,6 +45,10 @@ h3 {
 a {
   text-decoration: none;
   font-size: $big;
+
+  code {
+    font-weight: 400;
+  }
 }
 
 ul {
@@ -88,6 +92,30 @@ aside {
   a {
     font: {
       weight: 700;
+    }
+  }
+}
+
+.post-summary {
+  ul {
+    li {
+      &.header-H2 {
+        a {
+          font-size: 1em;
+          font-weight: 600;
+        }
+      }
+
+      &.header-H3 {
+        a {
+          font-size: 1em;
+          font-weight: 400;
+
+          &::before {
+            content: "┗";
+          }
+        }
+      }
     }
   }
 }

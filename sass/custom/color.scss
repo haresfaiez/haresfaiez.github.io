@@ -4,6 +4,14 @@ a {
   &:hover {
     color: var(--color-highlight2);
   }
+
+  code {
+    background: var(--color-highlight--code);
+
+    &:hover {
+      background: var(--color-highlight2--code);
+    }
+  }
 }
 
 aside {
@@ -19,6 +27,7 @@ footer {
 }
 
 .page {
+  background-color: var(--color-bg);
   color: var(--color-primary);
 }
 
