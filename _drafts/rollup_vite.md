@@ -221,6 +221,255 @@ interface ChunkRenderResult {
 ** usages of fields..?
 `usedModules` contains the list of non-empty modules the chunk will contain.
 ** usages? -->
+<!-- The main difference in represation is that while a static import
+is identified by a source, that is the imported path,
+the dynamic import is identified with a structure: -->
+<!-- ```typescript
+export interface DynamicImport {
+  argument: string | ExpressionNode;
+  id: string | null;
+  node: ImportExpression;
+  resolution: Module | ExternalModule | string | null;
+}
+```
+** explain this ..? fields usages..? and why do we need other fields than `id`..?
+** why can `resolveId` be a string or a null value ind DynamicDependency type ..? `resolvedId: ResolvedId | string | null` ..? -->
+
+<!-- It's `true` if the given module is Rollup cannot locate it through its normal procdure.
+It's not handled by [`options.external`](https://rollupjs.org/configuration-options/#external),
+no plugins handle its resolution hook,
+and its id is not an absolute path.
+** Usually, the name is an alias or an external package..?
+It's also true if it's id, it's file name is not absolvute
+[`makeabsoluteexternalsrelative`](https://rollupjs.org/configuration-options/#makeabsoluteexternalsrelative)
+can force it to be `true` if the file is absolute here.
+** explain this in simple terms...?
+`external` can be `true` also if
+a plugin handles it and returns an object with `external` value is `'relative'`,
+or the file id (the string used to import it) is not absolute,
+or the plugin returns `true` as `external` value and `makeabsoluteexternalsrelative` makes it external.
+In the last two situation, `external` will be `'absolute'` if it's not `true`. -->
+<!-- ** Sorting the modules in `addEntryModules` ..?
+** `graph.sortModules()` is ...? -->
+<!-- Then,
+```typescript
+module.linkImports();
+```
+** explain this..? -->
+
+<!-- ## Tree shaking
+
+`moduleSideEffects` inside `ResolvedId` structure is `true` by default unless a value for
+[`options.treeshake.moduleSideEffects`](https://rollupjs.org/configuration-options/#treeshake) is provided.
+The option is part of the structure that prescribe tree-shaking.
+It can be set to a function that returns a boolean.
+`moduSideEffects` for a module can be set to `'no-treeshake'` using
+plugins. A plugin can handle [the hook `'resolveId'`](https://rollupjs.org/plugin-development/#resolveid)
+and return a `ResolveId` structure,
+or also [the transform hook](https://rollupjs.org/plugin-development/#transform).
+** usages and implications of `moduleSideEffects` ..?
+
+`graph.includeStatements()` marks the code to be a part of the output bundle.
+** `Module.isIncluded` is ..?
+** `Module.include*` methods ..?
+** usages of `Module/*.included`/`Module/*.isIncluded` ..?
+
+Each moudle should be included once. `Module.isExecuted` is `true`.
+when a module is included, its internal modules dependecies, that is:
+```typescript
+!(dependency instanceof ExternalModule)
+    && (dependency.info.moduleSideEffects || module.implicitlyLoadedBefore.has(dependency))
+```
+** why are we excluding `ExternalModule` ..?
+
+`info.moduleSideEffects` takes its value from module's `ResolvedId` we talked about above.
+The internals of this method depends on the [tree shaking option](https://rollupjs.org/configuration-options/#treeshake).
+If such value is false, all modules are included:
+
+```typescript
+for (const module of this.modules) module.includeAllInBundle();
+```
+
+If it's truthy, Rollup goes over the order modules list once or twice.
+The second pass is done if `module.preserveSignature !== false`.
+** `module.preserveSignature` is ..?
+
+There are two ways to include a module:
+
+```typescript
+if (module.info.moduleSideEffects === 'no-treeshake') {
+  module.includeAllInBundle();
+} else {
+  module.include();
+}
+```
+
+`includeAllInBundle` marks the whole module to be inside the output bundle.
+It goes over all the module AST nodes and sets `this.included` to `true`.
+** other responsibilities of `Node.include()` ..? In the process also, it ..?
+
+** It then calls `includeAllExports()` ..?
+
+** `this.graph.needsTreeshakingPass = true` is ..?
+
+** `include()` ..?
+
+After the first pass:
+
+```typescript
+// We only include exports after the first pass to avoid issues with
+// the TDZ detection logic
+module.includeAllExports(false);
+this.needsTreeshakingPass = true;
+```
+** explain this ..? -->
+
+<!-- The value returned by `emitAsset`, and thus `emitFile`, is the reference id string.
+Later hook handlers can access the asset name using `getFileName(referenceId)`.
+** is the referenceId stored somewhere so that other plugins find it ..?
+`getFileName` is part of the API Rollup provides to the plugins. -->
+<!-- `chunk.generateFacades()` returns an array of `Chunk` instances for each chunk.
+** They're called "facades" because ..?
+These arrays are added to the array of chunks created previously.
+That is, the list of all chunks(** all..?) is composed from the manually
+created chunks (using manualChunks option) and the arrays of facades for each
+of these chunks.
+To do so, the method collects the list of exposed variables.
+Such array is composed from the namespaces of the dynamic entry modules
+and the modules exported (how a module export a modul...?) by entry modules (normal and implicit)
+that should be in the current chunk.
+** The namespace of a module is.. ? (a variable that contains all the exports of that module ..?)
+It's an AST node instance:
+A new `NamespaceVariable` is created and attached to each module when attaching
+its source.
+```typescript
+export default class NamespaceVariable extends Variable {
+```
+Being a variable, a namespace has an `included` attribute.
+It's included (meaning all the module exports are included) when
+a module is imported with `*`, like in:
+```typescript
+import * from `./utils`
+```
+It's included by the module containing this statement, when the import statement is included.
+Thus, it's included when a parent module is itself is included with a wildcard,
+** and when: `*includeAllExports*` (if `this.exports` or `this.getReexports()`), `includeDynamicImport` (if !`importedNames`)
+A namespace can also references merged namespaces, these are the namespaces
+of the modules imported with the wildcard.
+These are merged and included when:
+** `includeExportsByNames` (if `name` not in exports/reexports), `*includeAllExports*` (`includeNamespaceMembers`)
+** and `deoptimizePath` ..?
+** exported variables are created by `getExportNamesByVariable` ..?
+The list of facades that'll be returned is built from the list of chunks of each entry module (normal and implicit).
+For each module, the latter is an aggregation of modules names and of file names.
+It's created by extracting the names from both `chunkNames` and `chunkFileNames`.
+** creation and usages of `module.chunkNames` ..?
+** creation and usages of `module.chunkFileNames` ..?
+A new `Chunk` instance is created for each chunk name/filename, for each module.
+** Difference between create `Chunk` normally and create `Chunk` for facades using `generateFacade` ..?
+** `if (!this.facadeModule) {` is ..?
+** Then, for dynamic entry modules..?
+** `addNecessaryImportsForFacades` is ..?
+** `module.preserveSignature` is ..? its usages..? -->
+<!-- ** `Module.resolvedIds` contains a map of ??/`ResolvedId` of the dependencies??.
+** is every has a module per specifier..? multiple resolveId for each module..? `module.resolvedIds[specifier]` is ..?
+***********************--------------**************************************
+In addition to the files specified inside the `input` configuration option,
+there are implicitly added entry modules.
+These are treated as entry modules. They are checked during tree-shanking.
+* are they included separately in the bundle..?
+* An implicit entry module is ...? is it an entry module..?
+* usages of `this.implicitEntryModules` .. in `Graph` ..?
+* The distinction between an entry module and an implicit entry module is ..?
+* usages of `implicitEntryModules` ..?
+* other calls to `ModuleLoader.loadEntryModule`..?
+** `emitChunk` ..
+  `EmittedChunk` has a property named `implicitlyLoadedAfterOneOf`.
+  It's optional. It might contain an arry of file names that import the module
+  described by the chunk.
+  If that property is `undefined`, the chunk is treated exactly as an entry module.
+  If it's there, the module might not be an entry module.
+  Only when it's explicity mentioned in `options.input` that it's handeled as a normal entry module.
+  Otherwise, it's handeled a an "implicit entry module".
+  The module that depends on it are immediately imported.
+***********************--------------************************************** -->
+
+<!-- ***********************--------------**************************************
+For each module, it
+```typescript
+this.setDynamicImportResolutions(fileName);
+this.setImportMetaResolutions(fileName);
+this.setIdentifierRenderResolutions();
+```
+** explain this..?
+** `Module.includedDynamicImporters` and its usages in `Chunk.ts` ..?
+***********************--------------************************************** -->
+
+<!-- Then it adds a module to the rendered modules, that is a final list
+of modules that should be in the chunk, only if:
+```typescript
+module.isIncluded() || includedNamespaces.has(module)
+```
+** explain this..? -->
+
+<!-- Then `module.render` is called.
+This method copies the module string, then
+** `Program.render` is ...?
+
+It returns an object:
+
+```typescript
+{ source: MagicString; usesTopLevelAwait: boolean }
+```
+
+** `source` contains ..?
+** `usesTopLevelAwait` is `true` when ..? -->
+
+<!-- The source is added to the bundle using magic-string's `Bundle.addSource`,
+which simple adds the modlue source and filename to the bundle. -->
+
+<!-- `usesTopLevelAwait` is used to check whether any of the modules handleed by the chunk
+has a top-level `await`.
+** The result is returned and used to ..? -->
+<!-- In addition to putting each module source into one string,
+`Chunk` also inspects accesses to global variables.
+As the output is one code string per chunk, chunk rendring
+builds a set `accessedGlobals` fro the global varibales accessed
+by all the modules inside the chunk.
+** `this.accessedGlobalsByScope` A map is created early in the rendering process that maps ...? -->
+
+<!-- Also, for each module whose namespace is included,
+that is, a module that's imported with a wildcard,
+a module definition string is created.
+Such string is in the form:
+```typescript
+const moduleName =
+```
+** Complete from `NamespaceVariable.renderBlock`..?
+
+If such module should be exported from the chunk itself,
+a code denoting an export call for the module is added to this string:
+
+```typescript
+const ...
+exports()...
+```
+** Complete from previous snippet..? and from `getSystemExportStatement`..?
+
+The output string is either added to the beginning of the chunk magic string
+or just after the module source.
+** It's added at the beginning if `module.namespace.renderFirst()` -->
+<!-- 
+The second parameters contains, among many booleans, the list of the chunk dependencies.
+This is a list of `ChunkDependency` instance.
+** Each element is created from a `Chunk` or an `ExternalChunk` instance ..?
+** `ExternalChunk.imports` contains ..?
+And it contains the list of the chunk exports.
+** `getChunkExportDeclarations()` is ..? -->
+<!-- A dynamic dependency is added to `module.dynamicDependencies`
+and the importing module is added the the dependency `dependency.dynamicImporters`.
+Static dependencies are added to `module.dependencies` and the importer's `dependency.`importers` are updated.
+This is how the links in the graph are created. -->
 
 # Vite
 
