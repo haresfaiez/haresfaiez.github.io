@@ -13,22 +13,20 @@ tags:     featured
 >
 > [Rollup](https://github.com/rollup/rollup)
 
-Whether used through the Javascript API or the command line,
-Rollup build steps are the same.
-
 ## Building module graph
 
 Rollup build starts by creating a module graph.
-This graph contains the entry files and their dependencies.
+Such a graph contains the entry files and their dependencies.
+
 It'll be used to analyze the dependencies,
 find the exported expressions from the output bundle,
 run effective tree-shaking, and optimize the output bundle.
 
-The heads of the module graph we end up with are the entry modules.
-These are the modules defined in the [`input`](https://rollupjs.org/configuration-options/#input)
+The heads of the graph are the entry modules,
+the modules defined in the [`input`](https://rollupjs.org/configuration-options/#input)
 option of the configuration.
 Each graph node is created by first resolving a module file name
-then by fetching its source, parsing it, fetching its dependencies, and adding it to the graph.
+and fetching its source, parsing it, fetching its dependencies, and adding it to the graph.
 
 When resolving a module, `ModuleLoader` looks for a plugin that handles
 the hook `'resolveDynamicImport'` or the hook `'resolveId'`.
@@ -130,12 +128,31 @@ At the end, the dependencies are attached to the importing module.
 
 ## Identifying chunks
 
-You can learn about output generation and its hooks in the
+You can learn about output generation and its hooks from the
 [documentation](https://rollupjs.org/plugin-development/#output-generation-hooks).
+
+The build process identifies the output units and renders them inside a bundle entry.
+Such output units are named "chunks".
+
+Each chunk contains a set of modules.
+Read the [comment](https://github.com/rollup/rollup/blob/master/src/utils/chunkAssignment.ts)
+at the beginning of `chunkAssignment.ts` to learn about the identification algorithm.
+
+After getting the list of chunk names and their subject modules, Rollup
+creates `Chunk` instances for output units, builds a chunk graph.
+Then it analyzes the modules to find out chunk exports, imports, and re-exports.
+
+To build the chunk graph, Rollup iterates over each chunk module, gets their dependencies and their transitive
+dependencies using a depth-first traversal of the module graph,
+and then adds the chunks of these dependencies as dependencies
+to the subject chunk.
+
+`Chunk.dependencies` in the end will contain instances of `Chunk` and `ExternalChunk`
+(for external modules).
 
 The main output of Rollup is a bundle object.
 This bundle contains a map whose entries are output units.
-Usually, these are the files we get inside the build output directory.
+Usually, they are the files we get inside the build output directory.
 
 The bundle is defined as:
 
@@ -153,52 +170,32 @@ loading, dependencies fetching, and augmenting the module graph.
 Hook handlers call [`emitFile`](https://rollupjs.org/plugin-development/#this-emitfile)
 to add a chunk or an asset to the bundle.
 
-The build process identifies the output units and renders them inside a bundle entry.
-Such output units are named "chunks".
-Many scenarios are possible. Depending on the output values, we might
-have one chunk for all the modules, or we might need many.
-
-The identification is explained in the
-[comment](https://github.com/rollup/rollup/blob/master/src/utils/chunkAssignment.ts)
-at the beginning of `chunkAssignment.ts`.
-
-After getting the list of chunk names and their subject modules, Rollup
-creates `Chunk` instances for output units, builds a chunk graph.
-Then it analyzes the modules to find out chunk exports, imports, and re-exports.
-
-To build the chunk graph, Rollup iterates over each chunk modules,
-gets their dependencies and their transitive
-dependencies using a depth-first traversal of the module graph,
-and then adds the chunks of these dependencies as dependencies
-to the subject chunk.
-
-`Chunk.dependencies` in the end will contain instances of `Chunk` and `ExternalChunk`.
-(for external modules).
-
 ## Rendering chunks
 
-The last step of the build is rendering the chunks.
-Rollup builds a string for each chunk and puts it inside the bundle.
+The last step is rendering.
+Rollup converts each chunk into a string and puts the result inside the bundle.
 
 The library creates a [magic-string](https://www.npmjs.com/package/magic-string) instance.
-It goes over the modules one by one and adds them to this string.
-Then, it uses a format-aware finalizer to create the final string.
+It goes over the modules one by one and adds their string output to this string.
+Then, it uses a format-aware finalizer to create one final big string.
 
-Rollup exports a constant list of [finalizers](https://github.com/rollup/rollup/tree/master/src/finalisers):
+Rollup offers four [finalizers](https://github.com/rollup/rollup/tree/master/src/finalisers):
 
 ```typescript
 export default { amd, cjs, es, iife, system, umd };
 ```
 
-Each of these is a function that takes a magic string
+Each one is a function that takes a magic string
 (the outcome of rendering a chunk), a set of options that describe
 the chunk rendering context, and the output options object.
-It modifies the given magic string and makes it confirming.
 
-`es` finalizer for example adds an import block at the beginning and an export block at the end.
+It modifies the given magic string to make it compatible with the target format.
+
+`es` finalizer for example adds an "import" block at the beginning and an "export" block at the end.
+
 To build the export block, the module iterates over the export expressions
 passed inside the rendering options object
-(These are Acorn export nodes that are collected from the chunk modules)
+(These are Acorn export nodes. They are collected from the chunk modules)
 and builds one `export` statement.
 Same for the import block, it iterates over the dependencies.
 For each dependency, it adds an `import` or an `export ... from ...` statement for
@@ -213,7 +210,11 @@ the values imported and reexported from the modules.
 >
 > [JavaScript API](https://rollupjs.org/javascript-api/)
 
-This is the code that writes the generated bundle to the file system:
+Rollup persists files with `writeOutputFile`,
+which uses [`mkdir`](https://nodejs.org/api/fs.html#fspromisesmkdirpath-options)
+and [`writeFile`](https://nodejs.org/api/fs.html#filehandlewritefiledata-options) native functions.
+
+This code writes the generated bundle into the file system:
 
 ```typescript
 await Promise.all(
@@ -222,8 +223,3 @@ await Promise.all(
   )
 );
 ```
-
-Rollup persists each file using `writeOutputFile`.
-Internally this function uses [`mkdir`](https://nodejs.org/api/fs.html#fspromisesmkdirpath-options)
-and [`writeFile`](https://nodejs.org/api/fs.html#filehandlewritefiledata-options) native functions
-to write the files.
