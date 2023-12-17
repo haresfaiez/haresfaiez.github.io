@@ -179,7 +179,7 @@ The library creates a [magic-string](https://www.npmjs.com/package/magic-string)
 It goes over the modules one by one and adds their string output to this string.
 Then, it uses a format-aware finalizer to create one final big string.
 
-Rollup offers four [finalizers](https://github.com/rollup/rollup/tree/master/src/finalisers):
+Rollup offers six [finalizers](https://github.com/rollup/rollup/tree/master/src/finalisers):
 
 ```typescript
 export default { amd, cjs, es, iife, system, umd };
