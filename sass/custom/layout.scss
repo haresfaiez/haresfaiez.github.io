@@ -260,4 +260,10 @@ pre.highlight {
 
 #subscription  #mc_embed_signup_scroll {
   display: flex;
+
+  input {
+    border-radius: .25rem;
+    padding: .75rem 1rem;
+    margin-right: 10px;
+  }
 }
