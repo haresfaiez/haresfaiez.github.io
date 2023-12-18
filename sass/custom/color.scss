@@ -94,3 +94,20 @@ blockquote {
     color: var(--color-highlight2);
   }
 }
+
+#subscription  #mc_embed_signup_scroll {
+  input {
+    background: var(--color-contrast-bg);
+    border: none;
+
+    &[type="submit"] {
+      background: var(--color-light-bg2);
+      color: var(--color-light-fg3);
+      cursor: pointer;
+
+      &:hover {
+        color: var(--color-highlight);
+      }
+    }
+  }  
+}
