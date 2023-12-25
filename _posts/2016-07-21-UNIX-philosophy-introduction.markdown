@@ -18,7 +18,7 @@ Everyone has their metrics and its view of a good software.
 But, what about useful software?
 We can get the definition of a useful software:
 
-“A useful software is the software that can be used for a practical purpose.”
+> “A useful software is the software that can be used for a practical purpose.”
 
 It may not be the best solution, it may not be optimized,
 it may not look good, but it solves the problem facing us now.

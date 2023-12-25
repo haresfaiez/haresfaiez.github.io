@@ -37,7 +37,7 @@ That enables other tools to benefit from the component’s improvements, which e
 Software interoperability manifests itself all around us, HTML, TCP/IP, CORBA, …
 
 There should be an interface to be implemented, a protocol, or an adapter to use to expose the available functionality.
-UNIX offers through the pipe-and-filter style a great context to grow our tools with such a principle.
+UNIX offers, through the pipe-and-filter style, a great context to grow our tools with such a principle.
 
 An interoperable software component can be plugged in with other components without a ceremony.
 
@@ -48,6 +48,7 @@ Using a shell script, that fits on a single line.
 Pretty easy! Isn’t it?
 
 Doing such actions in a graphic-based environment is harder. We need to find the folder where our team data are stored, open the file, copy the addresses (filter the lines manually), and open the e-mail client and paste them with the message, then send it. That will take a reasonable amount of time and mental energy.
+
 Imagine doing that every day.
 
 The latter tools were not built with interoperability in mind. They may be small, simple, and focused. But they don’t work well together. That makes our mission harder. It makes combining more and more tools in the same process nonpleasurable.

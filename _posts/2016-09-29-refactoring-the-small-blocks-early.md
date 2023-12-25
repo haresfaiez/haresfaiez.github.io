@@ -16,26 +16,26 @@ I started with something like
 
 I was focusing on code smells instead of the knowledge expressed through the code.
 I was trying to take away one code smell at a time.
-The trouble was that as soon a smell disappears, it comes back, usually under a new form.
+The trouble was that as soon a smell disappeared, it came back, usually under a new form.
 Moreover, the code seemed more and more obscure.
 
 So, four or five successive red bars, and I restarted the kata.
 
 I started the second time with a different strategy:
-'Take one block, ignore the holisitic view,
+'Take one block, ignore the holistic view,
 refactor that block mercilessly,
 then go back and do the same for the next block'.
 
 I did well.
-I learned a lot about the solution as I was able to hold less context in my mind.
+I learned a lot about the solution as I was able to hold less context in my head.
 And, yes, I got it, without that red bar.
 
 This experience recalls some of my first steps with TDD.
 There was a voice in my mind yelling at me after making a test pass
-'Go ahead, write one more test, an interesting patterns will appear,
-then, you will be able refactor all the mess easily'.
+'Go ahead, write one more test, interesting patterns will appear,
+and then, you'll refactor all the mess easily'.
 
-It turns out that that perfect moment is an evil job, it is an illusion.
+It turns out, the "perfect" moment is an evil job, an illusion.
 
-It is rare to find good insights that help making the code tidy.
+It'is rare to find good insights that help make the code tidy.
 Nevertheless, tidy code leads continuously to good insights.
