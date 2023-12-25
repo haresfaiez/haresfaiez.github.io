@@ -30,12 +30,22 @@ and fetching its source, parsing it, fetching its dependencies, and adding it to
 
 When resolving a module, `ModuleLoader` looks for a plugin that handles
 the hook `'resolveDynamicImport'` or the hook `'resolveId'`.
+
 When no plugin does,
 it looks for a file whose path is the given id.
-If not found, it attempts to add `.mjs` to the add.
+If not found, it attempts to add `.mjs` to the id.
 If also not found, it tries to add `.js`.
 
-There are two resolution hooks because a module dependency can be static or dynamic.
+Hooks augment the build process.
+
+A [hook](https://rollupjs.org/plugin-development/#build-hooks)
+is a step in the build process where plugins extend the core logic.
+A plugin handles a hook by defining a function that takes a module
+id (its filename) and optionally a context object.
+It returns either the handling result or an `undefined` value, if it's
+not responsible for the given module.
+
+Two resolution hooks exist because a dependency can be static or dynamic.
 A static dependency is an import statement:
 
 ```typescript
@@ -50,15 +60,8 @@ A dynamic dependency is an import expression:
 import('bar')
 ```
 
-Hooks augment the build process.
-A [hook](https://rollupjs.org/plugin-development/#build-hooks)
-is a step in the build process where plugins extend the core logic.
-A plugin handles a hook by defining a function that takes a module
-id (its filename) and optionally a context object.
-It returns either the handling result or an `undefined` value if it's
-not responsible for the given module.
+The outcome of the resolution is an instance of `ResolvedId`.
 
-The outcome of the resolution step is an instance of `ResolvedId`.
 Such an object is the core of a graph node.
 It's used to create a `Module` or a `ExternalModule` instance that'll be inserted into the graph:
 
@@ -74,7 +77,7 @@ interface ResolvedId {
 }
 ```
 
-A module is internal if a plugin handles it and marks it as implicit,
+A module is internal if a plugin handles it and marks it as internal,
 by setting `external` to `false` in the returned `ResolveId` instance, or
 if the module id references an existing file.
 
@@ -83,6 +86,7 @@ External modules are the ones that should be kept out of the output bundle.
 
 As `external` type says, external modules are not all the same.
 `external` is either `true` or `'absolute'`.
+
 If the external filename is not absolute,
 the file name will be changed to a path relative to the current project.
 An absolute one always references an existing file on the file system with an absolute path.
@@ -139,8 +143,9 @@ Read the [comment](https://github.com/rollup/rollup/blob/master/src/utils/chunkA
 at the beginning of `chunkAssignment.ts` to learn about the identification algorithm.
 
 After getting the list of chunk names and their subject modules, Rollup
-creates `Chunk` instances for output units, builds a chunk graph.
-Then it analyzes the modules to find out chunk exports, imports, and re-exports.
+creates `Chunk` instances for output units.
+It builds a chunk graph.
+Then it analyzes the modules to find chunk exports, imports, and re-exports.
 
 To build the chunk graph, Rollup iterates over each chunk module, gets their dependencies and their transitive
 dependencies using a depth-first traversal of the module graph,
@@ -152,6 +157,7 @@ to the subject chunk.
 
 The main output of Rollup is a bundle object.
 This bundle contains a map whose entries are output units.
+
 Usually, they are the files we get inside the build output directory.
 
 The bundle is defined as:
@@ -164,7 +170,7 @@ interface OutputBundle {
 
 The difference between an "asset" and a "chunk" is that an asset is added to the output
 bundle while a "chunk" is a Javascript filename that's added as an entry module.
-Adding the latter triggers the process of resolution,
+Adding the latter manually, from a hook handler, triggers the process of resolution,
 loading, dependencies fetching, and augmenting the module graph.
 
 Hook handlers call [`emitFile`](https://rollupjs.org/plugin-development/#this-emitfile)
@@ -175,7 +181,7 @@ to add a chunk or an asset to the bundle.
 The last step is rendering.
 Rollup converts each chunk into a string and puts the result inside the bundle.
 
-The library creates a [magic-string](https://www.npmjs.com/package/magic-string) instance.
+For each chunk, the library creates a [magic-string](https://www.npmjs.com/package/magic-string) instance.
 It goes over the modules one by one and adds their string output to this string.
 Then, it uses a format-aware finalizer to create one final big string.
 
