@@ -16,6 +16,7 @@ functions, files, and modules. Behavior is how the application responds
 to user actions.
 
 ## Design by accident
+
 To change the behavior. First, we make the change easy. Then,  make the change.
 Then, we refactor toward a simple and coherent structure.
 
@@ -36,8 +37,8 @@ even before small changes in behavior.
 Questions like "How much am I refactoring?", "Am I doing enough?", and "what refactorings I am using the most?"
 tell me about how simple my design is. A small change is not supposed to have a significant impact.
 
-
 ## Let behavior drive refactoring
+
 The mapping between structure and behavior cannot be ideal.
 The design should bridge the gap between the two.
 
