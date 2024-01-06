@@ -157,6 +157,10 @@ footer {
 
 .post-container {
   width: 100%;
+
+  header > h1 {
+    overflow: auto;
+  }
 }
 
 .post {
