@@ -49,7 +49,7 @@ const clientsMap = new WeakMap<WebSocket, WebSocketClient>()
 wss = new WebSocketServer({ noServer: true })
 ```
 
-This is the basis of Vite Hot Module Replacement.
+This is the basis of Vite [Hot Module Replacement](https://vitejs.dev/guide/api-hmr).
 `customListeners` maps each event to a set of its handlers.
 `clientsMap` contains the connected sockets.
 One of the clients is the opened HTML page inside the browser.
@@ -70,11 +70,10 @@ It captures:
   * Links to CSS files
   * References to Javascript modules.
 
-Vite handles each of these as a separate module,
-that is, a distinct node in the module graph.
-
-It maintains a module graph quite similar to
-[Rollup module graph](/2023/11/26/Rollup-main-components.html#building-module-graph).
+Vite maintains a module graph quite similar to
+[Rollup module graph](/2023/11/26/Rollup-main-components.html#building-module-graph)
+and handles each of these as a separate module,
+that is, a distinct node.
 
 From a certain point of view, it inserts a layer between the HTML and these modules.
 In some cases, the layer is transparent.
@@ -106,8 +105,8 @@ The main attributes of `ModuleGraph` are:
 
 The first map keys are the URLs used for importing.
 
-The second map keys are the resolved `id`s for these URLs,
-usually files on the file system.
+The second map keys are the resolved `id`s for these URLs.
+These are usually files on the file system.
 
 This is how an `id` returned from `ResolveId` hook is transformed into a file name:
 
@@ -115,11 +114,11 @@ This is how an `id` returned from `ResolveId` hook is transformed into a file na
 url.replace(/[?#].*$/s, '')
 ```
 
-`fileToModulesMap` maps a file name, the result of this expression,
+`fileToModulesMap` maps a file name, the result of this latter expression,
 to the modules inside it.
 
 To identify the modules,
-Vite creates a [`MagicString`](https://www.npmjs.com/package/magic-string) instance with the initial html string.
+Vite creates a [`MagicString`](https://www.npmjs.com/package/magic-string) instance with the initial HTML string.
 It traverses the HTML with a depth-first approach using [parse5](https://www.npmjs.com/package/parse5).
 It looks for `<script>` or `<style>` elements,
 elements with an inline `style` attribute that contains
@@ -142,6 +141,7 @@ const url = `${proxyModulePath}?html-proxy&direct&index=${index}.css`
 
 `proxyModulePath` is the host HTML file.
 `index` is the order of the URL inside that file.
+
 `CssPlugin` and `CssPostPlugin` implement `transform` hook handlers for
 modules whose `id` ends with:
 
@@ -172,7 +172,7 @@ Three types of scripts exist:
 * Scripts with an `src` attribute
 * Scripts with a Javascript body
 
-For the three cases, a module node is added to the module graph.
+In all cases, a module node is added to the module graph.
 The identification of Javascript dependencies and their transitive dependencies
 will be handled later by an analysis plugin.
 
@@ -186,9 +186,7 @@ s.update(start, end, `<script type="module" src="${modulePath}"></script>`)
 `proxyModuleUrl` is url of the container HTML file.
 `inlineModuleIndex` is the order of the inline-module in the file.
 
-## Hot Module Replacement (HMR)
-
-[HMR](https://vitejs.dev/guide/api-hmr) augmentation is what makes Vite shine.
+## Hot Module Replacement
 
 Vite instantiates a [chokidar](https://www.npmjs.com/package/chokidar) instance to watch file system changes.
 
@@ -248,7 +246,7 @@ Only updates for a boundary are sent to the browser.
 
 The two main types of messages the web socket server sends to the client script are `'update'` and `'full-reload'`.
 
-After getting a message of the latter type, the font-end handler simply calls
+After getting a message of the latter type, the frontend handler simply calls
 [`location.reload()`](https://developer.mozilla.org/en-US/docs/Web/API/Location/reload).
 
 When it gets an update message, it identifies the target module and updates it.
@@ -282,7 +280,7 @@ el.after(newLinkTag)
 ```
 
 If an "accepted" Javascript module is modified. A `'js-update'` message is sent.
-The script then imports the updated module with a timestamp timestamp attribute:
+The script then imports the updated module with a timestamp attribute at the end of the URL:
 
 ```typescript
 fetchedModule = await import(update.acceptedPath + `?t=${update.timestamp}`)
