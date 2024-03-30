@@ -1,0 +1,106 @@
+<script>
+class EntropyEditor {
+  label(lineNumber) {
+    return {
+      content: `line: ${lineNumber}`,
+      inlineClassName: 'after-line-decoration'
+    }
+  }
+
+  loader(lineNumber) {
+    return {
+      content: '...',
+      inlineClassName: 'after-line-decoration--loader'
+    }
+  }
+
+  clear() {
+    const decorations = this.editor.getDecorationsInRange(this.range())
+    this.editor.deltaDecorations(decorations.map((decoration) => decoration.id), [])
+  }
+
+  range() {
+    const lineCount = this.editor.getModel().getLineCount()
+    return new monaco.Range(1, 1, lineCount, this.editor.getModel().getLineMaxColumn(lineCount))
+  }
+
+  forEachLine(callback) {
+    const lineCount = this.editor.getModel().getLineCount()
+    for (let eachLineNumber = 1; eachLineNumber <= lineCount; eachLineNumber++) {
+      const lineRange = this.editor.getModel().getLineContent(eachLineNumber)
+      const lineColumnsCount = this.editor.getModel().getLineMaxColumn(eachLineNumber)
+      const decoration = {
+        range: new monaco.Range(1, 1, eachLineNumber, lineColumnsCount),
+        options: {
+          after: callback(eachLineNumber)
+        }
+      }
+      const decorationId = this.editor.deltaDecorations([], [decoration])
+    }
+  }
+
+  
+
+  putEntropies() {
+    this.clear()
+    this.forEachLine(this.loader)
+
+    // TODO: Add throttling
+    setTimeout(() => {
+      this.clear()
+      this.forEachLine(this.label)
+    }, 1000)
+  }
+
+  adaptTheme() {
+    const darkModeToggleElement = document.querySelector('#toggleMode')
+    this.editor.updateOptions({ theme: darkModeToggleElement.checked ? 'vs-dark' : 'vs' })
+  }
+
+  setEditor(editor) {
+    this.editor = editor
+
+    const darkModeToggleElement = document.querySelector('#toggleMode')
+    darkModeToggleElement.addEventListener('change', () => this.adaptTheme())
+
+    setTimeout(() => this.putEntropies(this.editor), 1000)
+    this.editor.getModel().onDidChangeContent(() => this.putEntropies(this.editor))
+  }
+}
+
+window.entropyEditor = new EntropyEditor()
+
+const initialCode = `console.log('Hello world!')`
+require.config({ paths: { vs: 'https://unpkg.com/monaco-editor@latest/min/vs' }});
+const containerElement = document.getElementById('container')
+const createEditor = require(["vs/editor/editor.main"], function () {
+  const editor = monaco.editor.create(containerElement, {
+    value: [
+      ...initialCode.split('\n')
+    ].join('\n'),
+    language: 'javascript',
+    autoIndent: 'full'
+  })
+  window.entropyEditor.setEditor(editor)
+})
+</script>
+
+<style>
+  .after-line-decoration {
+    color: var(--color-inline-code-fg);
+    background-color: var(--color-inline-code-bg);
+    background: var(--color-bg);
+    border: 1px solid var(--color-primary-title);
+    box-shadow: 5px 4px 0px -2px var(--color-light-shadow2);
+    padding: 2px 5px;
+    opacity: .8;
+  }
+
+  .after-line-decoration:hover {
+    opacity: 1;
+  }
+
+  .after-line-decoration--loader {
+    color: var(--color-light-bg2);
+  }
+</style>
