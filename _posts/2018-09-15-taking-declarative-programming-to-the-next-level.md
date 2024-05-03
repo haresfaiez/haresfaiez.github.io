@@ -98,7 +98,6 @@ within different levels of abstraction.
 
 ## State management is not the bottleneck
 
-In software design at least.
 I need to deal with the state. I need to control the user interface and persist data.
 Making state management at the heart of design might not be that good of an idea.
 It does not cooperate well with our principles for creating meaningful layers of abstraction.
