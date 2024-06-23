@@ -5,28 +5,7 @@ layout: default
   <div class="principal">
     {% include header.html %}
     <section class="post">
-      <h1>About me</h1>
-      <p> Hey there!</p>
-      <p>
-        My name is Faiez. I am a programmer. I put here my thoughts on software and
-        I would like to hear your stories with what I write about.
-        Click on that "Say Hi" button above to send me an email and write what's on your mind.
-      </p>
-      <p>
-        I like backpacking.
-        Checkout <a href="/where-to-go-next.html">my journey</a> and let me know if I missed a corner here or there,
-        or if there are places I should visit next.
-      </p>
-      <p>
-        You can find me on:
-        {% include contact.html %}
-      </p>
-      <p>
-        If you want to get a notification when add a post, join my newsletter:
-        <div id="subscription">
-          {% include mailchimp.html %}
-        </div>
-      </p>
+      {% include intro.html %}
     </section>
     {% include footer.html %}
   </div>

@@ -9,9 +9,7 @@ baseurl: ""
 
 mastodon_handle : faiezhares
 twitter_handle  : FaiezHares
-github_handle   : haresfaiez
 goodreads_handle: 53209781-hares-faiez
-letterboxd_handle: faiezhares
 linkedin_handle : faiez-hares-4b2262158
 
 markdown: kramdown

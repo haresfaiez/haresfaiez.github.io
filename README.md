@@ -2,9 +2,11 @@
 
 ## Start the application
   * Install [Jekyll](https://jekyllrb.com/)
-  * Run `jekyll serve`
+**  * Run `jekyll serve`
 
 ## Roadmap
   * Mark a section from a blog post as "Under construction" when not finished
-  but the remaining is ready.
-  * Use a better theme for the source code.
+  but the remaining is ready
+  * Use a better theme for the source code
+  * Add direct links to sections
+  * Add feedback system

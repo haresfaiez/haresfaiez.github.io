@@ -1,0 +1,511 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Fira+Mono|Martel:400,700');
+
+$border-radius: 5px;
+
+$tiny-margin   : 0.1rem;
+$half-margin   : 0.5rem;
+$default-margin: 1rem;
+$medium-margin : 2rem;
+$huge-margin   : 3rem;
+$giant-margin  : 5rem;
+
+$serif     : 'Martel', Times, serif !default;
+$sans-serif: 'Open Sans', sans-serif !default;
+
+// TODO: specify
+$tiny     : 0.889rem;
+$medium   : 1.3rem;
+$big      : 1.6em;
+$fat      : 4rem;
+$extra-fat: 5rem;
+
+$paragraph: 1.1rem;
+
+// TODO: change to px
+$large-screen-min-size: 79em;
+$medium-screen-max-size: 80em;
+$small-screen-max-size: 1000px;
+
+// TODO: move to colors
+// $gradient-bg-1: linear-gradient(239deg, rgb(255, 107, 253) 0%, rgb(0, 255, 231) 100%);
+$gradient-bg-1: linear-gradient(239deg, var(--color-light-bg) 0%, var(--color-light-bg2) 100%);
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  font: {
+    family: $sans-serif,Helvetica,Roboto,Arial,sans-serif;
+    weight: 400;
+  }
+}
+
+// mixins
+@mixin font-header($font-size: 1em, $weight: 700) {
+  font: {
+    family: $sans-serif;
+    size  : $font-size;
+    weight: $weight;
+  }
+}
+
+// default
+body {
+	margin: 0;
+	padding: 0;
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--color-highlight);
+  text-decoration: none;
+  font-size: $medium;
+
+
+  &:hover {
+    color: var(--color-highlight2);
+  }
+
+  code {
+    font-weight: 400;
+    background: var(--color-highlight--code);
+
+    &:hover {
+      background: var(--color-highlight2--code);
+    }
+  }
+}
+
+aside {
+  color: var(--color-light-fg);
+  font: {
+    weight: 700;
+  }
+}
+
+h1, h2, h3 {
+  color: var(--color-primary-title);
+  margin: 0 0 $huge-margin;
+}
+
+main {
+  background-color: var(--color-bg);
+  color: var(--color-primary);
+}
+
+blockquote {
+  margin: 0;
+  padding-left: $default-margin;
+}
+
+figure {
+  margin-bottom: $medium-margin;
+
+  img {
+    display: block;
+    width: 100%;
+    margin-bottom: inherit;
+  }
+}
+
+h1 {
+  @include font-header($fat)
+}
+
+h2 {
+  @include font-header($big)
+}
+
+h3 {
+  @include font-header($medium, 400)
+}
+
+ul {
+  list-style-type: circle;
+}
+
+blockquote {
+  border-left: 2px solid var(--color-bg-thin-constast);
+  
+  p {
+    color: var(--color-highlight2);
+  }
+}
+
+menu {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $medium-margin;
+}
+
+// general purpose
+.button {
+  border-radius: $border-radius;
+  display: block;
+}
+
+// page body & lanes
+@media print, screen and (max-width: $medium-screen-max-size) {
+  div.page-body {
+    width: 85%;
+  }
+
+  #left-lane {
+    width: 65%;
+  }
+
+  #right-lane {
+    align-items: end;
+    width: 30%;
+  }
+}
+
+@media print, screen and (min-width: $large-screen-min-size) {
+  div.page-body {
+    width: 60%;
+  }
+
+  #left-lane {
+    width: 65%;
+  }
+
+  #right-lane {
+    align-items: end;
+    width: 30%;
+  }
+}
+
+@media print, screen and (max-width: $small-screen-max-size) {
+  div.page-body {
+   flex-direction: column;
+
+    #left-lane {
+      width: 100%;
+    }
+
+    #right-lane {
+      width: 100%;
+      align-items: start;
+    }
+  }
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  padding: $medium-margin 0;
+  min-height: 100vh;
+
+  div.page-body {
+    display: flex;
+    margin: auto;
+
+    #left-lane {
+      margin-right: $giant-margin;
+
+      .intro {
+        a {
+          padding: $tiny-margin $default-margin;
+          background: var(--color-contrast-bg);
+          color: var(--color-contrast-fg);
+
+          &:hover {
+            background: var(--color-light-bg2);
+          }
+        }
+
+        margin-bottom: $giant-margin;
+      }
+    }
+
+    #right-lane {
+      display: flex;
+      flex-direction: column;
+
+      .right-lane--element {
+        margin: 0 0 $medium-margin;
+        display: flex;
+        flex-direction: column;
+        
+        a {
+          line-height: 1;
+          padding: $default-margin;
+        }
+      }
+    }
+  }
+}
+
+
+// post
+.post, .post-intro {
+  header {
+    margin: 0 0 $medium-margin 0;
+  }
+
+  h2 {
+    margin: $medium-margin 0 $default-margin 0;
+  }
+
+  h3 {
+    margin: $medium-margin 0 $default-margin 0;
+    @include font-header($medium)
+  }
+
+  p, ul, ol, a {
+    font: {
+      family: $serif;
+      size: $paragraph;
+    }
+  }
+
+  a {
+    font: {
+      weight: 700;
+    }
+  }
+}
+
+// post summary
+.post-summary-container {
+  max-height: 70%;
+  margin-left: 15px;
+  width: 20%;
+  right: 3%;
+
+  .post-summary {
+    border: 1px solid var(--color-aside-border);
+    box-shadow: 8px 9px 0px -4px var(--color-aside-shodow);
+    border-radius: 5px;
+    padding: 20px 0;
+    width: 260px;
+    overflow: auto;
+
+    ul {
+      list-style-type: none;
+      padding: 0 20px;
+      margin: 0;
+
+      li {
+        &.header-H2 {
+          padding-top: 5px;
+
+          a {
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--color-aside-header);
+
+            &:hover {
+              color: var(--color-aside-hover);
+            }
+          }
+        }
+
+        &.header-H3 {
+          a {
+            font-size: 1em;
+            font-weight: 400;
+            color: var(--color-aside-subheader);
+
+            &:hover {
+              color: var(--color-aside-hover);
+            }
+
+            &::before {
+              content: "┗";
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// "Say Hi" button
+#say-hi-button {
+  background: var(--color-light-bg2);
+  color: var(--color-light-fg3);
+  font-weight: 700;
+
+  &:hover {
+    color: var(--color-highlight);
+  }
+}
+
+// "Dark Mode"
+.toggle-text {
+  cursor: pointer;
+  padding: 10px;
+  background: var(--color-contrast-bg);
+  color: var(--color-contrast-fg);
+
+  &:hover {
+    color: var(--color-contrast-fg-hover);
+  }
+
+  &.toggle-text--dark {
+    display: block;
+  }
+
+  &.toggle-text--light {
+    display: none;
+  }
+}
+
+.dark-mode {
+  .toggle-text {
+    &.toggle-text--dark{
+      display: none;
+    }
+
+    &.toggle-text--light{
+      display: block;
+    }
+  }
+}
+
+.dark-mode-switch {
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+@media print, screen and (max-width: $small-screen-max-size) {
+  .toggle-text {
+    position: fixed;
+    top : 0;
+    left: 0;
+
+    &--body {
+      display: none;
+    }
+  }
+}
+
+// source code
+code {
+  font: {
+    family: 'Fira Mono', monospace;
+  }
+  padding: 0;
+  background: var(--color-inline-code-bg);
+  border: none;
+
+  &.highlighter-rouge {
+      color: var(--color-inline-code-fg);
+  }
+}
+
+pre.highlight {
+  border-left: 2px solid var(--color-bg-thin-constast);
+  padding: $default-margin;
+  margin: $default-margin 0;
+  overflow: scroll;
+  width: 30vw;
+
+  code {
+    background: none;
+  }
+}
+
+.highligthed-bloc {
+  top   : 1.5rem;
+  bottom: 1.5rem;
+}
+
+.highlighter-rouge {
+  width  : 100%;
+  padding: 0 5px;
+}
+
+// subscription
+.subscription-container {
+  padding: $default-margin;
+  border-radius: 5px;
+  background: var(--color-contrast-bg);
+
+  #subscription  #mc_embed_signup_scroll {
+    display: flex;
+    flex-direction: column;
+    gap: $half-margin;
+    flex-wrap: wrap;
+
+    input {
+      border-radius: .25rem;
+      padding: $default-margin;
+      margin-right: 10px;
+      background: var(--color-light-bg);
+      border: none;
+      font-weight: 700;
+
+      &[type="submit"] {
+        background: var(--color-light-fg);
+        color: var(--color-contrast-fg);
+        cursor: pointer;
+        padding: $default-margin $half-margin;
+
+        &:hover {
+          color: var(--color-highlight);
+        }
+      }
+    }
+  }
+}
+
+// beta
+.fishnet {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e5f2d4;
+  box-shadow: 8px 9px 0px -4px #f0fde1;
+  margin: 20px 0;
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.tape-container {
+  position: fixed;
+  right: 0;
+  bottom: 100px;
+}
+
+.banner--home {
+  margin: $half-margin 0 $huge-margin 0;
+  max-height: 200px;
+}
+
+.post-toolbox {
+  position: fixed;
+  top: 180px;
+  left: 10px;
+  padding: 20px 0;
+}
+
+.fish {
+  border: none;
+  background: #d9ffa3;
+  color: #0f6a0c;
+  font-family: "Open Sans",sans-serif;
+  font-size: 1.2rem;
+  padding: 0 10px;
+  margin: 0 10px;
+
+  &:hover {
+    background: #bbe680;
+  }
+
+  &--variant1 {
+    background: #c1f5ea;
+    color: #152d5a;
+  }
+}

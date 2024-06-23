@@ -3,16 +3,13 @@
 
 @charset "utf-8";
 
-@import "settings";
-
 $fa-font-path: "/sass/fontawesome/webfonts" !default;
 @import "fontawesome/scss/fontawesome";
 @import "fontawesome/scss/brands";
 @import "fontawesome/scss/solid";
 
-@import "custom/color";
-@import "custom/typography";
-@import "custom/layout";
+@import "custom/colors";
+@import "custom/theme";
 
 @import "custom/code";
 @import "custom/code--dark-mode";

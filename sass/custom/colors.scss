@@ -26,15 +26,14 @@
   --color-aside-subheader: #aea959;
 }
 
-.dark-mode-switch:checked ~ .toggle-text,
-.dark-mode-switch:checked ~ .page {
+.dark-mode {
   --color-bg         : #022935;
   --color-primary    : #b1c9ee;
   --color-primary-title: #8DAFB9;
   --color-light-bg   : #48238A;
   --color-light-fg   : #9564E8;
   --color-highlight  : #19c673;
-  --color-highlight2 : #02EDF5;
+  --color-highlight2 : #3BA0A4;
   --color-light-bg2  : #264751;
   --color-light-fg2  : #476f7b;
   --color-light-fg3  : #476f7b;

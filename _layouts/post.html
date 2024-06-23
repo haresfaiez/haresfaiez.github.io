@@ -1,35 +1,9 @@
 ---
 layout: default
 ---
-<main class="page">
-  <div class="principal">
-    {% include header.html %}
-    <section class="cell row">
-      <div class="post-container">
-        {% include post.html %}
-        {% include comment.html %}
-      </div>
-    </section>
-    {% include footer.html %}
+<main class="page" id="post-page">
+  {% include navigation-to-home.html %}
+  <div>
+    {% include post.html %}
   </div>
-  <script type="text/javascript">
-    document.querySelector("main")
-      .innerHTML += document.querySelector("h2,h3") ? `
-        <aside class="post-summary">
-          <ul>
-            ${
-              Array
-              .from(document.querySelectorAll("h2,h3"))
-              .map(each => `
-                <li class="header-${each.tagName}">
-                  <a href="#${each.id}">
-                    ${each.innerText}
-                  </a>
-                </li>
-              `)
-              .join('')}
-          </ul>
-        </aside>
-      ` : '';
-  </script>
 </main>

@@ -1,18 +1,12 @@
 ---
 layout: default
 ---
-<main class="page">
-  <div class="principal principal--home">
-    {% include header.html %}
-    <section class="banner--home">
-      <h1 class="banner-title--home">
-        Faiez Hares
-      </h1>
-      {% include home-page-header-logo.html %}
-    </section>
-  </div>
-  <div class="principal principal--home">
-    {% include latest-posts.html %}
-    {% include footer.html %}
-  </div>
-</main>
+<div>
+  <!-- {% include home-page-header-logo.html %} -->
+  <section class="post intro">
+    {% include intro.html %}
+  </section>
+</div>
+<div>
+  {% include latest-posts.html %}
+</div>

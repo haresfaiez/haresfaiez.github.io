@@ -2,7 +2,16 @@
 <html lang="en">
   {% include head.html %}
   <body>
-    {% include dark-mode-switch.html %}
-    {{content}}
+    <main class="page">
+      <div class="page-body">
+        <div id="left-lane">
+          {{content}}
+        </div>
+        {% include right-lane.html %}
+      </div>
+    </main>
+    {% include silverfish.html %}
+    {% include navigation-tape.html %}
+    {% include post-summary.html %}
   </body>
 </html>

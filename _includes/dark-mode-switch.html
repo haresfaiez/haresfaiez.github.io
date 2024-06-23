@@ -1,3 +1,17 @@
-<input type="checkbox" id="toggleMode" class="dark-mode-switch" role="dark-mode-switch" aria-checked="false">
-<label for="toggleMode" class="toggle-text toggle-text--dark"><i class="fa-solid fa-ghost"></i> Dark Mode</label>
-<label for="toggleMode" class="toggle-text toggle-text--light"><i class="fa-solid fa-umbrella-beach"></i> Light Mode</label>
+<input
+  type="checkbox"
+  id="toggleMode"
+  class="dark-mode-switch"
+  role="dark-mode-switch"
+  aria-checked="false"
+  onchange="window.darkModeSwitch(event)"
+  >
+<label for="toggleMode" class="toggle-text toggle-text--dark"><i class="fa-solid fa-ghost"></i> <span class="toggle-text--body">Dark Mode</span></label>
+<label for="toggleMode" class="toggle-text toggle-text--light"><i class="fa-solid fa-umbrella-beach"></i> <span class="toggle-text--body">Light Mode</span></label>
+
+<script type="text/javascript">
+window.darkModeSwitch = function (event) {
+  let pg = document.querySelector('main.page').classList;
+  event.target.checked ? pg.add('dark-mode') : pg.remove('dark-mode');
+};
+</script>
