@@ -389,6 +389,20 @@ main {
 }
 
 // source code
+.highlighter-rouge {
+  background: var(--color-contrast-bg);
+  padding: 0 $half-margin;
+}
+
+pre.highlight {
+  overflow: auto;
+  padding: $half-margin 0;
+
+  code {
+    background: none;
+  }
+}
+
 code {
   font: {
     family: 'Fira Mono', monospace;
@@ -400,28 +414,6 @@ code {
   &.highlighter-rouge {
       color: var(--color-inline-code-fg);
   }
-}
-
-pre.highlight {
-  border-left: 2px solid var(--color-bg-thin-constast);
-  padding: $default-margin;
-  margin: $default-margin 0;
-  overflow: scroll;
-  width: 30vw;
-
-  code {
-    background: none;
-  }
-}
-
-.highligthed-bloc {
-  top   : 1.5rem;
-  bottom: 1.5rem;
-}
-
-.highlighter-rouge {
-  width  : 100%;
-  padding: 0 5px;
 }
 
 // subscription
