@@ -118,6 +118,13 @@ While writing this, I tried to keep these questions in mind:
 * Why IDE matters?
 
 
+## Why don't we have a "Person" class?
+Software is written to be used by people, so why don't we have a `Person` structure.
+Because it's obvious and implicit knowledge that there's no need to mention
+it and to make it explicit.
+Because that will a huge structure and will be involved everywhere.
+-> We can model things implicitly
+
 ## Data and reality ("named" as a relationship)
 * The proposition stated by the book is to propose a new data model...?
 * A model where relationships?? are the center...?
@@ -320,8 +327,12 @@ p(same-bd/two-kids) =/= p (two-kids/same-bd) =/?= sum p(other-kd-too / kd-has-bd
 * law of large number* bias (postmortem bias)* null hypothesis* p-value* significance test
 * significance hypothesis test
 
+## Wholeness and the Implicate Order
+* verb-first language
+* names extract from verbs root
 
-## Reflexions/phonix in a graveyard
+
+## Reflexions/phoenix in a graveyard
 - reflection on what software is
 - what happens if a software/idea dies
 - is software really a "part" of our lives, a "part" of us/behaviour, or is it a tool
