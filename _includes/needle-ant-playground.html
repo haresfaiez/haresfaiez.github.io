@@ -1,5 +1,10 @@
 <script>
 class EntropyEditor {
+  constructor(entropyValueElement) {
+    this.entropyValueElement = entropyValueElement
+    this.currentOperation = null
+  }
+
   label(lineNumber) {
     return {
       content: `line: ${lineNumber}`,
@@ -39,16 +44,26 @@ class EntropyEditor {
     }
   }
 
-  
-
   putEntropies() {
+      this.entropyValueElement.innerText = '...'
     this.clear()
     this.forEachLine(this.loader)
 
-    // TODO: Add throttling
-    setTimeout(() => {
+    if (this.currentOperation) {
+      clearTimeout(this.currentOperation)
+    }
+
+    this.currentOperation = setTimeout(() => {
       this.clear()
-      this.forEachLine(this.label)
+
+      try {
+        const needleant = new window.NeedleAnt(this.editor.getModel().getValue())
+        const analysis = needleant.entropy()
+        const entropyValue = analysis.evaluate().calculate()
+        this.entropyValueElement.innerText = entropyValue.toFixed(3)
+      } catch(e) {
+        this.entropyValueElement.innerText = 'Syntax error!'
+      }
     }, 1000)
   }
 
@@ -63,14 +78,15 @@ class EntropyEditor {
     const darkModeToggleElement = document.querySelector('#toggleMode')
     darkModeToggleElement.addEventListener('change', () => this.adaptTheme())
 
-    setTimeout(() => this.putEntropies(this.editor), 1000)
+    // setTimeout(() => this.putEntropies(this.editor), 1000)
     this.editor.getModel().onDidChangeContent(() => this.putEntropies(this.editor))
   }
 }
 
-window.entropyEditor = new EntropyEditor()
+const entropyValueElement = document.querySelector('#total-entropy-value')
+window.entropyEditor = new EntropyEditor(entropyValueElement)
 
-const initialCode = `console.log('Hello world!')`
+const initialCode = `const a = 4;`
 require.config({ paths: { vs: 'https://unpkg.com/monaco-editor@latest/min/vs' }});
 const containerElement = document.getElementById('container')
 const createEditor = require(["vs/editor/editor.main"], function () {

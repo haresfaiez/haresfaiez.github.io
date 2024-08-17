@@ -5,10 +5,35 @@ layout: default
   {% include navigation-to-home.html %}
   <section>
     <header class="post-header">
-      <h1>Needle-Ant</h1>
-      <p>
-        Description...
-      </p>
+      <h1>Needleant</h1>
+      <ul>
+        <li>Blog post: <a href="/2024/08/25/Code-entropy-in-action-needleant-alpha-release.html">Code entropy in action, Needleant alpha release</a></li>
+        <li>Source code: <a href="https://github.com/haresfaiez/needle-ant">Github repository</a></li>
+        <li>NPM package: <a href="https://www.npmjs.com/package/needleant">needleant</a></li>
+      </ul>
+      <div class="dashboard-container">
+        <div class="dashboard-column">
+          <div>
+            <h2>Total entropy</h2>
+            <p class="dashboard-value" id="total-entropy-value">0</p>
+          </div>
+        </div>
+        <!-- <div class="dashboard-column">
+          <div>
+            <h2>Range entropy</h2>
+            <p class="dashboard-value">23.3</p>
+          </div>
+          <ul class="dashboard-form">
+            <li>Start line:</li>
+            <li><input></li>
+            <li>End line:</li>
+            <li><input></li>
+          </ul>
+          <div>
+            <button>Recalculate</button>
+          </div>
+        </div> -->
+      </div>
     </header>
   
     <div class="post">
@@ -17,5 +42,62 @@ layout: default
   </section>
 
   <script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
+  <script>
+    window.module = window.NeedleAnt = {}
+  </script>
+  <script src="https://unpkg.com/needleant@latest/index.js"></script>
   {% include needle-ant-playground.html %}
 </main>
+
+<style>
+  .dashboard-container h2, p {
+    margin: 0;
+  }
+
+  .dashboard-container {
+    display: flex;
+    margin-top: 20px;
+  }
+
+  .dashboard-column {
+    flex: 1;
+  }
+
+  .dashboard-value {
+    font-size: 5em;
+    font-weight: 700;
+    color: var(--color-highlight2);
+  }
+
+  .dashboard-form {
+    list-style-type: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+
+  .dashboard-form > li {
+    flex: 1;
+  }
+
+  .dashboard-container input {
+    width: 50px;
+    margin: 0 3px;
+  }
+
+  .dashboard-container button {
+    margin-top: 10px;
+    border: 0;
+    background-color: var(--color-light-bg);
+    color: var(--color-primary);
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    box-shadow: 5px 5px 0px -2px var(--color-contrast-fg);
+  }
+  
+  .dashboard-container button:hover {
+    background-color: var(--color-light-fg);
+  }
+</style>
