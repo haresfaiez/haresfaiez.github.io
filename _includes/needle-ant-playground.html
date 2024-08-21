@@ -1,53 +1,54 @@
 <script>
+const inlineArray = (arr = []) => arr.length ? arr.reduce((acc, each) => [...acc, ...each]) : []
+
 class EntropyEditor {
   constructor(entropyValueElement) {
     this.entropyValueElement = entropyValueElement
     this.currentOperation = null
+    this.analysis = null
+    this.currentHighlights = []
+    this.actualCodeSlice = null
   }
 
-  label(lineNumber) {
-    return {
-      content: `line: ${lineNumber}`,
-      inlineClassName: 'after-line-decoration'
-    }
-  }
-
-  loader(lineNumber) {
-    return {
-      content: '...',
-      inlineClassName: 'after-line-decoration--loader'
-    }
-  }
-
-  clear() {
-    const decorations = this.editor.getDecorationsInRange(this.range())
-    this.editor.deltaDecorations(decorations.map((decoration) => decoration.id), [])
-  }
-
-  range() {
+  clear(decorationsIds) {
     const lineCount = this.editor.getModel().getLineCount()
-    return new monaco.Range(1, 1, lineCount, this.editor.getModel().getLineMaxColumn(lineCount))
+    const range = new monaco.Range(1, 1, lineCount, this.editor.getModel().getLineMaxColumn(lineCount))
+    const allDecorationsIds = this.editor.getDecorationsInRange(range).map((decoration) => decoration.id)
+    const decorations = decorationsIds || allDecorationsIds
+    this.editor.deltaDecorations(decorations, [])
   }
 
   forEachLine(callback) {
+    let lineStart = 0
+    const decorations = []
     const lineCount = this.editor.getModel().getLineCount()
     for (let eachLineNumber = 1; eachLineNumber <= lineCount; eachLineNumber++) {
       const lineRange = this.editor.getModel().getLineContent(eachLineNumber)
       const lineColumnsCount = this.editor.getModel().getLineMaxColumn(eachLineNumber)
-      const decoration = {
-        range: new monaco.Range(1, 1, eachLineNumber, lineColumnsCount),
-        options: {
-          after: callback(eachLineNumber)
-        }
-      }
-      const decorationId = this.editor.deltaDecorations([], [decoration])
+
+      const currentDecorations = callback(eachLineNumber, lineStart, lineColumnsCount)
+      const decorationIds = this.editor.deltaDecorations([], currentDecorations)
+
+      decorations.push(...decorationIds)
+      lineStart += lineColumnsCount
+    }
+    return decorations
+  }
+
+  evaluateCode() {
+    try {
+      const needleant = new window.NeedleAnt(this.editor.getModel().getValue())
+      this.analysis = needleant.entropy()
+      const entropyValue = this.analysis.evaluate().calculate()
+      this.entropyValueElement.innerText = entropyValue.toFixed(3)
+      this.forEachLine(this.highlightActuals.bind(this))
+    } catch(e) {
+      this.entropyValueElement.innerText = 'Syntax error!'
     }
   }
 
-  putEntropies() {
-      this.entropyValueElement.innerText = '...'
-    this.clear()
-    this.forEachLine(this.loader)
+  onCodeChange() {
+    this.entropyValueElement.innerText = '...'
 
     if (this.currentOperation) {
       clearTimeout(this.currentOperation)
@@ -55,16 +56,50 @@ class EntropyEditor {
 
     this.currentOperation = setTimeout(() => {
       this.clear()
+      this.evaluateCode()
+    }, 500)
+  }
 
-      try {
-        const needleant = new window.NeedleAnt(this.editor.getModel().getValue())
-        const analysis = needleant.entropy()
-        const entropyValue = analysis.evaluate().calculate()
-        this.entropyValueElement.innerText = entropyValue.toFixed(3)
-      } catch(e) {
-        this.entropyValueElement.innerText = 'Syntax error!'
-      }
-    }, 1000)
+  onCursorMove(event) {
+    this.clear(this.currentHighlights)
+
+    if (!this.analysis)
+      return
+
+    const position = this.editor.getPosition();
+    const offset = this.editor.getModel().getOffsetAt(position)
+
+    const actualCodeSlices =
+        (this.analysis.evaluations || [this.analysis])
+          .filter(e => inlineArray(Array.from(e.actual.elements.values())).find(each => each.start <= offset && each.end >= offset))
+
+    if (!actualCodeSlices || !actualCodeSlices.length)
+      return
+    
+    this.actualCodeSlice = actualCodeSlices[0]
+    this.currentHighlights = this.forEachLine(this.highlightPossibles.bind(this))
+  }
+
+  highlightPossibles(eachLineNumber, lineStart, lineColumnsCount) {
+    const possibleCodeSlices = inlineArray(Array.from(this.actualCodeSlice.possible.elements.values()))
+    return possibleCodeSlices
+      .filter(eachPossible => eachPossible.start >= lineStart && eachPossible.start <= lineStart + lineColumnsCount)
+      .map(e => ({
+        range: new monaco.Range(eachLineNumber, e.start - lineStart + 1, eachLineNumber, e.end - lineStart + 1),
+        options: { inlineClassName: 'line-decoration--secondary' }
+      }))
+  }
+
+  highlightActuals(eachLineNumber, lineStart, lineColumnsCount) {
+    return inlineArray(
+        (this.analysis.evaluations || [this.analysis])
+          .map(e => inlineArray(Array.from(e.actual.elements.values())))
+      )
+        .filter(eachActual => eachActual.start >= lineStart && eachActual.start <= lineStart + lineColumnsCount)
+        .map(e => ({
+          range: new monaco.Range(eachLineNumber, e.start - lineStart + 1, eachLineNumber, e.end - lineStart + 1),
+          options: { inlineClassName: 'line-decoration' }
+        }))
   }
 
   adaptTheme() {
@@ -74,49 +109,48 @@ class EntropyEditor {
 
   setEditor(editor) {
     this.editor = editor
-
     const darkModeToggleElement = document.querySelector('#toggleMode')
     darkModeToggleElement.addEventListener('change', () => this.adaptTheme())
-
-    // setTimeout(() => this.putEntropies(this.editor), 1000)
-    this.editor.getModel().onDidChangeContent(() => this.putEntropies(this.editor))
+    this.editor.getModel().onDidChangeContent(() => this.onCodeChange())
+    this.editor.onDidChangeCursorPosition((e) => this.onCursorMove(event))
   }
 }
 
 const entropyValueElement = document.querySelector('#total-entropy-value')
 window.entropyEditor = new EntropyEditor(entropyValueElement)
 
-const initialCode = `const a = 4;`
+const initialCode = ``
 require.config({ paths: { vs: 'https://unpkg.com/monaco-editor@latest/min/vs' }});
 const containerElement = document.getElementById('container')
 const createEditor = require(["vs/editor/editor.main"], function () {
   const editor = monaco.editor.create(containerElement, {
-    value: [
-      ...initialCode.split('\n')
-    ].join('\n'),
+    value: initialCode,
     language: 'javascript',
-    autoIndent: 'full'
+    autoIndent: 'full',
+    fontSize: 16,
+    minimap: {
+      enabled: false,
+    },
   })
   window.entropyEditor.setEditor(editor)
 })
 </script>
 
 <style>
-  .after-line-decoration {
-    color: var(--color-inline-code-fg);
+  .line-decoration {
     background-color: var(--color-inline-code-bg);
-    background: var(--color-bg);
-    border: 1px solid var(--color-primary-title);
-    box-shadow: 5px 4px 0px -2px var(--color-light-shadow2);
-    padding: 2px 5px;
     opacity: .8;
   }
 
-  .after-line-decoration:hover {
+  .line-decoration--secondary {
+    background-color: var(--color-highlight2--code);
+  }
+
+  .line-decoration:hover {
     opacity: 1;
   }
 
-  .after-line-decoration--loader {
-    color: var(--color-light-bg2);
+  .line-decoration--loader {
+    background-color: var(--color-bg-thin-constast);
   }
 </style>
