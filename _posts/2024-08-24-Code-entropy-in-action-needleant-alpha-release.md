@@ -87,11 +87,11 @@ It may answer questions such as:
 
 The package is still in its alpha stage.
 
-The [source code](https://github.com/haresfaiez/needle-ant) is on Github.
+The [source code](https://github.com/haresfaiez/needleant) is on Github.
 You might want to take a look, suggest improvements, report bugs,
 or even implement some stuff by yourself.
 
-You can also try it with a [sample editor](/needle-ant.html).
+You can also try it with a [sample editor](/needleant.html).
 
 It calculates the total entropy after each code change.
 When you move the cursor on a token, it highlights the
