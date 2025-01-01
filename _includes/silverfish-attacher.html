@@ -1,0 +1,23 @@
+{% include silverfish.html %}
+
+<script type="text/javascript">
+  const initSilverFish = () => {
+    const fish = new Rod()
+    fish.pick()
+    fish.focus()
+    fish.setup(document.querySelector("main"))
+
+    Array
+      .from(document.querySelectorAll("h2,h3"))
+      .forEach(header => {
+          const bg = `<svg width="297" height="32" viewBox="0 0 297 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: relative;top: 18px;right: 280px;z-index: -1;filter: blur(4px);">
+            <path d="M1.88279 30.1433C25.9334 -16.1484 54.3483 27.9323 67.7461 27.137C90.3729 25.7938 84.7182 3.0864 105.763 3.0864C121.076 4.74087 126.807 27.137 141.838 27.137C153.864 27.137 159.876 9.09911 177.914 3.0864C204.972 -3.66347 210.486 28.1916 227.357 27.137C246.436 25.9444 255.181 -22.7716 295.161 30.1434" stroke="#FFE600" stroke-width="3"/>
+            </svg>
+            `
+          header.innerHTML = `${header.innerHTML}${bg}`
+        })
+  }
+
+  if (window.isSilverFishActive) initSilverFish()
+</script>
+  

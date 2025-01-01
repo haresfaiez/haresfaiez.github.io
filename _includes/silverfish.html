@@ -1,0 +1,197 @@
+<script type="text/javascript">
+
+class Post {
+  paragraphs() {
+    return [...Array.from(document.querySelectorAll("p"))];
+  }
+
+  applyOperations(content, operations) {
+    let result = content
+    operations.forEach(({ keyword, replacement }) => result = result.replace(keyword, replacement))
+    return result
+  }
+
+  applyReplacements(element, operations) {
+    operations.forEach(({ selector, mapping }) => {
+        Array
+          .from(element.querySelector(selector) || [])
+          .forEach(found => found.replace(mapping(found)))
+    })
+  }
+
+  replace(operations) {
+    this.paragraphs().forEach(paragraph => this.applyReplacements(paragraph, operations))
+  }
+
+  rewrite(operations) {
+    this.paragraphs().forEach(paragraph => paragraph.innerHTML = this.applyOperations(paragraph.innerHTML, operations))
+  }
+
+  occurences(paragraph, query) {
+    const sentenceSeparator = "."
+    return paragraph.innerText.split(sentenceSeparator).filter(e => e.includes(query))
+  }
+}
+
+class Rod {
+
+  constructor() {
+    this.post = new Post()
+    this.well = null
+    this.panel = "aside#pre-post"
+    this.colorIndex = 0
+  }
+
+  _setup(deck, panel) {
+    this.pick()
+    this.focus()
+    this.setup(deck, panel)
+  }
+
+  setup(deck, panel) {
+    this.panel = panel || this.panel
+    const well = deck.appendChild(this.well)
+
+    // TODO: fix this
+    setTimeout(() => {
+      document.querySelector("button#hook").addEventListener("click", (event) => this.hookFish())
+      document.querySelector("button#paperclip").addEventListener("click", (event) => this.pinFish())
+    }, 0)
+  }
+
+  pick() {
+    const result = document.createElement("aside")
+    result.className = "post-toolbox"
+    result.id = "post-toolbox"
+
+    const ul = document.createElement("ul")
+    const li = document.createElement("li")
+
+    const hook = this.hook()
+    const pin = this.pin()
+    li.appendChild(hook)
+    li.appendChild(pin)
+    ul.appendChild(li)
+    result.appendChild(ul)
+
+    this.well = result
+  }
+
+  capture(element) {
+    document.querySelector("aside#post-toolbox").appendChild(element)
+  }
+
+  focus() {
+    this.post.replace([{ selector: "a", mapping: (link) => new Fish(link, this,).drawElement() }])
+  }
+
+  hookFish(selection) {
+    const fish = selection || window.getSelection().toString()
+    if (!fish.trim()) {
+      return;
+    }
+
+    this.colorIndex++
+    this.post.rewrite([{ keyword: fish, replacement: new Fish(fish, this).draw() }])
+  }
+
+  pinFish(selection) {
+    const fish = selection || window.getSelection().toString()
+    if (!fish.trim()) {
+      return;
+    }
+
+    document.querySelector(this.panel).appendChild(new Fish(fish, this).drawPinElement())
+  }
+
+  pin() {
+    const result = document.createElement("button")
+    result.id = "paperclip"
+    result.innerHTML = `<i class="fa-solid fa-paperclip"></i>`
+    return result
+  }
+
+  hook() {
+    const result = document.createElement("button")
+    result.id = "hook"
+    result.innerHTML = `<i class="fa-solid fa-plug-circle-check"></i>`
+    return result
+  }
+}
+
+class Fish {
+
+  constructor(name, rod) {
+    this.name = name.innerText ?? name
+    this.href = name.href
+    this.rod = rod
+  }
+
+  class() {
+    return this.rod.colorIndex < 2 ? "fish" : "fish fish--variant1"
+  }
+
+  capture() {
+    this.rod.capture(new CapturedFish(this).drawElement())
+  }
+
+  drawElement(link) {
+    const button = document.createElemen("button")
+    button.className = this.class()
+    button['data-href'] = this.href
+    button.addEventListener("click", (event) => this.capture())
+    return button
+  }
+
+  draw() {
+    const onclick = "holdSocket"
+    window[onclick] = (event) => new Fish(event.target.innerText, this.rod).capture()
+    return `<button class="${this.class()}" onclick="window.${onclick}(event)">${this.name}</button>`
+  }
+
+  drawOccurence(sentence) {
+    return sentence.replace(this.name, this.draw())
+  }
+  
+  drawPinElement() {
+    const netElement = document.createElement("div")
+    netElement.className = "fishnet"
+    const pinElement = document.createElement("ul")
+    pinElement.innerHTML = `<li>${this.name}</li>`
+    netElement.appendChild(pinElement)
+    return netElement
+  }
+
+  occurences() {
+    const paragraphs = this.rod.post.paragraphs()
+    const result = [];
+    paragraphs.forEach(paragraph => this.rod.post.occurences(paragraph, this.name).forEach(e => result.push(this.drawOccurence(e))))
+    return result
+  }
+}
+
+class CapturedFish {
+
+  constructor(source) {
+    this.source = source
+  }
+
+  drawElement() {
+    const result = document.createElement("button")
+    result.innerText = this.source.name
+    result.className = this.source.class()
+    result.addEventListener("click", (event) => this.fishnet())
+    return result
+  }
+
+  fishnet() {
+    const netElement = document.createElement("div")
+    netElement.className = "fishnet"
+    const searchResult = document.createElement("ul")
+    searchResult.innerHTML = this.source.occurences().map(e => `<li>${e}</li><li>...</li>`).join('')
+    netElement.appendChild(searchResult)
+    document.querySelector(this.source.rod.panel).appendChild(netElement)
+  }
+}
+
+</script>
