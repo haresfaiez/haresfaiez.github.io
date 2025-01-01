@@ -1,0 +1,104 @@
+<script type="text/javascript">
+
+class Stream {
+  constructor(stream) {
+    this.stream = stream;
+
+    this.canvas = document.createElement('svg');
+    this.currentTop = 0;
+    // version="1.1"
+    // xmlns="http://www.w3.org/2000/svg"
+    // viewBox="0 0 100 100"
+    const shotsElements = this.stream.map((shot) => {
+      this.slideTopPosition(shot);
+      return this.draw(shot);
+    });
+    this.canvas.appendChild(this.line())
+    shotsElements.forEach((element) => this.canvas.appendChild(element))
+  }
+
+  height() {
+    return 100
+  }
+
+  width() {
+    return 40
+  }
+
+  linePosition() {
+    return 50
+  }
+
+  verticalPadding() {
+    return 20
+  }
+
+  slideTopPosition(shot) {
+    return this.currentTop += 10;
+  }
+
+  draw(shot) {
+    if (shot.href)
+      return this.pinClick(shot);
+
+    return this.pinLocation(shot);
+  }
+
+  pinLocation() {
+    const result = document.createElement('circle')
+    result.setAttribute('cx', this.linePosition());
+    result.setAttribute('cy', this.currentTop);
+    result.setAttribute('r', 5);
+    return result;
+  }
+
+  pinClick() {
+    const result = document.createElement('rect')
+    result.setAttribute('x', this.linePosition() - 10 / 2);
+    result.setAttribute('y', this.currentTop);
+    result.setAttribute('width', 10);
+    result.setAttribute('height', 10);
+    result.setAttribute('rx', 2);
+    return result;
+  }
+
+  line() {
+    const result = document.createElement('line');
+    result.setAttribute('x1', this.linePosition());
+    result.setAttribute('y1', 0);
+    result.setAttribute('x2', this.linePosition());
+    result.setAttribute('y2', this.currentTop + this.verticalPadding());
+    result.setAttribute('stroke', "black");
+    return result;
+  }
+}
+
+class Tape {
+
+  constructor(container) {
+    this.container = container
+    // this.post = new Post()
+  }
+
+  draw(history) {
+    const stream = new Stream(history);
+    this.container.innerHTML = ''
+    this.container.appendChild(stream.canvas);
+  }
+}
+
+const initNavigationTape = () => {
+  const tapeContainer = document.createElement('aside')
+  tapeContainer.id = 'tape'
+  tapeContainer.classList.add('tape-container')
+  document.querySelector('main').appendChild(tapeContainer)
+
+  const tape = new Tape(tapeContainer);
+  tape.draw([]);
+  tape.draw(['#html-transformation']);
+  tape.draw(['#html-transformation', '#module-graph', {href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/image/image-set'}]);
+}
+
+if (window.isNavigationTapeActive) initNavigationTape();
+</script>
+  
