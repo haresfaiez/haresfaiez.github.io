@@ -1,0 +1,52 @@
+<h1>Loogy</h1>
+<p>Apply Loogy manually to textarea content!</p>
+
+<textarea>
+  #<syntax (quote (quote other))>
+  expand-id-application-form/
+  #<procedure:...der/expand/expr.rkt:475:1>
+  #<syntax (#%app (let-values () (let-values () (lambda (x) (let-values (((x) (quote other))) x)))) (quote ok))>
+</textarea>
+
+<button onclick="window.loogy()">Loogy</button>
+
+<h2>Playground</h2>
+<aside></aside>
+<section>
+</section>
+
+{% include silverfish.html %}
+
+<script type="text/javascript">
+  class Loogy {
+    constructor(contentTextarea, playground, controlPanel) {
+      this.content = contentTextarea.value
+      this.playground = playground
+      this.controlPanel = controlPanel.tagName
+    }
+
+    draw() {
+      this.playground.innerHTML = ''
+
+      const containerElement = document.createElement('section')
+      const lines = this.content.split('\n')
+        .map(each => {
+          const eachLineElement = document.createElement('p')
+          eachLineElement.innerText = each
+          return eachLineElement
+        })
+        .forEach(each => containerElement.appendChild(each))
+
+      this.playground.appendChild(containerElement)
+
+      new Rod()._setup(this.playground, this.controlPanel)
+    }
+  }
+
+  window.loogy =
+  () => new Loogy(
+    document.getElementsByTagName('textarea')[0],
+    document.getElementsByTagName('section')[0],
+    document.getElementsByTagName('aside')[0]
+    ).draw()
+</script>
