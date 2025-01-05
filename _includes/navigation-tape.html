@@ -5,16 +5,19 @@ class Stream {
     this.stream = stream;
 
     this.canvas = document.createElement('svg');
+    this.canvas.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    this.canvas.setAttribute('version', '1.1');
+    this.canvas.setAttribute('viewbox', '0 0 100 100');
+    this.canvas.setAttribute('fill', 'black')
+
     this.currentTop = 0;
-    // version="1.1"
-    // xmlns="http://www.w3.org/2000/svg"
-    // viewBox="0 0 100 100"
+
     const shotsElements = this.stream.map((shot) => {
       this.slideTopPosition(shot);
       return this.draw(shot);
     });
-    this.canvas.appendChild(this.line())
     shotsElements.forEach((element) => this.canvas.appendChild(element))
+    this.canvas.appendChild(this.line())
   }
 
   height() {
@@ -94,8 +97,8 @@ const initNavigationTape = () => {
   document.querySelector('main').appendChild(tapeContainer)
 
   const tape = new Tape(tapeContainer);
-  tape.draw([]);
-  tape.draw(['#html-transformation']);
+  // tape.draw([]);
+  // tape.draw(['#html-transformation']);
   tape.draw(['#html-transformation', '#module-graph', {href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/image/image-set'}]);
 }
 
