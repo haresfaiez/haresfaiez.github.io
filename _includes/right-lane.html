@@ -1,23 +1,25 @@
 <div id="right-lane">
-  <menu class="right-lane--element">
-    <li>
-      {% include dark-mode-switch.html %}
-    </li>
-    <li>
-      <a href="mailto:{{ site.email }}" class="button" id="say-hi-button">
-        Say Hi
-        <i class="fa-solid fa-comment-dots"></i>
-      </a>
-    </li>
-  </menu>
-  <div id="summary-container" class="right-lane--element"></div>
-  <div class="subscription-container right-lane--element">
-    <p>
-      If you want to get a notification when I write a post, join my newsletter:
-      <div id="subscription">
-        {% include mailchimp.html %}
-      </div>
-    </p>
+  <div class="right-lane--body">
+    <menu class="right-lane--element">
+      <li>
+        {% include dark-mode-switch.html %}
+      </li>
+      <li>
+        <a href="mailto:{{ site.email }}" class="button" id="say-hi-button">
+          Say Hi
+          <i class="fa-solid fa-comment-dots"></i>
+        </a>
+      </li>
+    </menu>
+    <div id="summary-container" class="right-lane--element"></div>
+    <div class="subscription-container right-lane--element">
+      <p>
+        If you want to get a notification when I write a post, join my newsletter:
+        <div id="subscription">
+          {% include mailchimp.html %}
+        </div>
+      </p>
+    </div>
+    {% include footer.html %}
   </div>
-  {% include footer.html %}
 </div>

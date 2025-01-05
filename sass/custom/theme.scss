@@ -30,6 +30,24 @@ $small-screen-max-size: 1000px;
 // $gradient-bg-1: linear-gradient(239deg, rgb(255, 107, 253) 0%, rgb(0, 255, 231) 100%);
 $gradient-bg-1: linear-gradient(239deg, var(--color-light-bg) 0%, var(--color-light-bg2) 100%);
 
+// Mixins
+
+@mixin box-style($border-color, $shadow-color) {
+  border: 1px solid $border-color;
+  box-shadow: 8px 9px 0px -4px $shadow-color;
+  border-radius: 5px;
+  padding: 20px 0;
+  overflow: hidden;
+
+  &:hover {
+    overflow: visible;
+    box-shadow: none;
+    border: none;
+  }
+}
+
+// Styles
+
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -146,37 +164,38 @@ menu {
 // general purpose
 .button {
   border-radius: $border-radius;
-  display: block;
+  display: inline-block;
 }
 
 // page body & lanes
-@media print, screen and (max-width: $medium-screen-max-size) {
-  div.page-body {
-    width: 85%;
-  }
-
+@media print, screen and (min-width: $large-screen-min-size) {
   #left-lane {
-    width: 65%;
+    width: 38vw;
+    margin-right: $giant-margin;
   }
 
   #right-lane {
-    align-items: end;
-    width: 30%;
+    width: 18vw;
+
+    .right-lane--body {
+      align-items: end;
+      position: fixed;
+      width: 18vw;
+    }
   }
 }
 
-@media print, screen and (min-width: $large-screen-min-size) {
+@media print, screen and (max-width: $medium-screen-max-size) {
   div.page-body {
-    width: 60%;
-  }
+   flex-direction: column;
 
-  #left-lane {
-    width: 65%;
-  }
+    #left-lane, #right-lane {
+      width: 60vw;
+    }
 
-  #right-lane {
-    align-items: end;
-    width: 30%;
+    #right-lane {
+      align-items: start;
+    }
   }
 }
 
@@ -184,12 +203,11 @@ menu {
   div.page-body {
    flex-direction: column;
 
-    #left-lane {
-      width: 100%;
+    #left-lane, #right-lane {
+      width: 80vw;
     }
 
     #right-lane {
-      width: 100%;
       align-items: start;
     }
   }
@@ -205,9 +223,12 @@ main {
     display: flex;
     margin: auto;
 
-    #left-lane {
-      margin-right: $giant-margin;
+    .navigation-button {
+      @include box-style(var(--color-aside-shodow), var(--color-aside-border));
+      padding: 2px;
+    }
 
+    #left-lane {
       .intro {
         a {
           padding: $tiny-margin $default-margin;
@@ -224,8 +245,11 @@ main {
     }
 
     #right-lane {
-      display: flex;
-      flex-direction: column;
+
+      .right-lane--body {
+        display: flex;
+        flex-direction: column;
+      }
 
       .right-lane--element {
         margin: 0 0 $medium-margin;
@@ -279,16 +303,12 @@ main {
   right: 3%;
 
   .post-summary {
-    border: 1px solid var(--color-aside-border);
-    box-shadow: 8px 9px 0px -4px var(--color-aside-shodow);
-    border-radius: 5px;
-    padding: 20px 0;
+    @include box-style(var(--color-aside-border), var(--color-aside-shodow));
     width: 260px;
-    overflow: auto;
 
     ul {
       list-style-type: none;
-      padding: 0 20px;
+      padding: 0;
       margin: 0;
 
       li {
@@ -299,6 +319,9 @@ main {
             font-size: 1em;
             font-weight: 600;
             color: var(--color-aside-header);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
 
             &:hover {
               color: var(--color-aside-hover);
@@ -311,6 +334,9 @@ main {
             font-size: 1em;
             font-weight: 400;
             color: var(--color-aside-subheader);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
 
             &:hover {
               color: var(--color-aside-hover);
@@ -349,7 +375,7 @@ main {
   }
 
   &.toggle-text--dark {
-    display: block;
+    display: inline-block;
   }
 
   &.toggle-text--light {
@@ -364,7 +390,7 @@ main {
     }
 
     &.toggle-text--light{
-      display: block;
+      display: inline-block;
     }
   }
 }
