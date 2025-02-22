@@ -42,7 +42,7 @@ $gradient-bg-1: linear-gradient(239deg, var(--color-light-bg) 0%, var(--color-li
   &:hover {
     overflow: visible;
     box-shadow: none;
-    border: none;
+    border-right: none;
   }
 }
 
@@ -169,8 +169,29 @@ menu {
 
 // page body & lanes
 @media print, screen and (min-width: $large-screen-min-size) {
+  .post-summary-container {
+    max-height: 70%;
+    margin-left: 15px;
+    width: 20%;
+    right: 3%;
+
+    .post-summary {
+      overflow: hidden;
+      width: 260px;
+      max-height: 30vh;
+
+      &:hover {
+        box-shadow: none;
+        border: none;
+        overflow-x: visible;
+        overflow-y: scroll;
+        background-color: var(--color-bg);
+      }
+    }
+  }
+
   #left-lane {
-    width: 38vw;
+    width: 40vw;
     margin-right: $giant-margin;
   }
 
@@ -216,16 +237,27 @@ menu {
 main {
   display: flex;
   flex-direction: column;
-  padding: $medium-margin 0;
   min-height: 100vh;
+
+  &.root-page {
+    padding: $medium-margin 0;
+  }
 
   div.page-body {
     display: flex;
     margin: auto;
 
     .navigation-button {
-      @include box-style(var(--color-aside-shodow), var(--color-aside-border));
+      border: 1px solid var(--color-aside-shodow);
+      box-shadow: 8px 9px 0px -4px var(--color-aside-border);
+      border-radius: 5px;
+      overflow: hidden;    
       padding: 2px;
+      margin: 0 0 20px 0;
+
+      &:hover {
+        box-shadow: none;
+      }
     }
 
     #left-lane {
@@ -267,6 +299,14 @@ main {
 
 
 // post
+.post-header {
+  h1 {
+    padding: 20px;
+    background: var(--color-text-layer-bg);
+    text-wrap: balance;
+  }
+}
+
 .post, .post-intro {
   header {
     margin: 0 0 $medium-margin 0;
@@ -292,19 +332,25 @@ main {
     font: {
       weight: 700;
     }
+
+    font-weight: 700;
+    background: var(--color-link-bg);
+    padding: 0 5px;
+    color: var(--color-link-fg);
+
+    &:hover {
+      background: var(--color-link-bg--hover);
+    }
   }
 }
 
 // post summary
 .post-summary-container {
-  max-height: 70%;
-  margin-left: 15px;
-  width: 20%;
-  right: 3%;
-
   .post-summary {
-    @include box-style(var(--color-aside-border), var(--color-aside-shodow));
-    width: 260px;
+    border: 1px solid var(--color-aside-border);
+    box-shadow: 8px 9px 0px -4px var(--color-aside-shodow);
+    border-radius: 5px;
+    padding: 20px 0;
 
     ul {
       list-style-type: none;
@@ -418,6 +464,16 @@ main {
 .highlighter-rouge {
   background: var(--color-contrast-bg);
   padding: 0 $half-margin;
+  transition: all 0.1s ease-in-out; /* Smooth transition for all properties */
+
+  &:not(.language-plaintext):hover {
+    position: relative;
+    width: 70vw;
+    z-index: 2;
+    background: var(--code-hover-bg);
+    display: flex;
+    overflow: scroll;
+  }
 }
 
 pre.highlight {
