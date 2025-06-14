@@ -10,8 +10,23 @@
 <label for="toggleMode" class="toggle-text toggle-text--light"><i class="fa-solid fa-umbrella-beach"></i> <span class="toggle-text--body">Light Mode</span></label>
 
 <script type="text/javascript">
-window.darkModeSwitch = function (event) {
-  let pg = document.querySelector('main.page').classList;
-  event.target.checked ? pg.add('dark-mode') : pg.remove('dark-mode');
+let pageClassList = document.querySelector('main.page').classList;
+window.darkModeSwitch = function(event) {
+  const isDarkModeOn = event.target.checked;
+  if (isDarkModeOn) {
+    pageClassList.add('dark-mode');
+    localStorage && localStorage.setItem('dark-mode', 'enabled');
+  } else {
+    pageClassList.remove('dark-mode');
+    localStorage && localStorage.removeItem('dark-mode');
+  }
 };
+
+const darkModeState = localStorage && localStorage.getItem('dark-mode');
+if (darkModeState) {
+  if (darkModeState === 'enabled') {
+    document.getElementById('toggleMode').checked = true;
+    pageClassList.add('dark-mode');
+  }
+}
 </script>
