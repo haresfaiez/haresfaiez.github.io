@@ -8,3 +8,9 @@ sass/node_modules
 #*
 .#*
 .jekyll-cache/
+
+# Bundler/Gem files
+Gemfile
+Gemfile.lock
+.bundle/
+vendor/
