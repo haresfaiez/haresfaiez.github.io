@@ -6,8 +6,8 @@
   aria-checked="false"
   onchange="window.darkModeSwitch(event)"
   >
-<label for="toggleMode" class="toggle-text toggle-text--dark"><i class="fa-solid fa-ghost"></i> <span class="toggle-text--body">Dark Mode</span></label>
-<label for="toggleMode" class="toggle-text toggle-text--light"><i class="fa-solid fa-umbrella-beach"></i> <span class="toggle-text--body">Light Mode</span></label>
+<label for="toggleMode" class="toggle-text toggle-text--dark">{% include icon.html name="moon" %} <span class="toggle-text--body">Dark Mode</span></label>
+<label for="toggleMode" class="toggle-text toggle-text--light">{% include icon.html name="light-bulb" %} <span class="toggle-text--body">Light Mode</span></label>
 
 <script type="text/javascript">
 let pageClassList = document.querySelector('main.page').classList;

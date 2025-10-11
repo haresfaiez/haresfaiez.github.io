@@ -2,7 +2,7 @@
   {% if site.mastodon_handle %}
   <li>
     <a class="item" href="https://mastodon.social/@{{ site.mastodon_handle }}">
-      <i class="fa-brands fa-mastodon"></i>
+      {% include icon.html name="mastodon" %}
       <span>Mastodon</span>
     </a>
   </li>
@@ -10,7 +10,7 @@
   {% if site.bsky_handle %}
   <li>
     <a class="item" href="https://bsky.app/profile/{{ site.bsky_handle }}.bsky.social">
-      <i class="fa-brands fa-bluesky"></i>
+      {% include icon.html name="bluesky" %}
       <span>BlueSky</span>
     </a>
   </li>
@@ -19,7 +19,7 @@
   {% if site.linkedin_handle %}
   <li>
     <a class="item" href="https://linkedin.com/in/{{ site.linkedin_handle }}">
-      <i class="fa-brands fa-linkedin"></i>
+      {% include icon.html name="linkedin" %}
       <span>Linkedin</span>
     </a>
   </li>
@@ -28,7 +28,7 @@
   {% if site.github_handle %}
   <li>
     <a class="item" href="https://github.com/{{ site.github_handle }}">
-      <i class="fa-brands fa-github top"></i>
+      {% include icon.html name="github" %}
       <span>Github</span>
     </a>
   </li>
@@ -37,7 +37,7 @@
   {% if site.goodreads_handle %}
   <li>
     <a class="item" href="https://goodreads.com/user/show/{{ site.goodreads_handle }}">
-      <i class="fa-brands fa-goodreads top"></i>
+      {% include icon.html name="goodreads" %}
       <span>Goodreads</span>
     </a>
   </li>
@@ -46,7 +46,7 @@
   {% if site.letterboxd_handle %}
   <li>
     <a class="item" href="https://letterboxd.com/{{ site.letterboxd_handle }}/films/">
-      <i class="fa-brands fa-square-letterboxd"></i>
+      {% include icon.html name="letterboxd" %}
       <span>Letterboxd</span>
     </a>
   </li>
@@ -55,7 +55,7 @@
   {% if site.instagram_handle %}
   <li>
     <a class="item" href="https://instagram.com/{{ site.instagram_handle }}">
-      <i class="fa-brands fa-instagram top"></i>
+      {% include icon.html name="instagram" %}
       <span>Instagram</span>
     </a>
   </li>
@@ -64,7 +64,7 @@
   {% if site.behance_handle %}
   <li>
     <a class="item" href="https://behance.net/{{ site.behance_handle }}">
-      <i class="fa-brands fa-behance top"></i>
+      {% include icon.html name="behance" %}
       <span>Behance</span>
     </a>
   </li>
