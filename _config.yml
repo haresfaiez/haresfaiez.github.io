@@ -10,6 +10,7 @@ baseurl: ""
 mastodon_handle : faiezhares
 bsky_handle  : faiezhares
 linkedin_handle : faiez-hares-4b2262158
+substack_handle : faiezhares
 
 markdown: kramdown
 

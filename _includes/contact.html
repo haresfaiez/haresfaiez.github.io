@@ -1,4 +1,22 @@
 <menu class="menu">
+  {% if site.linkedin_handle %}
+  <li>
+    <a class="item" href="https://linkedin.com/in/{{ site.linkedin_handle }}">
+      {% include icon.html name="linkedin" %}
+      <span>Linkedin</span>
+    </a>
+  </li>
+  {% endif %}
+
+  {% if site.substack_handle %}
+  <li>
+    <a class="item" href="https://{{ site.substack_handle }}.substack.com">
+      {% include icon.html name="substack" %}
+      <span>Substack</span>
+    </a>
+  </li>
+  {% endif %}
+
   {% if site.mastodon_handle %}
   <li>
     <a class="item" href="https://mastodon.social/@{{ site.mastodon_handle }}">
@@ -12,15 +30,6 @@
     <a class="item" href="https://bsky.app/profile/{{ site.bsky_handle }}.bsky.social">
       {% include icon.html name="bluesky" %}
       <span>BlueSky</span>
-    </a>
-  </li>
-  {% endif %}
-
-  {% if site.linkedin_handle %}
-  <li>
-    <a class="item" href="https://linkedin.com/in/{{ site.linkedin_handle }}">
-      {% include icon.html name="linkedin" %}
-      <span>Linkedin</span>
     </a>
   </li>
   {% endif %}
