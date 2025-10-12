@@ -1,32 +1,35 @@
-<input
-  type="checkbox"
-  id="toggleMode"
-  class="dark-mode-switch"
-  role="dark-mode-switch"
-  aria-checked="false"
-  onchange="window.darkModeSwitch(event)"
-  >
-<label for="toggleMode" class="toggle-text toggle-text--dark">{% include icon.html name="moon" %} <span class="toggle-text--body">Dark Mode</span></label>
-<label for="toggleMode" class="toggle-text toggle-text--light">{% include icon.html name="light-bulb" %} <span class="toggle-text--body">Light Mode</span></label>
+<input type="checkbox" id="toggleMode" class="dark-mode-switch" role="dark-mode-switch" aria-checked="false"
+  onchange="window.darkModeSwitch(event)">
+<label for="toggleMode" class="toggle-text toggle-text--dark">{% include icon.html name="moon" %} <span
+    class="toggle-text--body">Dark Mode</span></label>
+<label for="toggleMode" class="toggle-text toggle-text--light">{% include icon.html name="light-bulb" %} <span
+    class="toggle-text--body">Light Mode</span></label>
 
 <script type="text/javascript">
-let pageClassList = document.querySelector('main.page').classList;
-window.darkModeSwitch = function(event) {
-  const isDarkModeOn = event.target.checked;
-  if (isDarkModeOn) {
-    pageClassList.add('dark-mode');
-    localStorage && localStorage.setItem('dark-mode', 'enabled');
-  } else {
-    pageClassList.remove('dark-mode');
-    localStorage && localStorage.removeItem('dark-mode');
-  }
-};
+  document.addEventListener('DOMContentLoaded', function () {
+    let pageClassList = document.querySelector('main.page').classList;
+    let footerClassList = document.querySelector('footer').classList;
 
-const darkModeState = localStorage && localStorage.getItem('dark-mode');
-if (darkModeState) {
-  if (darkModeState === 'enabled') {
-    document.getElementById('toggleMode').checked = true;
-    pageClassList.add('dark-mode');
-  }
-}
+    window.darkModeSwitch = function (event) {
+      const isDarkModeOn = event.target.checked;
+      if (isDarkModeOn) {
+        pageClassList.add('dark-mode');
+        footerClassList.add('dark-mode');
+        localStorage && localStorage.setItem('dark-mode', 'enabled');
+      } else {
+        pageClassList.remove('dark-mode');
+        footerClassList.remove('dark-mode');
+        localStorage && localStorage.removeItem('dark-mode');
+      }
+    };
+
+    const darkModeState = localStorage && localStorage.getItem('dark-mode');
+    if (darkModeState) {
+      if (darkModeState === 'enabled') {
+        document.getElementById('toggleMode').checked = true;
+        pageClassList.add('dark-mode');
+        footerClassList.add('dark-mode');
+      }
+    }
+  });
 </script>

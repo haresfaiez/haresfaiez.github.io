@@ -25,6 +25,11 @@ $small-screen-max-size: 1000px;
 // $gradient-bg-1: linear-gradient(239deg, rgb(255, 107, 253) 0%, rgb(0, 255, 231) 100%);
 $gradient-bg-1: linear-gradient(239deg, var(--color-light-bg) 0%, var(--color-light-bg2) 100%);
 
+// layout widths
+$left-lane-width  : 40vw;
+$right-lane-width : 18vw;
+$footer-width       : $left-lane-width + $right-lane-width;
+
 // Mixins
 
 @mixin box-style($border-color, $shadow-color) {
@@ -102,7 +107,7 @@ h1, h2, h3 {
   margin: 0 0 $huge-margin;
 }
 
-main {
+main, footer {
   background-color: var(--color-bg);
   color: var(--color-primary);
 }
@@ -186,17 +191,17 @@ menu {
   }
 
   #left-lane {
-    width: 40vw;
+    width: $left-lane-width;
     margin-right: $giant-margin;
   }
 
   #right-lane {
-    width: 18vw;
+    width: $right-lane-width;
 
     .right-lane--body {
       align-items: end;
       position: fixed;
-      width: 18vw;
+      width: $right-lane-width;
     }
   }
 }
@@ -226,6 +231,26 @@ menu {
     #right-lane {
       align-items: start;
     }
+  }
+}
+
+.footer-container {
+  padding: 0.4em 0;
+  border-top: 1px solid var(--color-bg-thin-constast);
+  width: $footer-width;
+  display: flex;
+  flex-direction: column;
+
+  a {
+    font-size: 0.9em;
+    font-weight: 700;
+  }
+  
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
   }
 }
 
