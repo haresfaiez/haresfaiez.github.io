@@ -6,13 +6,6 @@ date:     2021-08-25 08:00:00 +0100
 tags:     featured
 ---
 
-> The campus will be in a good condition
-> when it has not only big building projects that are gradually adding to it, but
-> also a continuous series of adaptations—small, very small, and tiny, in ever
-> larger quantities—so that by the time you get down to the smallest level,
-> you’ve got hundreds of things that are getting tuned all the time. A bench
-> here, a window here, a tree here, a couple of paving stones here.
-
 I have just finished [How Building Learn](https://www.goodreads.com/book/show/38310.How_Buildings_Learn) by Stewart Brand.
 Software practitioners with different backgrounds recommended it.
 Although software development is inherently different from buildings construction,
@@ -21,7 +14,7 @@ The mismatch between plans and reality, the continuous change, and the organic e
 are common interests.
 
 ## Feedback
-> Inhabit early, build forever.
+
 
 People often repaint a wall with a different color after painting half of it,
 and move home offices to basements to enjoy some tranquility.
@@ -58,6 +51,7 @@ But, the moment we try to integrate them fully, some unexpected property
 blocks us.
 
 ## Rough initial design
+
 Close to fast and continuous feedback is the idea of starting with a rough product
 and deferring design decisions.
 The book tells stories of houses that are fully livable from the very start of construction.
@@ -67,10 +61,6 @@ then grow rooms and facilities as the needs arise.
 The book has a chapter titled "function melts form".
 Ever tried merging two long-lived branches. The feeling is the same.
 The form will deteriorate as we strive to fix the function.
-
-> He insists that architects can’t really visualize how a building will look and feel,
-> nor can anyone else—no matter how computer-enhanced they are—and so construction should be a
-> prolonged process of cut-and-try. [...] You are watching a developing wholeness.
 
 The idea is that if one does not live inside a building early and continuously,
 it will end up forcing it to its needs that keep changing.
@@ -85,9 +75,6 @@ as they complicate maintenance.
 In software, we might start with an architecture and impose it on the code.
 But, the implementation later reveals insight and invites simple abstraction we can
 hardly envision when we have only vague requirements.
-
-> All the design intelligence gets forced to the earliest part of the
-> building process, when everyone knows the least about what is really needed.
 
 We need to start with the mindset that the code will change.
 The problem can be somewhat mitigated if we refactor continuously to a simpler
@@ -115,10 +102,6 @@ layers behind each other for the sake of efficiency. Then, we find it
 hard to maintain the inner layer, to change it, or to configure it
 with the input of a higher layer.
 
-> The trick is to remodel in such a way as to make later remodeling
-> unnecessary or at least easy. Keep furniture mobile. Keep wiring, plumbing,
-> and ducts accessible.
-
 The book gives the example of services (wires and pipes)
 hidden inside the structures (walls).
 Then, adding a new feeder is major work.
@@ -130,13 +113,6 @@ the walls or in cable troughs hanging from ceilings instead.
 If we identify layers, we should be able to maintain each of them without hassle.
 We have many practices in software that simplify this:
 Dependency injection, Inversion of Control, Closures, ...
-
-> A design imperative emerges: An adaptive building has to allow slippage
-> between the differently-paced systems of Site, Structure, Skin, Services, Space
-> plan, and Stuff. Otherwise the slow systems block the flow of the quick ones,
-> and the quick ones tear up the slow ones with their constant change.
-> Embedding the systems together may look efficient at first, but over time it is
-> the opposite, and destructive as well.
 
 ## A whole
 The book draws on Christofer Alexender's philosophies of owner/builder,
@@ -166,10 +142,3 @@ from the beginning?
 Solving the bug by renaming the function, changing its meaning, then fixing the problem
 by adding a new concept or new step in an algorithm, leaves more options for the future
 and can keep the whole component consistent.
-
-> An organic process of growth and repair must create a gradual sequence of
-> changes, and these changes must be distributed evenly across every level of
-> scale. [In developing a college campus] there must be as much attention to
-> the repair of details—rooms, wings of buildings, windows, paths—as to the
-> creation of brand new buildings. Only then can an environment stay balanced
-> both as a whole, and in its parts, at every moment of its history.
